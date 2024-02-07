@@ -9,7 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.stream.Collectors;
+import javax.swing.text.html.HTMLDocument.Iterator;
 
 /**
  * This class contains the data that is visible to the player.
@@ -26,9 +28,9 @@ public class Table {
 
     private final int noToken = -1;
 
-    private Object[] slots;
+    private Integer[] slots;
 
-    private final Integer[][] tokensMap;
+    private final Queue<Integer>[][] tokensQueues;
 
     protected final Integer[] slotToCard; // card per slot (if any)
 
@@ -51,14 +53,14 @@ public class Table {
         this.env = env;
         this.slotToCard = slotToCard;
         this.cardToSlot = cardToSlot;
-        this.tokensMap = new Integer[env.config.players][maxTokens];
+        this.tokensQueues = new Queue[env.config.players][0];
         for (int i = 0; i < env.config.players; i++) {
             for (int j = 0; j < maxTokens; j++) {
-                tokensMap[i][j] = noToken;
+                tokensQueues[i][j].add(noToken);
             }
 
         }
-        this.slots = new Object[env.config.tableSize]; // slots to lock while prforming actions
+        this.slots = new Integer[env.config.tableSize]; // slots to lock while prforming actions
         for (int i = 0; i < slots.length; i++) {
             slots[i] = i;
         }
@@ -89,6 +91,11 @@ public class Table {
             System.out.println(
                     sb.append("slots: ").append(slots).append(" features: ").append(Arrays.deepToString(features)));
         });
+    }
+
+    // get the token map
+    public Queue<Integer>[][] getTokensQueues() {
+        return tokensQueues;
     }
 
     /**
@@ -122,7 +129,7 @@ public class Table {
         cardToSlot[card] = slot;
 
         if (slotToCard[slot] != null) { // there is a card in the given slot, we want to replace it
-            synchronized (slots[slot]) { 
+            synchronized (slots[slot]) {
                 removeCard(slot);
                 env.ui.removeCard(slot); // remove from table in ui
                 env.ui.placeCard(card, slot);
@@ -136,8 +143,8 @@ public class Table {
         slotToCard[slot] = card;
     }
 
-    public Object getSlot(int card){
-        return slots[cardToSlot[card]];
+    public Integer getSlot(int slot) {
+        return slots[slot];
     }
 
     /**
@@ -161,6 +168,7 @@ public class Table {
      */
     public void placeToken(int player, int slot) { // there is nothing to lock here becuse 2 players can place token on
                                                    // the same card
+        tokensQueues[player][0].add(slot); //adding new slot of token 
         env.ui.placeToken(player, slot); // for logger and ui
     }
 
@@ -172,11 +180,14 @@ public class Table {
      * @return - true iff a token was successfully removed.
      */
     public boolean removeToken(int player, int slot) {
-        for (int i = 0; i < maxTokens; i++) {
-            if (tokensMap[player][i] == slot) { // there is a token there
+        Queue<Integer> queue = tokensQueues[player][0];
+        java.util.Iterator<Integer> iterator = queue.iterator();
+        while (iterator.hasNext()) {
+            Integer tokenPosition = iterator.next();
+            if (tokenPosition == slot) { //there is a slot to remove
                 env.ui.removeToken(player, slot);
-                tokensMap[player][i] = noToken;
-                return false;
+                iterator.remove();
+                return true;
             }
         }
         // there is no token to remove
