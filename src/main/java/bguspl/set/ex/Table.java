@@ -5,7 +5,9 @@ import bguspl.set.UserInterfaceDecorator;
 import bguspl.set.UserInterfaceSwing;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -20,9 +22,11 @@ public class Table {
      */
     private final Env env;
 
-    private UserInterfaceDecorator userInterfaceDecorator;
+    private final int maxTokens = 2;
 
-    private UserInterfaceSwing userInterfaceSwing;
+    private final int noToken = -1;
+
+    private final Integer[][] tokensMap;
 
     protected final Integer[] slotToCard; // card per slot (if any)
 
@@ -45,6 +49,13 @@ public class Table {
         this.env = env;
         this.slotToCard = slotToCard;
         this.cardToSlot = cardToSlot;
+        this.tokensMap = new Integer [env.config.players][maxTokens]; 
+        for (int i=0; i<env.config.players; i++){
+            for (int j=0; j<maxTokens; j++){
+                tokensMap[i][j] = noToken;
+            }
+
+        }
     }
 
     /**
@@ -95,8 +106,8 @@ public class Table {
      *
      * @post - the card placed is on the table, in the assigned slot.
      */
-    public synchronized void placeCard(int card, int slot) { // Adding sycro becuse I dont want anyone else to touch the
-                                                             // board
+    public void placeCard(int card, int slot) { // while I am placing a new card, I do not want any player to choose the
+        // temporariy empty slot as his set. So, I want to lock the slot
         try {
             Thread.sleep(env.config.tableDelayMillis); /* While I am placing a card, no one can touch the table */
         } catch (InterruptedException ignored) {
@@ -104,14 +115,21 @@ public class Table {
 
         cardToSlot[card] = slot;
 
+        Object lock = slot; //Here I get the slot of the card
+
         if (slotToCard[slot] != null) { // there is a card in the given slot, we want to replace it
-            int slotOfCardToRemove = slot;
-            removeCard(slotOfCardToRemove);
+            synchronized(lock){
+                removeCard(slot);
+                env.ui.removeCard(slot); //remove from table in ui
+                env.ui.placeCard(card, slot);
+            }
+            
+        } else { //there is no card in the given slot, we still want to lock the slot
+            synchronized(lock){
+                env.ui.placeCard(card, slot); // Include ui swing. I have a card that I want to place in empty slot
+            }
         }
-
         slotToCard[slot] = card;
-        env.ui.placeCard(card, slot); // Include ui swing
-
     }
 
     /**
@@ -119,12 +137,11 @@ public class Table {
      * 
      * @param slot - the slot from which to remove the card.
      */
-    public void removeCard(int slot) {
+    public void removeCard(int slot) { //No need to lock becuse only place card calls me and it has lock
         try {
             Thread.sleep(env.config.tableDelayMillis);
         } catch (InterruptedException ignored) {
         }
-
         slotToCard[slot] = null; // No card in there
     }
 
@@ -134,11 +151,8 @@ public class Table {
      * @param player - the player the token belongs to.
      * @param slot   - the slot on which to place the token.
      */
-    public void placeToken(int player, int slot) {
-        String playerName = env.config.playerNames[player];
-        env.ui.placeToken(player, slot); // for logger
-
-        // TODO implement
+    public void placeToken(int player, int slot) { //there is nothing to lock here becuse 2 players can place token on the same card
+        env.ui.placeToken(player, slot); // for logger and ui
     }
 
     /**
@@ -149,7 +163,15 @@ public class Table {
      * @return - true iff a token was successfully removed.
      */
     public boolean removeToken(int player, int slot) {
-        // TODO implement
+        for (int i=0; i<maxTokens; i++){
+            if (tokensMap[player][i]==slot){ //there is a token there
+                env.ui.removeToken(player, slot);
+                tokensMap[player][i] = noToken;
+                return false;
+            } 
+        }
+         //there is no token to remove
         return false;
+        
     }
 }
