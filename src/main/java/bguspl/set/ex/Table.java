@@ -26,7 +26,7 @@ public class Table {
 
     private final int noToken = -1;
 
-    private Object[] slotsLocks;
+    private Object[] slots;
 
     private final Integer[][] tokensMap;
 
@@ -58,9 +58,9 @@ public class Table {
             }
 
         }
-        this.slotsLocks = new Object[env.config.tableSize]; // slots to lock while prforming actions
-        for (int i = 0; i < slotsLocks.length; i++) {
-            slotsLocks[i] = new Object();
+        this.slots = new Object[env.config.tableSize]; // slots to lock while prforming actions
+        for (int i = 0; i < slots.length; i++) {
+            slots[i] = i;
         }
     }
 
@@ -122,22 +122,22 @@ public class Table {
         cardToSlot[card] = slot;
 
         if (slotToCard[slot] != null) { // there is a card in the given slot, we want to replace it
-            synchronized (slotsLocks[slot]) { // need to check ???
+            synchronized (slots[slot]) { 
                 removeCard(slot);
                 env.ui.removeCard(slot); // remove from table in ui
                 env.ui.placeCard(card, slot);
             }
 
         } else { // there is no card in the given slot, we still want to lock the slot
-            synchronized (slotsLocks[slot]) {
+            synchronized (slots[slot]) {
                 env.ui.placeCard(card, slot); // Include ui swing. I have a card that I want to place in empty slot
             }
         }
         slotToCard[slot] = card;
     }
 
-    public Object[] getSlotsLock(){
-        return this.slotsLocks;
+    public Object getSlot(int card){
+        return slots[cardToSlot[card]];
     }
 
     /**
