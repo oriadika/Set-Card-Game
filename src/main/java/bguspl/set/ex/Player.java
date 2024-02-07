@@ -35,8 +35,6 @@ public class Player implements Runnable {
      */
     private Thread aiThread;
 
-    private final Object[] slotsLock;
-
     /**
      * True iff the player is human (not a computer player).
      */
@@ -66,7 +64,6 @@ public class Player implements Runnable {
         this.table = table;
         this.id = id;
         this.human = human;
-        this.slotsLock = table.getSlotsLock();
     }
 
     /**
