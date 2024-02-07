@@ -26,6 +26,8 @@ public class Table {
 
     private final int noToken = -1;
 
+    private Object[] slotsLocks;
+
     private final Integer[][] tokensMap;
 
     protected final Integer[] slotToCard; // card per slot (if any)
@@ -49,12 +51,16 @@ public class Table {
         this.env = env;
         this.slotToCard = slotToCard;
         this.cardToSlot = cardToSlot;
-        this.tokensMap = new Integer [env.config.players][maxTokens]; 
-        for (int i=0; i<env.config.players; i++){
-            for (int j=0; j<maxTokens; j++){
+        this.tokensMap = new Integer[env.config.players][maxTokens];
+        for (int i = 0; i < env.config.players; i++) {
+            for (int j = 0; j < maxTokens; j++) {
                 tokensMap[i][j] = noToken;
             }
 
+        }
+        this.slotsLocks = new Object[env.config.tableSize]; // slots to lock while prforming actions
+        for (int i = 0; i < slotsLocks.length; i++) {
+            slotsLocks[i] = new Object();
         }
     }
 
@@ -115,21 +121,23 @@ public class Table {
 
         cardToSlot[card] = slot;
 
-        Object lock = slot; //Here I get the slot of the card
-
         if (slotToCard[slot] != null) { // there is a card in the given slot, we want to replace it
-            synchronized(lock){
+            synchronized (slotsLocks[slot]) { // need to check ???
                 removeCard(slot);
-                env.ui.removeCard(slot); //remove from table in ui
+                env.ui.removeCard(slot); // remove from table in ui
                 env.ui.placeCard(card, slot);
             }
-            
-        } else { //there is no card in the given slot, we still want to lock the slot
-            synchronized(lock){
+
+        } else { // there is no card in the given slot, we still want to lock the slot
+            synchronized (slotsLocks[slot]) {
                 env.ui.placeCard(card, slot); // Include ui swing. I have a card that I want to place in empty slot
             }
         }
         slotToCard[slot] = card;
+    }
+
+    public Object[] getSlotsLock(){
+        return this.slotsLocks;
     }
 
     /**
@@ -137,7 +145,7 @@ public class Table {
      * 
      * @param slot - the slot from which to remove the card.
      */
-    public void removeCard(int slot) { //No need to lock becuse only place card calls me and it has lock
+    public void removeCard(int slot) { // No need to lock becuse only place card calls me and it has lock
         try {
             Thread.sleep(env.config.tableDelayMillis);
         } catch (InterruptedException ignored) {
@@ -151,7 +159,8 @@ public class Table {
      * @param player - the player the token belongs to.
      * @param slot   - the slot on which to place the token.
      */
-    public void placeToken(int player, int slot) { //there is nothing to lock here becuse 2 players can place token on the same card
+    public void placeToken(int player, int slot) { // there is nothing to lock here becuse 2 players can place token on
+                                                   // the same card
         env.ui.placeToken(player, slot); // for logger and ui
     }
 
@@ -163,15 +172,15 @@ public class Table {
      * @return - true iff a token was successfully removed.
      */
     public boolean removeToken(int player, int slot) {
-        for (int i=0; i<maxTokens; i++){
-            if (tokensMap[player][i]==slot){ //there is a token there
+        for (int i = 0; i < maxTokens; i++) {
+            if (tokensMap[player][i] == slot) { // there is a token there
                 env.ui.removeToken(player, slot);
                 tokensMap[player][i] = noToken;
                 return false;
-            } 
+            }
         }
-         //there is no token to remove
+        // there is no token to remove
         return false;
-        
+
     }
 }
