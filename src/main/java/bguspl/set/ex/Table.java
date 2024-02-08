@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.stream.Collectors;
+
+import javax.management.ObjectName;
 import javax.swing.text.html.HTMLDocument.Iterator;
 
 /**
@@ -28,7 +30,7 @@ public class Table {
 
     private final int noToken = -1;
 
-    private Integer[] slots;
+    private Object[] slotsLocks;
 
     private final Queue<Integer>[][] tokensQueues;
 
@@ -60,9 +62,9 @@ public class Table {
             }
 
         }
-        this.slots = new Integer[env.config.tableSize]; // slots to lock while prforming actions
-        for (int i = 0; i < slots.length; i++) {
-            slots[i] = i;
+        this.slotsLocks = new Object[env.config.tableSize]; // slots to lock while prforming actions
+        for (int i = 0; i < slotsLocks.length; i++) {
+            slotsLocks[i] = new Object();
         }
     }
 
@@ -129,22 +131,22 @@ public class Table {
         cardToSlot[card] = slot;
 
         if (slotToCard[slot] != null) { // there is a card in the given slot, we want to replace it
-            synchronized (slots[slot]) {
+            synchronized (slotsLocks[slot]) {
                 removeCard(slot);
                 env.ui.removeCard(slot); // remove from table in ui
                 env.ui.placeCard(card, slot);
             }
 
         } else { // there is no card in the given slot, we still want to lock the slot
-            synchronized (slots[slot]) {
+            synchronized (slotsLocks[slot]) {
                 env.ui.placeCard(card, slot); // Include ui swing. I have a card that I want to place in empty slot
             }
         }
         slotToCard[slot] = card;
     }
 
-    public Integer getSlot(int slot) {
-        return slots[slot];
+    public Object getSlot(int slot) {
+        return slotsLocks[slot];
     }
 
     /**
