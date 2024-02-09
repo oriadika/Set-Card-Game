@@ -4,6 +4,7 @@ import java.util.Queue;
 
 import bguspl.set.Env;
 
+
 /**
  * This class manages the players' threads and data
  *
@@ -11,6 +12,11 @@ import bguspl.set.Env;
  * @inv score >= 0
  */
 public class Player implements Runnable {
+
+    final int PENAlTY_MILLISECONDS = 3000;
+    final int FREEZE_TIME_MILLI = 1000;
+    final int POINT = 1;
+
 
     /**
      * The game environment object.
@@ -144,8 +150,15 @@ public class Player implements Runnable {
     public void point() {
         // TODO implement
 
-        int ignored = table.countCards(); // this part is just for demonstration in the unit tests
-        env.ui.setScore(id, ++score);
+            try{
+            this.score= this.score+POINT;
+            int ignored = table.countCards(); // this part is just for demonstration in the unit tests
+            env.ui.setScore(id, ++score);
+            Thread.sleep(FREEZE_TIME_MILLI);
+            }
+            catch (InterruptedException e){
+                e.printStackTrace();
+            }
     }
 
     /**
