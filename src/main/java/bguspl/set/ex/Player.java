@@ -113,7 +113,8 @@ public class Player implements Runnable {
      * Called when the game should be terminated.
      */
     public void terminate() {
-        // TODO implement
+       playerThread.interrupt();
+         terminate = true;
     }
 
     /**
@@ -123,7 +124,7 @@ public class Player implements Runnable {
      */
     public void keyPressed(int slot) {
         Integer pressedSlot = table.getSlot(slot); //get the slot that may be loacked. preforom the actions on it
-        Queue<Integer> tokenQueue = table.getTokensQueues()[id][0];
+        Queue<Integer> tokenQueue = table.getTokensQueues()[id][0];      //thy not [id][slot]?
         java.util.Iterator<Integer> iterator = tokenQueue.iterator();
         boolean placeToken = true;
         while (iterator.hasNext()){
@@ -148,15 +149,17 @@ public class Player implements Runnable {
      * @post - the player's score is updated in the ui.
      */
     public void point() {
-        // TODO implement
 
             try{
+
             this.score= this.score+POINT;
             int ignored = table.countCards(); // this part is just for demonstration in the unit tests
             env.ui.setScore(id, ++score);
-            Thread.sleep(FREEZE_TIME_MILLI);
+            playerThread.sleep(FREEZE_TIME_MILLI);
+            this.env.ui.setFreeze(this.id,FREEZE_TIME_MILLI);
+
             }
-            catch (InterruptedException e){
+            catch (InterruptedException e){  //need to understand what to do with the exception
                 e.printStackTrace();
             }
     }
@@ -165,7 +168,14 @@ public class Player implements Runnable {
      * Penalize a player and perform other related actions.
      */
     public void penalty() {
-        // TODO implement
+
+        try{
+            playerThread.sleep(PENAlTY_MILLISECONDS);
+            this.env.ui.setFreeze(this.id,PENAlTY_MILLISECONDS);
+        }
+        catch (InterruptedException e){  //need to understand what to do with the exception
+            e.printStackTrace();
+        }
     }
 
     public int score() {
