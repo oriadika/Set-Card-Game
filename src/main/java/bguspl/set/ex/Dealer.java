@@ -61,7 +61,8 @@ public class Dealer implements Runnable {
     }
 
     /**
-     * The inner loop of the dealer thread that runs as long as the countdown did not time out.
+     * The inner loop of the dealer thread that runs as long as the countdown did
+     * not time out.
      */
     private void timerLoop() {
         while (!terminate && System.currentTimeMillis() < reshuffleTime) {
@@ -91,19 +92,20 @@ public class Dealer implements Runnable {
     /**
      * Checks cards should be removed from the table and removes them.
      */
-    private void removeCardsFromTable() {
+    private void removeCardsFromTable() {// remove cards when a set was found
         // TODO implement
     }
 
     /**
      * Check if any cards can be removed from the deck and placed on the table.
      */
-    private void placeCardsOnTable() {
+    private void placeCardsOnTable() { 
         // TODO implement
     }
 
     /**
-     * Sleep for a fixed amount of time or until the thread is awakened for some purpose.
+     * Sleep for a fixed amount of time or until the thread is awakened for some
+     * purpose.
      */
     private void sleepUntilWokenOrTimeout() {
         // TODO implement
