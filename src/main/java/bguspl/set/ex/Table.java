@@ -30,7 +30,7 @@ public class Table {
 
     private final int noToken = -1;
 
-    private Object[] slotsLocks;
+    private Integer[] slotsLocks;
 
     private final Queue<Integer>[][] tokensQueues;
 
@@ -62,9 +62,9 @@ public class Table {
             }
 
         }
-        this.slotsLocks = new Object[env.config.tableSize]; // slots to lock while prforming actions
+        this.slotsLocks = new Integer[env.config.tableSize]; // slots to lock while prforming actions
         for (int i = 0; i < slotsLocks.length; i++) {
-            slotsLocks[i] = new Object();
+            slotsLocks[i] = i;
         }
     }
 
@@ -145,7 +145,7 @@ public class Table {
         slotToCard[slot] = card;
     }
 
-    public Object getSlot(int slot) {
+    public Integer getSlot(int slot) {
         return slotsLocks[slot];
     }
 
