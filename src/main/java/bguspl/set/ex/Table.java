@@ -30,7 +30,7 @@ public class Table {
 
     private final int noToken = -1;
 
-    private Integer[] slotsLocks;
+    protected Integer[] slotsLocks;
 
     private final Queue<Integer>[] tokensQueues;
 
@@ -153,16 +153,14 @@ public class Table {
      */
     public void removeCard(int slot) { // No need to lock becuse only place card calls me and it has lock
         try {
-            synchronized (slotsLocks[slot]) {   //I want to lock the slot while I am removing the card
+            synchronized (slotsLocks[slot]) { // I want to lock the slot while I am removing the card
                 Thread.sleep(env.config.tableDelayMillis);
                 slotToCard[slot] = null; // No card in there
-                
-                
+
                 this.env.ui.removeCard(slot); // remove from table in ui
             }
-            
-        }
-        catch (InterruptedException ignored) {
+
+        } catch (InterruptedException ignored) {
         }
 
     }
@@ -173,10 +171,12 @@ public class Table {
      * @param player - the player the token belongs to.
      * @param slot   - the slot on which to place the token.
      */
-    public void placeToken(int player, int slot) { // there is nothing to lock here becuse 2 players can place token on
-                                                   // the same card
-        tokensQueues[player].add(slot); //adding new slot of token 
-        env.ui.placeToken(player, slot); // for logger and ui
+    public void placeToken(int player, int slot) {
+        synchronized (slotsLocks[slot]) {
+            tokensQueues[player].add(slot); // adding new slot of token
+            env.ui.placeToken(player, slot); // for logger and ui
+        }
+
     }
 
     /**
@@ -188,14 +188,13 @@ public class Table {
      */
     public boolean removeToken(int player, int slot) {
         Queue<Integer> queue = tokensQueues[player];
-        for (int i=0; i<queue.size(); i++){
+        for (int i = 0; i < queue.size(); i++) {
             int tokenPosition = queue.poll();
-            if (tokenPosition == slot) { //there is a slot to remove
+            if (tokenPosition == slot) { // there is a slot to remove
                 env.ui.removeToken(player, slot);
                 return true;
-            }
-            else{
-                queue.add(tokenPosition); 
+            } else {
+                queue.add(tokenPosition);
             }
         }
         return false;
