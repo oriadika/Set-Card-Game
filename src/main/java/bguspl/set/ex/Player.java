@@ -134,9 +134,7 @@ public class Player implements Runnable {
                 table.removeToken(id, slot); //call the table to remove the token
             }
 
-            tokenQueue.add(slotOfExistToken); //return the token to the queue (if it was removed it will be added to the end of the queue, if not it will be added to the end of the queue anyway
-            
-            
+            tokenQueue.add(slotOfExistToken); //return the token to the queue (if it was removed it will be added to the end of the queue, if not it will be added to the end of the queue anyway        
         }
         if (placeToken){ //the player wants to put a new token
             table.placeToken(id, slot);    //checks if there is max of 3 or it happends by deafult?
