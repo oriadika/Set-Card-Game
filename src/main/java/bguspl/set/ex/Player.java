@@ -124,7 +124,7 @@ public class Player implements Runnable {
      */
     public void keyPressed(int slot) {
         Integer pressedSlot = table.getSlot(slot); //get the slot that may be loacked. preforom the actions on it
-        Queue<Integer> tokenQueue = table.getTokensQueues()[id][0];      //thy not [id][slot]?
+        Queue<Integer> tokenQueue = table.getTokensQueues()[id];      //thy not [id][slot]?
         java.util.Iterator<Integer> iterator = tokenQueue.iterator();
         boolean placeToken = true;
         while (iterator.hasNext()){
