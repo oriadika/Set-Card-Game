@@ -17,16 +17,16 @@ public class Dealer implements Runnable {
     /**
      * The game environment object.
      */
-    private final int noScore = -1;
 
     private final Env env;
+
+    private boolean lockAllTable = false;
 
     /**
      * Game entities.
      */
     private final Table table;
     private final Player[] players;
-
 
     private final int noScore = -1;
     /**
@@ -105,51 +105,65 @@ public class Dealer implements Runnable {
      */
     private void removeCardsFromTable() {// remove cards when a set was found
 
-        for(int i = 0; i < env.config.players; i++){
-        Queue<Integer>[] set  = table.getTokensQueues(); //get all players tokens
-        for(int playerID = 0; playerID < set.length; playerID++){
-            int cardsToCheck[] = new int[3];
-            if (set[playerID].size() == 3) { //If the queue is not in size of 3 - cannot check set
-                for(int k =0; k<set[playerID].size();k++){ //get all the cards to check
-                    int card = set[playerID].poll();
-                    cardsToCheck[k] = card;
-                    set[playerID].add(card); //get to the end of the queue
+
+        for (int i = 0; i < env.config.players; i++) {
+            Queue<Integer>[] set = table.getTokensQueues(); // get all players tokens
+            for (int playerID = 0; playerID < set.length; playerID++) {
+                int cardsToCheck[] = new int[3];
+                if (set[playerID].size() == 3) { // If the queue is not in size of 3 - cannot check set
+                    for (int k = 0; k < set[playerID].size(); k++) { // get all the cards to check
+                        int card = set[playerID].poll();
+                        cardsToCheck[k] = card;
+                        set[playerID].add(card); // get to the end of the queue
+                    }
+
+                    boolean isSet = env.util.testSet(cardsToCheck);
+
+                    if (isSet) {
+                        players[playerID].point();
+                        for (int card : cardsToCheck) {
+                            table.removeCard(table.cardToSlot[card]);
+                        }
+
+                    } else {
+                        players[playerID].penalty();
+                    }
                 }
 
-                boolean isSet = env.util.testSet(cardsToCheck);
-                
-                if (isSet) {
-                    players[playerID].point();
-                    for (int card : cardsToCheck){
-                        table.removeCard(table.cardToSlot[card]);
-                    }
-                
-                }
-                   else{
-                    players[playerID].penalty(); 
-                }
-            }       
-            
+            }
         }
-   }
-}
+    }
 
     /**
      * Check if any cards can be removed from the deck and placed on the table.
      */
-    private void placeCardsOnTable() { 
- 
-        while (deck.size() > 0) {
-            
-            Collections.shuffle(deck);
+    private void placeCardsOnTable() {
+        if (deck.size() == env.config.deckSize) { // the beggin of the game - lock all table
+            synchronized (table) {
+                Collections.shuffle(deck);
+                for (int slot = 0; slot < env.config.tableSize; slot++) { // check if the slot is empty
+                    if (table.slotToCard[slot] == null) {
+                        int card = deck.remove(0);
+                        table.placeCard(card, slot);
+                    }
+                }
 
-            for(int slot = 0; slot < env.config.tableSize; slot++){ //check if the slot is empty
-                if (table.slotToCard[slot] == null){
-                    int card = deck.remove(0);
-                    table.placeCard(card, slot);
+            }
+        } else {
 
+            while (deck.size() > 0) { //no need to lock all table - only specific slot
+
+                Collections.shuffle(deck);
+
+                for (int slot = 0; slot < env.config.tableSize; slot++) { // check if the slot is empty
+                    if (table.slotToCard[slot] == null) {
+                        int card = deck.remove(0);
+                        table.placeCard(card, slot);
+
+                    }
                 }
             }
+
         }
 
     }
@@ -180,13 +194,12 @@ public class Dealer implements Runnable {
      * Check who is/are the winner/s and displays them.
      */
     private void announceWinners() {
-         Integer[] playersScore = new Integer[env.config.players]; // get all players scores
-            for (int id = 0; id < playersScore.length; id++) {
-                playersScore[id] = players[id].score();
-            }
-        
+        Integer[] playersScore = new Integer[env.config.players]; // get all players scores
+        for (int id = 0; id < playersScore.length; id++) {
+            playersScore[id] = players[id].score();
+        }
 
-        int maxScore = noScore; //get the max score
+        int maxScore = noScore; // get the max score
         for (int i = 0; i < playersScore.length; i++) {
             if (playersScore[i] >= maxScore) {
                 maxScore = playersScore[i];
@@ -194,7 +207,7 @@ public class Dealer implements Runnable {
         }
 
         int numberOfWinners = 0;
-        for (Player player : players) { //get number of winners 
+        for (Player player : players) { // get number of winners
             if (player.score() == maxScore) {
                 numberOfWinners++;
             }
@@ -202,8 +215,8 @@ public class Dealer implements Runnable {
 
         int[] winners = new int[numberOfWinners];
         int index = 0;
-        for (int playerId = 0; playerId<playersScore.length; playerId++){
-            if (playersScore[playerId]==maxScore){
+        for (int playerId = 0; playerId < playersScore.length; playerId++) {
+            if (playersScore[playerId] == maxScore) {
                 winners[index] = playerId;
                 index++;
             }

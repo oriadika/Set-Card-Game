@@ -135,29 +135,22 @@ public class Player implements Runnable {
      */
     public void keyPressed(int slot) {
         Queue<Integer> tokenQueue = table.getTokensQueues()[id]; // thy not [id][slot]?
-        // java.util.Iterator<Integer> iterator = tokenQueue.iterator();
+        java.util.Iterator<Integer> iterator = tokenQueue.iterator();
         boolean placeToken = true;
-        for (int i = 0; i < tokenQueue.size(); i++) {
-            int slotOfExistToken = tokenQueue.poll();
-
+        while (iterator.hasNext()) {
+            int slotOfExistToken = iterator.next();
             if (slotOfExistToken == slot) {// It means there is already a token on the slot, so the player wants to
-                                           // remove the token
+                // remove the token
                 placeToken = false;
                 table.removeToken(id, slot); // call the table to remove the token
+                break;
             }
 
-            tokenQueue.add(slotOfExistToken); // return the token to the queue (if it was removed it will be added to
-                                              // the end of the queue, if not it will be added to the end of the queue
-                                              // anyway
-        }
-        if (tokenQueue.size() == 3) { // if the player has 3 tokens, he can't put more
-            placeToken = false;
         }
 
-        if (placeToken) { // the player wants to put a new token
+        if (placeToken & tokenQueue.size() < 3) { // the player wants to put a new token
             table.placeToken(id, slot); // checks if there is max of 3 or it happends by deafult?
         }
-
         // TODO implement
     }
 
