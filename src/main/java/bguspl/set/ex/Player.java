@@ -109,8 +109,11 @@ public class Player implements Runnable {
             while (!terminate) {
                 // TODO implement player key press simulator
                 try {
-                    synchronized (this) { wait(); }
-                } catch (InterruptedException ignored) {}
+                    synchronized (this) {
+                        wait();
+                    } // wait until notify from someone
+                } catch (InterruptedException ignored) {
+                }
             }
             env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
         }, "computer-" + id);
@@ -131,25 +134,28 @@ public class Player implements Runnable {
      * @param slot - the slot corresponding to the key pressed.
      */
     public void keyPressed(int slot) {
-        Queue<Integer> tokenQueue = table.getTokensQueues()[id];      //thy not [id][slot]?
-        //java.util.Iterator<Integer> iterator = tokenQueue.iterator();
+        Queue<Integer> tokenQueue = table.getTokensQueues()[id]; // thy not [id][slot]?
+        // java.util.Iterator<Integer> iterator = tokenQueue.iterator();
         boolean placeToken = true;
-        for (int i=0; i<tokenQueue.size(); i++){
+        for (int i = 0; i < tokenQueue.size(); i++) {
             int slotOfExistToken = tokenQueue.poll();
 
-            if (slotOfExistToken==slot){//It means there is already a token on the slot, so the player wants to remove the token
+            if (slotOfExistToken == slot) {// It means there is already a token on the slot, so the player wants to
+                                           // remove the token
                 placeToken = false;
-                table.removeToken(id, slot); //call the table to remove the token
+                table.removeToken(id, slot); // call the table to remove the token
             }
 
-            tokenQueue.add(slotOfExistToken); //return the token to the queue (if it was removed it will be added to the end of the queue, if not it will be added to the end of the queue anyway        
+            tokenQueue.add(slotOfExistToken); // return the token to the queue (if it was removed it will be added to
+                                              // the end of the queue, if not it will be added to the end of the queue
+                                              // anyway
         }
-        if(tokenQueue.size()==3){ //if the player has 3 tokens, he can't put more
+        if (tokenQueue.size() == 3) { // if the player has 3 tokens, he can't put more
             placeToken = false;
         }
 
-        if (placeToken){ //the player wants to put a new token
-            table.placeToken(id, slot);    //checks if there is max of 3 or it happends by deafult?
+        if (placeToken) { // the player wants to put a new token
+            table.placeToken(id, slot); // checks if there is max of 3 or it happends by deafult?
         }
 
         // TODO implement
@@ -169,12 +175,11 @@ public class Player implements Runnable {
             int ignored = table.countCards(); // this part is just for demonstration in the unit tests
             env.ui.setScore(id, this.score);
             playerThread.sleep(FREEZE_TIME_MILLI);
-            this.env.ui.setFreeze(this.id,FREEZE_TIME_MILLI);
+            this.env.ui.setFreeze(this.id, FREEZE_TIME_MILLI);
 
-            }
-            catch (InterruptedException e){  //need to understand what to do with the exception
-                e.printStackTrace();
-            }
+        } catch (InterruptedException e) { // need to understand what to do with the exception
+            e.printStackTrace();
+        }
     }
 
     /**

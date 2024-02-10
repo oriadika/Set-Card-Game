@@ -17,6 +17,8 @@ public class Dealer implements Runnable {
     /**
      * The game environment object.
      */
+    private final int noScore = -1;
+
     private final Env env;
 
     /**
@@ -35,7 +37,7 @@ public class Dealer implements Runnable {
     /**
      * True iff game should be terminated.
      */
-    private volatile boolean terminate;
+    private volatile boolean terminate; // defult false
 
     /**
      * The time when the dealer needs to reshuffle the deck due to turn timeout.
@@ -82,6 +84,10 @@ public class Dealer implements Runnable {
      * Called when the game should be terminated.
      */
     public void terminate() {
+        for (Player player : players) {
+            player.terminate(); // tell all players the game is over
+        }
+
         // TODO implement
     }
 
