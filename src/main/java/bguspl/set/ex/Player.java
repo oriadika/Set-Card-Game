@@ -123,19 +123,23 @@ public class Player implements Runnable {
      * @param slot - the slot corresponding to the key pressed.
      */
     public void keyPressed(int slot) {
-        Integer pressedSlot = table.getSlot(slot); //get the slot that may be loacked. preforom the actions on it
         Queue<Integer> tokenQueue = table.getTokensQueues()[id];      //thy not [id][slot]?
-        java.util.Iterator<Integer> iterator = tokenQueue.iterator();
+        //java.util.Iterator<Integer> iterator = tokenQueue.iterator();
         boolean placeToken = true;
-        while (iterator.hasNext()){
-            int slotOfExistToken = iterator.next();
+        for (int i=0; i<tokenQueue.size(); i++){
+            int slotOfExistToken = tokenQueue.poll();
+
             if (slotOfExistToken==slot){//It means there is already a token on the slot, so the player wants to remove the token
                 placeToken = false;
-                table.removeToken(id, pressedSlot); //call the table to remove the token
-            } 
+                table.removeToken(id, slot); //call the table to remove the token
+            }
+
+            tokenQueue.add(slotOfExistToken); //return the token to the queue (if it was removed it will be added to the end of the queue, if not it will be added to the end of the queue anyway
+            
+            
         }
         if (placeToken){ //the player wants to put a new token
-            table.placeToken(id, pressedSlot);    //checks if there is max of 3 or it happends by deafult?
+            table.placeToken(id, slot);    //checks if there is max of 3 or it happends by deafult?
         }
         
         

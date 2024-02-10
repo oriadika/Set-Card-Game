@@ -56,6 +56,9 @@ public class Table {
         this.slotToCard = slotToCard;
         this.cardToSlot = cardToSlot;
         this.tokensQueues = new Queue[env.config.players];
+        for (int i = 0; i < tokensQueues.length; i++) {
+            tokensQueues[i] = new java.util.LinkedList<>();
+        }
         this.slotsLocks = new Integer[env.config.tableSize]; // slots to lock while prforming actions
         for (int i = 0; i < slotsLocks.length; i++) {
             slotsLocks[i] = i;
