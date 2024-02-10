@@ -188,16 +188,16 @@ public class Table {
      */
     public boolean removeToken(int player, int slot) {
         Queue<Integer> queue = tokensQueues[player];
-        java.util.Iterator<Integer> iterator = queue.iterator();
-        while (iterator.hasNext()) {
-            Integer tokenPosition = iterator.next();
+        for (int i=0; i<queue.size(); i++){
+            int tokenPosition = queue.poll();
             if (tokenPosition == slot) { //there is a slot to remove
                 env.ui.removeToken(player, slot);
-                iterator.remove();
                 return true;
             }
+            else{
+                queue.add(tokenPosition); 
+            }
         }
-        // there is no token to remove
         return false;
 
     }
