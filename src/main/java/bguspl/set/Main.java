@@ -22,7 +22,6 @@ public class Main {
 
     private static boolean xButtonPressed = false;
     private static Logger logger;
-
     
 
     public static void xButtonPressed() throws InterruptedException {

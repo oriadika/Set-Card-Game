@@ -4,7 +4,6 @@ import java.util.Queue;
 
 import bguspl.set.Env;
 
-
 /**
  * This class manages the players' threads and data
  *
@@ -16,7 +15,6 @@ public class Player implements Runnable {
     final int PENAlTY_MILLISECONDS = 3000;
     final int FREEZE_TIME_MILLI = 1000;
     final int POINT = 1;
-
 
     /**
      * The game environment object.
@@ -39,7 +37,8 @@ public class Player implements Runnable {
     private Thread playerThread;
 
     /**
-     * The thread of the AI (computer) player (an additional thread used to generate key presses).
+     * The thread of the AI (computer) player (an additional thread used to generate
+     * key presses).
      */
     private Thread aiThread;
 
@@ -65,7 +64,8 @@ public class Player implements Runnable {
      * @param dealer - the dealer object.
      * @param table  - the table object.
      * @param id     - the id of the player.
-     * @param human  - true iff the player is a human player (i.e. input is provided manually, via the keyboard).
+     * @param human  - true iff the player is a human player (i.e. input is provided
+     *               manually, via the keyboard).
      */
     public Player(Env env, Dealer dealer, Table table, int id, boolean human) {
         this.env = env;
@@ -75,24 +75,32 @@ public class Player implements Runnable {
     }
 
     /**
-     * The main player thread of each player starts here (main loop for the player thread).
+     * The main player thread of each player starts here (main loop for the player
+     * thread).
      */
     @Override
     public void run() {
         playerThread = Thread.currentThread();
         env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
-        if (!human) createArtificialIntelligence();
+        if (!human)
+            createArtificialIntelligence();
 
         while (!terminate) {
             // TODO implement main player loop
         }
-        if (!human) try { aiThread.join(); } catch (InterruptedException ignored) {}
+        if (!human)
+            try {
+                aiThread.join();
+            } catch (InterruptedException ignored) {
+            }
         env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
     }
 
     /**
-     * Creates an additional thread for an AI (computer) player. The main loop of this thread repeatedly generates
-     * key presses. If the queue of key presses is full, the thread waits until it is not full.
+     * Creates an additional thread for an AI (computer) player. The main loop of
+     * this thread repeatedly generates
+     * key presses. If the queue of key presses is full, the thread waits until it
+     * is not full.
      */
     private void createArtificialIntelligence() {
         // note: this is a very, very smart AI (!)
@@ -113,8 +121,8 @@ public class Player implements Runnable {
      * Called when the game should be terminated.
      */
     public void terminate() {
-       playerThread.interrupt();
-         terminate = true;
+        playerThread.interrupt();
+        terminate = true;
     }
 
     /**
@@ -143,8 +151,7 @@ public class Player implements Runnable {
         if (placeToken){ //the player wants to put a new token
             table.placeToken(id, slot);    //checks if there is max of 3 or it happends by deafult?
         }
-        
-        
+
         // TODO implement
     }
 
@@ -156,11 +163,11 @@ public class Player implements Runnable {
      */
     public void point() {
 
-            try{
+        try {
 
-            this.score= this.score+POINT;
+            this.score = this.score + POINT;
             int ignored = table.countCards(); // this part is just for demonstration in the unit tests
-            env.ui.setScore(id, ++score);
+            env.ui.setScore(id, this.score);
             playerThread.sleep(FREEZE_TIME_MILLI);
             this.env.ui.setFreeze(this.id,FREEZE_TIME_MILLI);
 
@@ -175,11 +182,10 @@ public class Player implements Runnable {
      */
     public void penalty() {
 
-        try{
+        try {
             playerThread.sleep(PENAlTY_MILLISECONDS);
-            this.env.ui.setFreeze(this.id,PENAlTY_MILLISECONDS);
-        }
-        catch (InterruptedException e){  //need to understand what to do with the exception
+            this.env.ui.setFreeze(this.id, PENAlTY_MILLISECONDS);
+        } catch (InterruptedException e) { // need to understand what to do with the exception
             e.printStackTrace();
         }
     }
