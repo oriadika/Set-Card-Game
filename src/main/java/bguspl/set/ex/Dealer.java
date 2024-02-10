@@ -142,33 +142,25 @@ public class Dealer implements Runnable {
                 playersScore[id] = player.score();
             }
         }
-        Integer[] potentionalWinners = new Integer[env.config.players];
-        for (int i = 0; i < env.config.players; i++) {
-            potentionalWinners[i] = noScore;
-        }
+
         int maxScore = noScore;
-        for (int id = 0; id < potentionalWinners.length; id++) {
-            if (playersScore[id] >= maxScore) {
-                potentionalWinners[id] = id; // score in position i is the score of the player i
-                maxScore = playersScore[id];
-            }
-        }
-
         int numberOfWinners = 0;
-        for (int i = 0; i < potentionalWinners.length; i++) {
-            if (potentionalWinners[i] != noScore) {
+        for (int i = 0; i < playersScore.length; i++) {
+            if (playersScore[i] >= maxScore) {
                 numberOfWinners++;
+                maxScore = playersScore[i];
             }
         }
 
-        Integer[] winners = new Integer[numberOfWinners];
-        for (int i = 0; i < potentionalWinners.length; i++) {
-            if (potentionalWinners[i] != noScore) {
-                winners[i] = i;
+        int[] winners = new int[numberOfWinners];
+        int id = 0;
+        for (Player player : players) {
+            if (player.score() == maxScore) {
+                winners[id] = player.id;
             }
         }
 
-        env.ui.announceWinner(null);
+        env.ui.announceWinner(winners);
         // TODO implement
     }
 }
