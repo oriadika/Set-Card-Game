@@ -14,6 +14,8 @@ public class Dealer implements Runnable {
     /**
      * The game environment object.
      */
+    private final int noScore = -1;
+
     private final Env env;
 
     /**
@@ -30,7 +32,7 @@ public class Dealer implements Runnable {
     /**
      * True iff game should be terminated.
      */
-    private volatile boolean terminate;
+    private volatile boolean terminate; // defult false
 
     /**
      * The time when the dealer needs to reshuffle the deck due to turn timeout.
@@ -77,6 +79,10 @@ public class Dealer implements Runnable {
      * Called when the game should be terminated.
      */
     public void terminate() {
+        for (Player player : players) {
+            player.terminate(); // tell all players the game is over
+        }
+
         // TODO implement
     }
 
@@ -99,7 +105,7 @@ public class Dealer implements Runnable {
     /**
      * Check if any cards can be removed from the deck and placed on the table.
      */
-    private void placeCardsOnTable() { 
+    private void placeCardsOnTable() {
         // TODO implement
     }
 
@@ -129,6 +135,40 @@ public class Dealer implements Runnable {
      * Check who is/are the winner/s and displays them.
      */
     private void announceWinners() {
+        // still need to work on this
+        Integer[] playersScore = new Integer[env.config.players]; // maybe all winners are in tie
+        for (Player player : players) {
+            for (int id = 0; id < playersScore.length; id++) {
+                playersScore[id] = player.score();
+            }
+        }
+        Integer[] potentionalWinners = new Integer[env.config.players];
+        for (int i = 0; i < env.config.players; i++) {
+            potentionalWinners[i] = noScore;
+        }
+        int maxScore = noScore;
+        for (int id = 0; id < potentionalWinners.length; id++) {
+            if (playersScore[id] >= maxScore) {
+                potentionalWinners[id] = id; // score in position i is the score of the player i
+                maxScore = playersScore[id];
+            }
+        }
+
+        int numberOfWinners = 0;
+        for (int i = 0; i < potentionalWinners.length; i++) {
+            if (potentionalWinners[i] != noScore) {
+                numberOfWinners++;
+            }
+        }
+
+        Integer[] winners = new Integer[numberOfWinners];
+        for (int i = 0; i < potentionalWinners.length; i++) {
+            if (potentionalWinners[i] != noScore) {
+                winners[i] = i;
+            }
+        }
+
+        env.ui.announceWinner(null);
         // TODO implement
     }
 }

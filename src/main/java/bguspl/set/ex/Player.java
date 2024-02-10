@@ -101,7 +101,7 @@ public class Player implements Runnable {
             while (!terminate) {
                 // TODO implement player key press simulator
                 try {
-                    synchronized (this) { wait(); }
+                    synchronized (this) { wait(); } //wait until notify from someone
                 } catch (InterruptedException ignored) {}
             }
             env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
@@ -122,7 +122,8 @@ public class Player implements Runnable {
      *
      * @param slot - the slot corresponding to the key pressed.
      */
-    public void keyPressed(int slot) {
+    public void keyPressed(int slot) { 
+        playerThread.notify(); //somthing haapend, it waited for user input
         Integer pressedSlot = table.getSlot(slot); //get the slot that may be loacked. preforom the actions on it
         Queue<Integer> tokenQueue = table.getTokensQueues()[id][0];      //thy not [id][slot]?
         java.util.Iterator<Integer> iterator = tokenQueue.iterator();
@@ -154,8 +155,8 @@ public class Player implements Runnable {
 
             this.score= this.score+POINT;
             int ignored = table.countCards(); // this part is just for demonstration in the unit tests
-            env.ui.setScore(id, ++score);
-            playerThread.sleep(FREEZE_TIME_MILLI);
+            env.ui.setScore(id, ++score); 
+            playerThread.sleep(FREEZE_TIME_MILLI); //"In this case player also gets freeze"
             this.env.ui.setFreeze(this.id,FREEZE_TIME_MILLI);
 
             }
