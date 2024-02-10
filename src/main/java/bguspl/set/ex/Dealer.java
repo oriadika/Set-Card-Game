@@ -20,8 +20,6 @@ public class Dealer implements Runnable {
 
     private final Env env;
 
-    private boolean lockAllTable = false;
-
     /**
      * Game entities.
      */
@@ -105,7 +103,6 @@ public class Dealer implements Runnable {
      */
     private void removeCardsFromTable() {// remove cards when a set was found
 
-
         for (int i = 0; i < env.config.players; i++) {
             Queue<Integer>[] set = table.getTokensQueues(); // get all players tokens
             for (int playerID = 0; playerID < set.length; playerID++) {
@@ -134,24 +131,37 @@ public class Dealer implements Runnable {
         }
     }
 
+    public boolean isSet(int playerId) { //wants to be exceuted when player hits his third token - need to check
+        Queue<Integer> playerSet = table.getTokensQueues()[playerId]; // get all players tokens
+        java.util.Iterator<Integer> iterator = playerSet.iterator();
+        int cardsToCheck[] = new int[3];
+        int index = 0;
+        while (iterator.hasNext()){
+            cardsToCheck[index] = iterator.next();
+            index++;
+        }
+        return env.util.testSet(cardsToCheck);
+    }
+
     /**
      * Check if any cards can be removed from the deck and placed on the table.
      */
     private void placeCardsOnTable() {
         if (deck.size() == env.config.deckSize) { // the beggin of the game - lock all table
-            synchronized (table) {
-                Collections.shuffle(deck);
-                for (int slot = 0; slot < env.config.tableSize; slot++) { // check if the slot is empty
-                    if (table.slotToCard[slot] == null) {
+            Collections.shuffle(deck);
+            for (int slot = 0; slot < env.config.tableSize; slot++) { // check if the slot is empty
+                if (table.slotToCard[slot] == null) {
+                    synchronized (table.slotsLocks[slot]) {
                         int card = deck.remove(0);
                         table.placeCard(card, slot);
                     }
-                }
 
+                }
             }
+
         } else {
 
-            while (deck.size() > 0) { //no need to lock all table - only specific slot
+            while (deck.size() > 0) { // no need to lock all table - only specific slot
 
                 Collections.shuffle(deck);
 

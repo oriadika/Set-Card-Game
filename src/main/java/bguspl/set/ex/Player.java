@@ -151,6 +151,11 @@ public class Player implements Runnable {
         if (placeToken & tokenQueue.size() < 3) { // the player wants to put a new token
             table.placeToken(id, slot); // checks if there is max of 3 or it happends by deafult?
         }
+
+        if (tokenQueue.size()==3){
+            notifyAll(); //once the player hit third token on the table, he must notify to the delaer and wait for him to check
+        }
+
         // TODO implement
     }
 
