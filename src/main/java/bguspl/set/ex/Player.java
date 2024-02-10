@@ -136,6 +136,10 @@ public class Player implements Runnable {
 
             tokenQueue.add(slotOfExistToken); //return the token to the queue (if it was removed it will be added to the end of the queue, if not it will be added to the end of the queue anyway        
         }
+        if(tokenQueue.size()==3){ //if the player has 3 tokens, he can't put more
+            placeToken = false;
+        }
+
         if (placeToken){ //the player wants to put a new token
             table.placeToken(id, slot);    //checks if there is max of 3 or it happends by deafult?
         }
