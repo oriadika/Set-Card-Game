@@ -32,7 +32,7 @@ public class Table {
 
     private Integer[] slotsLocks;
 
-    private final Queue<Integer>[][] tokensQueues;
+    private final Queue<Integer>[] tokensQueues;
 
     protected final Integer[] slotToCard; // card per slot (if any)
 
@@ -55,12 +55,9 @@ public class Table {
         this.env = env;
         this.slotToCard = slotToCard;
         this.cardToSlot = cardToSlot;
-        this.tokensQueues = new Queue[env.config.players][0];
-        for (int i = 0; i < env.config.players; i++) {
-            for (int j = 0; j < maxTokens; j++) {
-                tokensQueues[i][j].add(noToken);
-            }
-
+        this.tokensQueues = new Queue[env.config.players];
+        for (int i = 0; i < tokensQueues.length; i++) {
+            tokensQueues[i] = new java.util.LinkedList<>();
         }
         this.slotsLocks = new Integer[env.config.tableSize]; // slots to lock while prforming actions
         for (int i = 0; i < slotsLocks.length; i++) {
@@ -96,7 +93,7 @@ public class Table {
     }
 
     // get the token map
-    public Queue<Integer>[][] getTokensQueues() {
+    public Queue<Integer>[] getTokensQueues() {
         return tokensQueues;
     }
 
@@ -156,10 +153,18 @@ public class Table {
      */
     public void removeCard(int slot) { // No need to lock becuse only place card calls me and it has lock
         try {
-            Thread.sleep(env.config.tableDelayMillis);
-        } catch (InterruptedException ignored) {
+            synchronized (slotsLocks[slot]) {   //I want to lock the slot while I am removing the card
+                Thread.sleep(env.config.tableDelayMillis);
+                slotToCard[slot] = null; // No card in there
+                
+                
+                this.env.ui.removeCard(slot); // remove from table in ui
+            }
+            
         }
-        slotToCard[slot] = null; // No card in there
+        catch (InterruptedException ignored) {
+        }
+
     }
 
     /**
@@ -170,7 +175,7 @@ public class Table {
      */
     public void placeToken(int player, int slot) { // there is nothing to lock here becuse 2 players can place token on
                                                    // the same card
-        tokensQueues[player][0].add(slot); //adding new slot of token 
+        tokensQueues[player].add(slot); //adding new slot of token 
         env.ui.placeToken(player, slot); // for logger and ui
     }
 
@@ -182,7 +187,7 @@ public class Table {
      * @return - true iff a token was successfully removed.
      */
     public boolean removeToken(int player, int slot) {
-        Queue<Integer> queue = tokensQueues[player][0];
+        Queue<Integer> queue = tokensQueues[player];
         java.util.Iterator<Integer> iterator = queue.iterator();
         while (iterator.hasNext()) {
             Integer tokenPosition = iterator.next();
