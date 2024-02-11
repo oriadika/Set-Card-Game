@@ -134,7 +134,7 @@ public class Player implements Runnable {
      * @param slot - the slot corresponding to the key pressed.
      */
     public synchronized void keyPressed(int slot) {
-        if (table.cardToSlot[slot] != null) {
+        if (table.slotToCard[slot] != null) {
             Queue<Integer> tokenQueue = table.getTokensQueues()[id]; // thy not [id][slot]?
             java.util.Iterator<Integer> iterator = tokenQueue.iterator();
             boolean placeToken = true;
