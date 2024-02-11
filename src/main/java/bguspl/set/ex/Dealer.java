@@ -131,12 +131,12 @@ public class Dealer implements Runnable {
         }
     }
 
-    public boolean isSet(int playerId) { //wants to be exceuted when player hits his third token - need to check
+    public boolean isSet(int playerId) { // wants to be exceuted when player hits his third token - need to check
         Queue<Integer> playerSet = table.getTokensQueues()[playerId]; // get all players tokens
         java.util.Iterator<Integer> iterator = playerSet.iterator();
         int cardsToCheck[] = new int[3];
         int index = 0;
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             cardsToCheck[index] = iterator.next();
             index++;
         }
@@ -147,33 +147,17 @@ public class Dealer implements Runnable {
      * Check if any cards can be removed from the deck and placed on the table.
      */
     private void placeCardsOnTable() {
-        if (deck.size() == env.config.deckSize) { // the beggin of the game - lock all table
+        if (deck.size() > 0) {
             Collections.shuffle(deck);
             for (int slot = 0; slot < env.config.tableSize; slot++) { // check if the slot is empty
                 if (table.slotToCard[slot] == null) {
-                    synchronized (table.slotsLocks[slot]) {
+                    synchronized (table.slotsLocks[slot]) { // I can still place token on no card
                         int card = deck.remove(0);
                         table.placeCard(card, slot);
                     }
 
                 }
             }
-
-        } else {
-
-            while (deck.size() > 0) { // no need to lock all table - only specific slot
-
-                Collections.shuffle(deck);
-
-                for (int slot = 0; slot < env.config.tableSize; slot++) { // check if the slot is empty
-                    if (table.slotToCard[slot] == null) {
-                        int card = deck.remove(0);
-                        table.placeCard(card, slot);
-
-                    }
-                }
-            }
-
         }
 
     }
@@ -183,7 +167,19 @@ public class Dealer implements Runnable {
      * purpose.
      */
     private void sleepUntilWokenOrTimeout() {
-        // TODO implement
+        for (Player player : players){
+            synchronized(player){
+                try{
+                    while (table.getTokensQueues()[player.id].size()!=3){
+                        player.wait();
+                    }
+                    isSet(player.id);
+                }
+                catch(InterruptedException e){};
+                
+            }
+        }
+
     }
 
     /**
@@ -197,7 +193,7 @@ public class Dealer implements Runnable {
      * Returns all the cards from the table to the deck.
      */
     private void removeAllCardsFromTable() {
-        // TODO implement
+
     }
 
     /**
