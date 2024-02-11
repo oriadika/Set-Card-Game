@@ -133,7 +133,7 @@ public class Player implements Runnable {
      *
      * @param slot - the slot corresponding to the key pressed.
      */
-    public void keyPressed(int slot) {
+    public synchronized void keyPressed(int slot) {
         Queue<Integer> tokenQueue = table.getTokensQueues()[id]; // thy not [id][slot]?
         java.util.Iterator<Integer> iterator = tokenQueue.iterator();
         boolean placeToken = true;
@@ -149,11 +149,15 @@ public class Player implements Runnable {
         }
 
         if (placeToken & tokenQueue.size() < 3) { // the player wants to put a new token
-            table.placeToken(id, slot); // checks if there is max of 3 or it happends by deafult?
+            synchronized (table.slotsLocks[slot]) { //prevent from a player to place token on empty slot
+                table.placeToken(id, slot); // checks if there is max of 3 or it happends by deafult?
+            }
         }
 
-        if (tokenQueue.size()==3){
-            notifyAll(); //once the player hit third token on the table, he must notify to the delaer and wait for him to check
+        if (tokenQueue.size() == 3) {
+            notifyAll(); // once the player hit third token on the table, he must notify to the delaer
+            // and wait for him to check
+
         }
 
         // TODO implement

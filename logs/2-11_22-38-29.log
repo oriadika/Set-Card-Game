@@ -1,0 +1,214 @@
+[22:38:29.746] [INFO   ] thread main starting.
+[22:38:29.762] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[22:38:29.764] [SEVERE ] configuration file was loaded from resources directory.
+[22:38:30.745] [INFO   ] thread dealer starting.
+[22:38:30.745] [INFO   ] thread dealer starting.
+[22:38:30.881] [SEVERE ] placing card 46 in slot 0
+[22:38:30.984] [SEVERE ] placing card 56 in slot 1
+[22:38:31.097] [SEVERE ] placing card 10 in slot 2
+[22:38:31.171] [SEVERE ] key 70 was pressed by player 1
+[22:38:31.173] [SEVERE ] player 1 placing token on slot 7
+[22:38:31.199] [SEVERE ] placing card 57 in slot 3
+[22:38:31.310] [SEVERE ] placing card 1 in slot 4
+[22:38:31.414] [SEVERE ] placing card 67 in slot 5
+[22:38:31.518] [SEVERE ] placing card 42 in slot 6
+[22:38:31.625] [SEVERE ] placing card 66 in slot 7
+[22:38:31.728] [SEVERE ] placing card 0 in slot 8
+[22:38:31.838] [SEVERE ] placing card 60 in slot 9
+[22:38:31.950] [SEVERE ] placing card 34 in slot 10
+[22:38:32.058] [SEVERE ] placing card 7 in slot 11
+[22:38:32.661] [SEVERE ] key 68 was pressed by player 1
+[22:38:32.661] [SEVERE ] player 1 placing token on slot 6
+[22:38:32.959] [SEVERE ] key 83 was pressed by player 1
+[22:38:32.959] [SEVERE ] player 1 placing token on slot 5
+[22:38:35.966] [SEVERE ] setting player 1 freeze to 3000
+[22:38:38.979] [SEVERE ] setting player 1 freeze to 3000
+[22:38:39.806] [SEVERE ] key 80 was pressed by player 2
+[22:38:39.806] [SEVERE ] player 2 placing token on slot 3
+[22:38:39.972] [SEVERE ] key 79 was pressed by player 2
+[22:38:39.972] [SEVERE ] player 2 placing token on slot 2
+[22:38:40.959] [SEVERE ] key 68 was pressed by player 1
+[22:38:40.961] [SEVERE ] removing player 1 token from slot 6
+[22:38:41.243] [SEVERE ] key 68 was pressed by player 1
+[22:38:41.243] [SEVERE ] player 1 placing token on slot 6
+[22:38:41.557] [SEVERE ] key 68 was pressed by player 1
+[22:38:41.557] [SEVERE ] removing player 1 token from slot 6
+[22:38:41.857] [SEVERE ] key 68 was pressed by player 1
+[22:38:41.857] [SEVERE ] player 1 placing token on slot 6
+[22:38:41.983] [SEVERE ] setting player 1 freeze to 3000
+[22:38:42.283] [SEVERE ] key 73 was pressed by player 2
+[22:38:42.283] [SEVERE ] player 2 placing token on slot 1
+[22:38:44.999] [SEVERE ] setting player 1 freeze to 3000
+[22:38:48.003] [SEVERE ] setting player 2 freeze to 3000
+[22:38:51.016] [SEVERE ] setting player 1 freeze to 3000
+[22:38:54.030] [SEVERE ] setting player 2 freeze to 3000
+[22:38:57.037] [SEVERE ] setting player 1 freeze to 3000
+[22:39:00.042] [SEVERE ] setting player 2 freeze to 3000
+[22:39:03.048] [SEVERE ] setting player 1 freeze to 3000
+[22:39:06.059] [SEVERE ] setting player 2 freeze to 3000
+[22:39:09.063] [SEVERE ] setting player 1 freeze to 3000
+[22:39:12.077] [SEVERE ] setting player 2 freeze to 3000
+[22:39:15.090] [SEVERE ] setting player 1 freeze to 3000
+[22:39:18.105] [SEVERE ] setting player 2 freeze to 3000
+[22:39:21.113] [SEVERE ] setting player 1 freeze to 3000
+[22:39:24.127] [SEVERE ] setting player 2 freeze to 3000
+[22:39:27.141] [SEVERE ] setting player 1 freeze to 3000
+[22:39:30.143] [SEVERE ] setting player 2 freeze to 3000
+[22:39:33.153] [SEVERE ] setting player 1 freeze to 3000
+[22:39:36.160] [SEVERE ] setting player 2 freeze to 3000
+[22:39:39.165] [SEVERE ] setting player 1 freeze to 3000
+[22:39:42.173] [SEVERE ] setting player 2 freeze to 3000
+[22:39:45.187] [SEVERE ] setting player 1 freeze to 3000
+[22:39:48.191] [SEVERE ] setting player 2 freeze to 3000
+[22:39:51.206] [SEVERE ] setting player 1 freeze to 3000
+[22:39:54.214] [SEVERE ] setting player 2 freeze to 3000
+[22:39:57.215] [SEVERE ] setting player 1 freeze to 3000
+[22:40:00.230] [SEVERE ] setting player 2 freeze to 3000
+[22:40:03.240] [SEVERE ] setting player 1 freeze to 3000
+[22:40:06.253] [SEVERE ] setting player 2 freeze to 3000
+[22:40:09.261] [SEVERE ] setting player 1 freeze to 3000
+[22:40:12.268] [SEVERE ] setting player 2 freeze to 3000
+[22:40:15.270] [SEVERE ] setting player 1 freeze to 3000
+[22:40:18.289] [SEVERE ] setting player 2 freeze to 3000
+[22:40:21.293] [SEVERE ] setting player 1 freeze to 3000
+[22:40:24.305] [SEVERE ] setting player 2 freeze to 3000
+[22:40:27.313] [SEVERE ] setting player 1 freeze to 3000
+[22:40:30.315] [SEVERE ] setting player 2 freeze to 3000
+[22:40:33.327] [SEVERE ] setting player 1 freeze to 3000
+[22:40:36.331] [SEVERE ] setting player 2 freeze to 3000
+[22:40:39.334] [SEVERE ] setting player 1 freeze to 3000
+[22:40:42.349] [SEVERE ] setting player 2 freeze to 3000
+[22:40:45.351] [SEVERE ] setting player 1 freeze to 3000
+[22:40:48.359] [SEVERE ] setting player 2 freeze to 3000
+[22:40:51.374] [SEVERE ] setting player 1 freeze to 3000
+[22:40:54.380] [SEVERE ] setting player 2 freeze to 3000
+[22:40:57.381] [SEVERE ] setting player 1 freeze to 3000
+[22:41:00.382] [SEVERE ] setting player 2 freeze to 3000
+[22:41:03.392] [SEVERE ] setting player 1 freeze to 3000
+[22:41:06.398] [SEVERE ] setting player 2 freeze to 3000
+[22:41:09.410] [SEVERE ] setting player 1 freeze to 3000
+[22:41:12.412] [SEVERE ] setting player 2 freeze to 3000
+[22:41:15.414] [SEVERE ] setting player 1 freeze to 3000
+[22:41:18.428] [SEVERE ] setting player 2 freeze to 3000
+[22:41:21.433] [SEVERE ] setting player 1 freeze to 3000
+[22:41:24.434] [SEVERE ] setting player 2 freeze to 3000
+[22:41:27.446] [SEVERE ] setting player 1 freeze to 3000
+[22:41:30.456] [SEVERE ] setting player 2 freeze to 3000
+[22:41:33.464] [SEVERE ] setting player 1 freeze to 3000
+[22:41:36.472] [SEVERE ] setting player 2 freeze to 3000
+[22:41:39.478] [SEVERE ] setting player 1 freeze to 3000
+[22:41:42.490] [SEVERE ] setting player 2 freeze to 3000
+[22:41:45.494] [SEVERE ] setting player 1 freeze to 3000
+[22:41:48.503] [SEVERE ] setting player 2 freeze to 3000
+[22:41:51.518] [SEVERE ] setting player 1 freeze to 3000
+[22:41:54.525] [SEVERE ] setting player 2 freeze to 3000
+[22:41:57.527] [SEVERE ] setting player 1 freeze to 3000
+[22:42:00.540] [SEVERE ] setting player 2 freeze to 3000
+[22:42:03.540] [SEVERE ] setting player 1 freeze to 3000
+[22:42:06.556] [SEVERE ] setting player 2 freeze to 3000
+[22:42:09.568] [SEVERE ] setting player 1 freeze to 3000
+[22:42:12.584] [SEVERE ] setting player 2 freeze to 3000
+[22:42:15.589] [SEVERE ] setting player 1 freeze to 3000
+[22:42:18.597] [SEVERE ] setting player 2 freeze to 3000
+[22:42:21.598] [SEVERE ] setting player 1 freeze to 3000
+[22:42:24.607] [SEVERE ] setting player 2 freeze to 3000
+[22:42:27.620] [SEVERE ] setting player 1 freeze to 3000
+[22:42:30.629] [SEVERE ] setting player 2 freeze to 3000
+[22:42:33.639] [SEVERE ] setting player 1 freeze to 3000
+[22:42:36.644] [SEVERE ] setting player 2 freeze to 3000
+[22:42:39.654] [SEVERE ] setting player 1 freeze to 3000
+[22:42:42.660] [SEVERE ] setting player 2 freeze to 3000
+[22:42:45.670] [SEVERE ] setting player 1 freeze to 3000
+[22:42:48.678] [SEVERE ] setting player 2 freeze to 3000
+[22:42:51.682] [SEVERE ] setting player 1 freeze to 3000
+[22:42:54.697] [SEVERE ] setting player 2 freeze to 3000
+[22:42:57.709] [SEVERE ] setting player 1 freeze to 3000
+[22:43:00.715] [SEVERE ] setting player 2 freeze to 3000
+[22:43:03.716] [SEVERE ] setting player 1 freeze to 3000
+[22:43:06.725] [SEVERE ] setting player 2 freeze to 3000
+[22:43:09.740] [SEVERE ] setting player 1 freeze to 3000
+[22:43:12.741] [SEVERE ] setting player 2 freeze to 3000
+[22:43:15.754] [SEVERE ] setting player 1 freeze to 3000
+[22:43:18.768] [SEVERE ] setting player 2 freeze to 3000
+[22:43:21.777] [SEVERE ] setting player 1 freeze to 3000
+[22:43:24.793] [SEVERE ] setting player 2 freeze to 3000
+[22:43:27.811] [SEVERE ] setting player 1 freeze to 3000
+[22:43:30.827] [SEVERE ] setting player 2 freeze to 3000
+[22:43:33.833] [SEVERE ] setting player 1 freeze to 3000
+[22:43:36.833] [SEVERE ] setting player 2 freeze to 3000
+[22:43:39.841] [SEVERE ] setting player 1 freeze to 3000
+[22:43:42.853] [SEVERE ] setting player 2 freeze to 3000
+[22:43:45.857] [SEVERE ] setting player 1 freeze to 3000
+[22:43:48.863] [SEVERE ] setting player 2 freeze to 3000
+[22:43:51.871] [SEVERE ] setting player 1 freeze to 3000
+[22:43:54.885] [SEVERE ] setting player 2 freeze to 3000
+[22:43:57.891] [SEVERE ] setting player 1 freeze to 3000
+[22:44:00.895] [SEVERE ] setting player 2 freeze to 3000
+[22:44:03.911] [SEVERE ] setting player 1 freeze to 3000
+[22:44:06.918] [SEVERE ] setting player 2 freeze to 3000
+[22:44:09.925] [SEVERE ] setting player 1 freeze to 3000
+[22:44:12.927] [SEVERE ] setting player 2 freeze to 3000
+[22:44:15.928] [SEVERE ] setting player 1 freeze to 3000
+[22:44:18.932] [SEVERE ] setting player 2 freeze to 3000
+[22:44:21.940] [SEVERE ] setting player 1 freeze to 3000
+[22:44:24.948] [SEVERE ] setting player 2 freeze to 3000
+[22:44:27.962] [SEVERE ] setting player 1 freeze to 3000
+[22:44:30.964] [SEVERE ] setting player 2 freeze to 3000
+[22:44:33.971] [SEVERE ] setting player 1 freeze to 3000
+[22:44:36.984] [SEVERE ] setting player 2 freeze to 3000
+[22:44:39.987] [SEVERE ] setting player 1 freeze to 3000
+[22:44:42.996] [SEVERE ] setting player 2 freeze to 3000
+[22:44:46.011] [SEVERE ] setting player 1 freeze to 3000
+[22:44:49.011] [SEVERE ] setting player 2 freeze to 3000
+[22:44:52.012] [SEVERE ] setting player 1 freeze to 3000
+[22:44:55.018] [SEVERE ] setting player 2 freeze to 3000
+[22:44:58.030] [SEVERE ] setting player 1 freeze to 3000
+[22:45:01.032] [SEVERE ] setting player 2 freeze to 3000
+[22:45:04.046] [SEVERE ] setting player 1 freeze to 3000
+[22:45:07.059] [SEVERE ] setting player 2 freeze to 3000
+[22:45:10.067] [SEVERE ] setting player 1 freeze to 3000
+[22:45:13.078] [SEVERE ] setting player 2 freeze to 3000
+[22:45:16.094] [SEVERE ] setting player 1 freeze to 3000
+[22:45:19.105] [SEVERE ] setting player 2 freeze to 3000
+[22:45:22.114] [SEVERE ] setting player 1 freeze to 3000
+[22:45:23.351] [SEVERE ] key 70 was pressed by player 1
+[22:45:23.351] [SEVERE ] removing player 1 token from slot 7
+[22:45:23.650] [SEVERE ] key 70 was pressed by player 1
+[22:45:23.650] [SEVERE ] player 1 placing token on slot 7
+[22:45:24.816] [SEVERE ] key 70 was pressed by player 1
+[22:45:24.816] [SEVERE ] removing player 1 token from slot 7
+[22:45:25.115] [SEVERE ] setting player 2 freeze to 3000
+[22:45:25.334] [SEVERE ] key 70 was pressed by player 1
+[22:45:25.334] [SEVERE ] player 1 placing token on slot 7
+[22:45:25.366] [SEVERE ] key 70 was pressed by player 1
+[22:45:25.366] [SEVERE ] removing player 1 token from slot 7
+[22:45:25.382] [SEVERE ] key 70 was pressed by player 1
+[22:45:25.382] [SEVERE ] player 1 placing token on slot 7
+[22:45:25.413] [SEVERE ] key 70 was pressed by player 1
+[22:45:25.413] [SEVERE ] removing player 1 token from slot 7
+[22:45:25.448] [SEVERE ] key 70 was pressed by player 1
+[22:45:25.448] [SEVERE ] player 1 placing token on slot 7
+[22:45:25.487] [SEVERE ] key 70 was pressed by player 1
+[22:45:25.487] [SEVERE ] removing player 1 token from slot 7
+[22:45:25.508] [SEVERE ] key 70 was pressed by player 1
+[22:45:25.517] [SEVERE ] player 1 placing token on slot 7
+[22:45:25.548] [SEVERE ] key 70 was pressed by player 1
+[22:45:25.548] [SEVERE ] removing player 1 token from slot 7
+[22:45:25.571] [SEVERE ] key 70 was pressed by player 1
+[22:45:25.571] [SEVERE ] player 1 placing token on slot 7
+[22:45:25.603] [SEVERE ] key 70 was pressed by player 1
+[22:45:25.603] [SEVERE ] removing player 1 token from slot 7
+[22:45:25.634] [SEVERE ] key 70 was pressed by player 1
+[22:45:25.634] [SEVERE ] player 1 placing token on slot 7
+[22:45:25.665] [SEVERE ] key 70 was pressed by player 1
+[22:45:25.665] [SEVERE ] removing player 1 token from slot 7
+[22:45:25.697] [SEVERE ] key 70 was pressed by player 1
+[22:45:25.697] [SEVERE ] player 1 placing token on slot 7
+[22:45:25.728] [SEVERE ] key 70 was pressed by player 1
+[22:45:25.728] [SEVERE ] removing player 1 token from slot 7
+[22:45:25.760] [SEVERE ] key 70 was pressed by player 1
+[22:45:25.761] [SEVERE ] player 1 placing token on slot 7
+[22:45:26.076] [SEVERE ] exit button pressed
+[22:45:28.138] [SEVERE ] setting player 2 freeze to 3000
+[22:45:31.142] [SEVERE ] setting player 1 freeze to 3000
+[22:45:31.963] [SEVERE ] exit button pressed
