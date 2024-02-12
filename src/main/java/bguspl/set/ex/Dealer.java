@@ -55,12 +55,15 @@ public class Dealer implements Runnable {
     @Override
     public void run() {
         env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
+
         while (!shouldFinish()) {
             placeCardsOnTable();
+            sleepUntilWokenOrTimeout();
             timerLoop();
             updateTimerDisplay(false);
             removeAllCardsFromTable();
         }
+
         announceWinners();
         env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
     }
@@ -102,6 +105,15 @@ public class Dealer implements Runnable {
      * Checks cards should be removed from the table and removes them.
      */
     private void removeCardsFromTable() {// remove cards when a set was found
+
+    for (Player player : players){
+        if (table.getTokensQueues()[player.id].size()==3){
+            if (isSet(player.id)){
+
+        }
+        }
+        
+    }
 
         for (int i = 0; i < env.config.players; i++) {
             Queue<Integer>[] set = table.getTokensQueues(); // get all players tokens
@@ -166,14 +178,21 @@ public class Dealer implements Runnable {
      * Sleep for a fixed amount of time or until the thread is awakened for some
      * purpose.
      */
-    private void sleepUntilWokenOrTimeout() {
+    private synchronized void sleepUntilWokenOrTimeout() {
+    
         for (Player player : players){
             synchronized(player){
                 try{
                     while (table.getTokensQueues()[player.id].size()!=3){
                         player.wait();
                     }
-                    isSet(player.id);
+                  if (isSet(player.id)) {
+                    player.point();
+                    removeCardsFromTable();
+                  }  
+                  else{
+                    player.penalty();
+                  }
                 }
                 catch(InterruptedException e){};
                 
