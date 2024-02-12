@@ -1,8 +1,10 @@
 package bguspl.set.ex;
 
+import java.sql.Time;
 import java.util.Queue;
 
 import bguspl.set.Env;
+
 
 /**
  * This class manages the players' threads and data
@@ -57,7 +59,6 @@ public class Player implements Runnable {
      */
     private int score;
 
-
     /**
      * The class constructor.
      *
@@ -75,6 +76,7 @@ public class Player implements Runnable {
         this.human = human;
         Thread plThread = new Thread(this);
         plThread.start();
+    
     }
 
     /**
@@ -105,8 +107,6 @@ public class Player implements Runnable {
         env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
     }
 
-    
-
     /**
      * Creates an additional thread for an AI (computer) player. The main loop of
      * this thread repeatedly generates
@@ -118,11 +118,11 @@ public class Player implements Runnable {
         aiThread = new Thread(() -> {
             env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
             while (!terminate) {
-                while (table.getTokensQueues()[id].size()==3){
-                    try{
+                while (table.getTokensQueues()[id].size() == 3) {
+                    try {
                         this.wait();
+                    } catch (InterruptedException e) {
                     }
-                    catch(InterruptedException e){}
                 }
                 // TODO implement player key press simulator
             }
@@ -145,8 +145,8 @@ public class Player implements Runnable {
      * @param slot - the slot corresponding to the key pressed.
      */
     public synchronized void keyPressed(int slot) {
-        if (table.getTokensQueues()[id].size()==3){
-            notifyAll(); //notify the AI?
+        if (table.getTokensQueues()[id].size() == 3) {
+            notifyAll(); // notify the AI?
         }
         if (table.slotToCard[slot] != null) {
             Queue<Integer> tokenQueue = table.getTokensQueues()[id]; // thy not [id][slot]?
@@ -198,9 +198,6 @@ public class Player implements Runnable {
             playerThread.sleep(FREEZE_TIME_MILLI);
             this.env.ui.setFreeze(this.id, FREEZE_TIME_MILLI);
 
-
-            
-
         } catch (InterruptedException e) { // need to understand what to do with the exception
             e.printStackTrace();
         }
@@ -214,8 +211,7 @@ public class Player implements Runnable {
         try {
             this.env.ui.setFreeze(id, PENAlTY_MILLISECONDS);
             Thread.currentThread().sleep(PENAlTY_MILLISECONDS);
-           // this.env.ui.setFreeze(this.id, PENAlTY_MILLISECONDS);
-           // this.env.ui.setCountdown(PENAlTY_MILLISECONDS, human);
+
         } catch (InterruptedException e) { // need to understand what to do with the exception
             e.printStackTrace();
         }
@@ -225,19 +221,18 @@ public class Player implements Runnable {
         return score;
     }
 
-    public synchronized boolean waitForThree(){
-        try{
+    public synchronized boolean waitForThree() {
+        try {
             if (table.getTokensQueues()[id].size() != 3) {
                 Thread.currentThread().wait();
-            }
-            else{
+            } else {
                 this.notifyAll();
-            
+
             }
-           
+
         }
 
-        catch(Exception exception){
+        catch (Exception exception) {
             waitForThree();
         }
         return true;

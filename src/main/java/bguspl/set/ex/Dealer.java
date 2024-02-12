@@ -2,9 +2,12 @@ package bguspl.set.ex;
 
 import bguspl.set.Env;
 import java.util.Queue;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.sql.Time;
 import java.util.Collections;
 
 import javax.swing.text.StyledEditorKit.ForegroundAction;
@@ -19,6 +22,14 @@ public class Dealer implements Runnable {
      */
 
     private final Env env;
+
+    private long remainSeconds;
+
+    private long remainMiliSconds;
+
+    private long lastUpdateTime;
+
+    private final long updateEach = 1000;
 
     /**
      * Game entities.
@@ -47,6 +58,10 @@ public class Dealer implements Runnable {
         this.table = table;
         this.players = players;
         deck = IntStream.range(0, env.config.deckSize).boxed().collect(Collectors.toList());
+        this.remainSeconds = env.config.turnTimeoutMillis / 1000;
+        this.remainMiliSconds = this.env.config.turnTimeoutMillis;
+        this.lastUpdateTime = System.currentTimeMillis();
+
     }
 
     /**
@@ -58,9 +73,8 @@ public class Dealer implements Runnable {
 
         while (!shouldFinish()) {
             placeCardsOnTable();
-            sleepUntilWokenOrTimeout();
             timerLoop();
-            updateTimerDisplay(false);
+            // updateTimerDisplay(false);
             removeAllCardsFromTable();
         }
 
@@ -113,10 +127,10 @@ public class Dealer implements Runnable {
                     java.util.Iterator<Integer> iterator = table.getTokensQueues()[player.id].iterator();
                     int index = 0;
                     while (iterator.hasNext()) {
-                       slotsToRemove[index] = iterator.next();
-                       index++;
+                        slotsToRemove[index] = iterator.next();
+                        index++;
                     }
-                    for (int i=0; i<slotsToRemove.length; i++){
+                    for (int i = 0; i < slotsToRemove.length; i++) {
                         table.removeToken(player.id, slotsToRemove[i]);
                         table.removeCard(slotsToRemove[i]);
                     }
@@ -195,20 +209,16 @@ public class Dealer implements Runnable {
      */
     private synchronized void sleepUntilWokenOrTimeout() {
         for (Player player : players) {
-            synchronized (player) {
-                while (table.getTokensQueues()[player.id].size() != 3) {
-                    try {
-                        player.wait();
-                    } catch (InterruptedException e) {
-                    }
-                    ;
-                }
-            }
+           if (table.getTokensQueues()[player.id].size() == 3) { //Just to test other functions!
             if (isSet(player.id)) {
                 player.point();
+                updateTimerDisplay(true); // by H.W : when player hits set
+                updatePlayerTimer(env.config.pointFreezeMillis);
                 removeCardsFromTable();
             } else {
                 player.penalty();
+                updatePlayerTimer(env.config.penaltyFreezeMillis);
+            }
             }
         }
     }
@@ -216,11 +226,34 @@ public class Dealer implements Runnable {
     /**
      * Reset and/or update the countdown and the countdown display.
      */
-    private void updateTimerDisplay(boolean reset) {
-        while (!reset) {
 
+    private void updatePlayerTimer(long freezeTime) {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastUpdateTime >= updateEach) {
+            if (freezeTime >= 0) {
+                env.ui.setCountdown(freezeTime, false);
+                freezeTime = freezeTime - 1000;
+            }
+            lastUpdateTime = System.currentTimeMillis();
         }
-        // TODO implement
+    }
+
+    private void updateTimerDisplay(boolean reset) {
+        if (reset) {
+            remainMiliSconds = env.config.turnTimeoutMillis;
+        }
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastUpdateTime >= updateEach) {
+            if (remainMiliSconds >= 0) {
+                env.ui.setCountdown(remainMiliSconds, false);
+                remainMiliSconds = remainMiliSconds - 1000;
+            }
+            lastUpdateTime = System.currentTimeMillis();
+        }
+        if (remainMiliSconds == 0) {
+            removeAllCardsFromTable();
+            announceWinners();
+        }
     }
 
     /**
