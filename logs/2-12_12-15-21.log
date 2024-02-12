@@ -1,0 +1,33 @@
+[12:15:21.327] [INFO   ] thread main starting.
+[12:15:21.338] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[12:15:21.339] [SEVERE ] configuration file was loaded from resources directory.
+[12:15:22.024] [INFO   ] thread dealer starting.
+[12:15:22.026] [INFO   ] thread Thread-0 starting.
+[12:15:22.036] [INFO   ] thread Thread-1 starting.
+[12:15:22.036] [INFO   ] thread dealer starting.
+[12:15:22.161] [SEVERE ] placing card 8 in slot 0
+[12:15:22.269] [SEVERE ] placing card 49 in slot 1
+[12:15:22.378] [SEVERE ] placing card 20 in slot 2
+[12:15:22.487] [SEVERE ] placing card 66 in slot 3
+[12:15:22.595] [SEVERE ] placing card 40 in slot 4
+[12:15:22.705] [SEVERE ] placing card 41 in slot 5
+[12:15:22.812] [SEVERE ] placing card 11 in slot 6
+[12:15:22.921] [SEVERE ] placing card 75 in slot 7
+[12:15:23.029] [SEVERE ] placing card 55 in slot 8
+[12:15:23.138] [SEVERE ] placing card 51 in slot 9
+[12:15:23.248] [SEVERE ] placing card 22 in slot 10
+[12:15:23.357] [SEVERE ] placing card 26 in slot 11
+[12:15:23.729] [SEVERE ] key 81 was pressed by player 1
+[12:15:23.730] [SEVERE ] player 1 placing token on slot 0
+[12:15:23.888] [SEVERE ] key 87 was pressed by player 1
+[12:15:23.888] [SEVERE ] player 1 placing token on slot 1
+[12:15:24.084] [SEVERE ] key 69 was pressed by player 1
+[12:15:24.084] [SEVERE ] player 1 placing token on slot 2
+[12:15:28.738] [SEVERE ] setting player 1 score to 1
+[12:15:29.756] [SEVERE ] setting player 1 freeze to 1000
+[12:15:58.992] [SEVERE ] removing player 1 token from slot 0
+[12:16:04.937] [SEVERE ] removing card from slot 0
+[12:16:37.553] [INFO   ] thread dealer terminated.
+[12:16:42.554] [SEVERE ] thanks for playing... it was fun!
+[12:16:42.554] [INFO   ] thread main terminated.
+[12:16:42.554] [SEVERE ] disposing of user interface elements

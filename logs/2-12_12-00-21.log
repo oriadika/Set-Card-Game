@@ -1,0 +1,46 @@
+[12:00:21.058] [INFO   ] thread main starting.
+[12:00:21.067] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[12:00:21.068] [SEVERE ] configuration file was loaded from resources directory.
+[12:00:21.633] [INFO   ] thread dealer starting.
+[12:00:21.633] [INFO   ] thread Thread-1 starting.
+[12:00:21.640] [INFO   ] thread Thread-0 starting.
+[12:00:21.640] [INFO   ] thread dealer starting.
+[12:00:21.758] [SEVERE ] placing card 1 in slot 0
+[12:00:21.861] [SEVERE ] placing card 74 in slot 1
+[12:00:21.961] [SEVERE ] placing card 6 in slot 2
+[12:00:22.061] [SEVERE ] placing card 76 in slot 3
+[12:00:22.176] [SEVERE ] placing card 27 in slot 4
+[12:00:22.291] [SEVERE ] placing card 47 in slot 5
+[12:00:22.394] [SEVERE ] placing card 32 in slot 6
+[12:00:22.497] [SEVERE ] placing card 54 in slot 7
+[12:00:22.606] [SEVERE ] placing card 60 in slot 8
+[12:00:22.715] [SEVERE ] placing card 5 in slot 9
+[12:00:22.825] [SEVERE ] placing card 56 in slot 10
+[12:00:22.934] [SEVERE ] placing card 70 in slot 11
+[12:00:23.009] [SEVERE ] key 65 was pressed by player 1
+[12:00:23.010] [SEVERE ] player 1 placing token on slot 4
+[12:00:23.230] [SEVERE ] key 83 was pressed by player 1
+[12:00:23.230] [SEVERE ] player 1 placing token on slot 5
+[12:00:24.271] [SEVERE ] key 70 was pressed by player 1
+[12:00:24.271] [SEVERE ] player 1 placing token on slot 7
+[12:00:39.333] [SEVERE ] setting player 1 freeze to 3000
+[12:00:40.025] [SEVERE ] key 70 was pressed by player 1
+[12:00:40.026] [SEVERE ] removing player 1 token from slot 7
+[12:00:40.737] [SEVERE ] key 68 was pressed by player 1
+[12:00:40.737] [SEVERE ] player 1 placing token on slot 6
+[12:00:50.931] [SEVERE ] key 70 was pressed by player 1
+[12:00:51.191] [SEVERE ] key 68 was pressed by player 1
+[12:00:51.192] [SEVERE ] removing player 1 token from slot 6
+[12:00:51.710] [SEVERE ] key 83 was pressed by player 1
+[12:00:51.711] [SEVERE ] removing player 1 token from slot 5
+[12:00:51.988] [SEVERE ] key 87 was pressed by player 1
+[12:00:51.988] [SEVERE ] player 1 placing token on slot 1
+[12:00:52.477] [SEVERE ] key 69 was pressed by player 1
+[12:00:52.477] [SEVERE ] player 1 placing token on slot 2
+[12:00:53.306] [SEVERE ] key 65 was pressed by player 1
+[12:00:53.306] [SEVERE ] removing player 1 token from slot 4
+[12:00:53.831] [SEVERE ] key 81 was pressed by player 1
+[12:00:53.831] [SEVERE ] player 1 placing token on slot 0
+[12:01:01.020] [SEVERE ] exit button pressed
+[12:01:01.020] [INFO   ] thread Thread-1 terminated.
+[12:01:01.020] [INFO   ] thread Thread-0 terminated.

@@ -1,0 +1,22 @@
+[11:29:35.291] [INFO   ] thread main starting.
+[11:29:35.300] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[11:29:35.303] [SEVERE ] configuration file was loaded from resources directory.
+[11:29:35.836] [INFO   ] thread dealer starting.
+[11:29:35.836] [INFO   ] thread Thread-1 starting.
+[11:29:35.839] [INFO   ] thread dealer starting.
+[11:29:35.836] [INFO   ] thread Thread-0 starting.
+[11:29:35.955] [SEVERE ] placing card 37 in slot 0
+[11:29:36.064] [SEVERE ] placing card 45 in slot 1
+[11:29:36.174] [SEVERE ] placing card 22 in slot 2
+[11:29:36.283] [SEVERE ] placing card 8 in slot 3
+[11:29:36.392] [SEVERE ] placing card 41 in slot 4
+[11:29:36.502] [SEVERE ] placing card 5 in slot 5
+[11:29:36.611] [SEVERE ] placing card 74 in slot 6
+[11:29:36.720] [SEVERE ] placing card 64 in slot 7
+[11:29:36.829] [SEVERE ] placing card 15 in slot 8
+[11:29:36.938] [SEVERE ] placing card 17 in slot 9
+[11:29:37.046] [SEVERE ] placing card 34 in slot 10
+[11:29:37.156] [SEVERE ] placing card 39 in slot 11
+[11:35:56.245] [SEVERE ] exit button pressed
+[11:35:56.246] [INFO   ] thread Thread-0 terminated.
+[11:35:56.246] [INFO   ] thread Thread-1 terminated.
