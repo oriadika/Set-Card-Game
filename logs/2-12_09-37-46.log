@@ -1,0 +1,38 @@
+[09:37:46.129] [INFO   ] thread main starting.
+[09:37:46.140] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[09:37:46.144] [SEVERE ] configuration file was loaded from resources directory.
+[09:37:46.865] [INFO   ] thread dealer starting.
+[09:37:46.865] [INFO   ] thread Thread-0 starting.
+[09:37:46.873] [INFO   ] thread Thread-1 starting.
+[09:37:46.873] [INFO   ] thread dealer starting.
+[09:37:51.730] [SEVERE ] placing card 8 in slot 0
+[09:37:51.841] [SEVERE ] placing card 38 in slot 1
+[09:37:51.966] [SEVERE ] placing card 43 in slot 2
+[09:37:52.076] [SEVERE ] placing card 26 in slot 3
+[09:37:52.184] [SEVERE ] placing card 69 in slot 4
+[09:37:52.291] [SEVERE ] placing card 9 in slot 5
+[09:37:52.400] [SEVERE ] placing card 44 in slot 6
+[09:37:52.508] [SEVERE ] placing card 49 in slot 7
+[09:37:52.616] [SEVERE ] placing card 5 in slot 8
+[09:37:52.725] [SEVERE ] placing card 52 in slot 9
+[09:37:52.833] [SEVERE ] placing card 53 in slot 10
+[09:37:52.942] [SEVERE ] placing card 3 in slot 11
+[09:38:12.311] [SEVERE ] key 65 was pressed by player 1
+[09:38:12.312] [SEVERE ] player 1 placing token on slot 4
+[09:38:12.868] [SEVERE ] key 83 was pressed by player 1
+[09:38:12.869] [SEVERE ] player 1 placing token on slot 5
+[09:38:13.093] [SEVERE ] key 68 was pressed by player 1
+[09:38:13.093] [SEVERE ] player 1 placing token on slot 6
+[09:38:14.399] [SEVERE ] key 70 was pressed by player 1
+[09:38:14.867] [SEVERE ] key 68 was pressed by player 1
+[09:38:14.868] [SEVERE ] removing player 1 token from slot 6
+[09:38:15.197] [SEVERE ] key 70 was pressed by player 1
+[09:38:15.198] [SEVERE ] player 1 placing token on slot 7
+[09:38:15.901] [SEVERE ] key 70 was pressed by player 1
+[09:38:15.901] [SEVERE ] removing player 1 token from slot 7
+[09:38:16.282] [SEVERE ] key 68 was pressed by player 1
+[09:38:16.284] [SEVERE ] player 1 placing token on slot 6
+[09:38:16.512] [SEVERE ] key 70 was pressed by player 1
+[09:38:55.167] [SEVERE ] exit button pressed
+[09:38:55.167] [INFO   ] thread Thread-1 terminated.
+[09:38:55.167] [INFO   ] thread Thread-0 terminated.
