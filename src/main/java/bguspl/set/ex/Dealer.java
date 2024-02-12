@@ -151,7 +151,7 @@ public class Dealer implements Runnable {
             Collections.shuffle(deck);
             for (int slot = 0; slot < env.config.tableSize; slot++) { // check if the slot is empty
                 if (table.slotToCard[slot] == null) {
-                    synchronized (table.slotsLocks[slot]) { // I can still place token on no card
+                    synchronized (table.slotsLocks[slot]) { 
                         int card = deck.remove(0);
                         table.placeCard(card, slot);
                     }
@@ -186,6 +186,10 @@ public class Dealer implements Runnable {
      * Reset and/or update the countdown and the countdown display.
      */
     private void updateTimerDisplay(boolean reset) {
+        while (!reset){
+            
+            
+        }
         // TODO implement
     }
 
@@ -193,7 +197,12 @@ public class Dealer implements Runnable {
      * Returns all the cards from the table to the deck.
      */
     private void removeAllCardsFromTable() {
-
+        for (int i=0; i<env.config.tableSize; i++){
+            if (table.slotToCard[i]!=null){
+                table.removeCard(i);
+                deck.add(table.slotToCard[i]);
+            }
+        }
     }
 
     /**

@@ -72,6 +72,8 @@ public class Player implements Runnable {
         this.table = table;
         this.id = id;
         this.human = human;
+        Thread plThread = new Thread(this);
+        plThread.start();
     }
 
     /**
@@ -86,6 +88,12 @@ public class Player implements Runnable {
             createArtificialIntelligence();
 
         while (!terminate) {
+            synchronized (this) {
+                try {
+                    this.wait();
+                } catch (InterruptedException e) {
+                }
+            }
             // TODO implement main player loop
         }
         if (!human)
@@ -102,18 +110,18 @@ public class Player implements Runnable {
      * key presses. If the queue of key presses is full, the thread waits until it
      * is not full.
      */
-    private void createArtificialIntelligence() {
+    private synchronized void createArtificialIntelligence() {
         // note: this is a very, very smart AI (!)
         aiThread = new Thread(() -> {
             env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
             while (!terminate) {
-                // TODO implement player key press simulator
-                try {
-                    synchronized (this) {
-                        wait();
-                    } // wait until notify from someone
-                } catch (InterruptedException ignored) {
+                while (table.getTokensQueues()[id].size()==3){
+                    try{
+                        this.wait();
+                    }
+                    catch(InterruptedException e){}
                 }
+                // TODO implement player key press simulator
             }
             env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
         }, "computer-" + id);
@@ -134,6 +142,9 @@ public class Player implements Runnable {
      * @param slot - the slot corresponding to the key pressed.
      */
     public synchronized void keyPressed(int slot) {
+        if (table.getTokensQueues()[id].size()==3){
+            notifyAll(); //notify the AI?
+        }
         if (table.slotToCard[slot] != null) {
             Queue<Integer> tokenQueue = table.getTokensQueues()[id]; // thy not [id][slot]?
             java.util.Iterator<Integer> iterator = tokenQueue.iterator();
@@ -156,8 +167,10 @@ public class Player implements Runnable {
             }
 
             if (tokenQueue.size() == 3) {
-                notifyAll(); // once the player hit third token on the table, he must notify to the delaer
-                // and wait for him to check
+                synchronized (this) {
+                    notifyAll(); // once the player hit third token on the table, he must notify to the delaer
+                    // and wait for him to check
+                }
 
             }
 

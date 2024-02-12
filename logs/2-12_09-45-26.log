@@ -1,0 +1,53 @@
+[09:45:26.809] [INFO   ] thread main starting.
+[09:45:26.820] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[09:45:26.820] [SEVERE ] configuration file was loaded from resources directory.
+[09:45:27.413] [INFO   ] thread dealer starting.
+[09:45:27.414] [INFO   ] thread Thread-0 starting.
+[09:45:27.427] [INFO   ] thread dealer starting.
+[09:45:27.427] [INFO   ] thread Thread-1 starting.
+[09:45:27.550] [SEVERE ] placing card 18 in slot 0
+[09:45:27.667] [SEVERE ] placing card 15 in slot 1
+[09:45:27.783] [SEVERE ] placing card 41 in slot 2
+[09:45:27.899] [SEVERE ] placing card 13 in slot 3
+[09:45:28.001] [SEVERE ] placing card 47 in slot 4
+[09:45:28.115] [SEVERE ] placing card 19 in slot 5
+[09:45:28.216] [SEVERE ] placing card 0 in slot 6
+[09:45:28.331] [SEVERE ] placing card 46 in slot 7
+[09:45:28.441] [SEVERE ] placing card 39 in slot 8
+[09:45:28.551] [SEVERE ] placing card 43 in slot 9
+[09:45:28.655] [SEVERE ] placing card 30 in slot 10
+[09:45:28.763] [SEVERE ] placing card 4 in slot 11
+[09:45:32.156] [SEVERE ] key 74 was pressed by player 2
+[09:45:32.156] [SEVERE ] player 2 placing token on slot 4
+[09:45:33.074] [SEVERE ] key 70 was pressed by player 1
+[09:45:33.074] [SEVERE ] player 1 placing token on slot 7
+[09:45:33.782] [SEVERE ] key 69 was pressed by player 1
+[09:45:33.782] [SEVERE ] player 1 placing token on slot 2
+[09:45:34.757] [SEVERE ] key 70 was pressed by player 1
+[09:45:34.757] [SEVERE ] removing player 1 token from slot 7
+[09:45:35.196] [SEVERE ] key 83 was pressed by player 1
+[09:45:35.196] [SEVERE ] player 1 placing token on slot 5
+[09:45:35.511] [SEVERE ] key 70 was pressed by player 1
+[09:45:35.511] [SEVERE ] player 1 placing token on slot 7
+[09:45:35.951] [SEVERE ] key 67 was pressed by player 1
+[09:45:37.119] [SEVERE ] key 87 was pressed by player 1
+[09:45:37.491] [SEVERE ] key 87 was pressed by player 1
+[09:45:38.386] [SEVERE ] key 80 was pressed by player 2
+[09:45:38.386] [SEVERE ] player 2 placing token on slot 3
+[09:45:38.465] [SEVERE ] key 79 was pressed by player 2
+[09:45:38.465] [SEVERE ] player 2 placing token on slot 2
+[09:45:39.047] [SEVERE ] key 73 was pressed by player 2
+[09:45:39.486] [SEVERE ] key 73 was pressed by player 2
+[09:45:39.580] [SEVERE ] key 79 was pressed by player 2
+[09:45:39.580] [SEVERE ] removing player 2 token from slot 2
+[09:45:39.753] [SEVERE ] key 85 was pressed by player 2
+[09:45:39.753] [SEVERE ] player 2 placing token on slot 0
+[09:45:40.114] [SEVERE ] key 85 was pressed by player 2
+[09:45:40.114] [SEVERE ] removing player 2 token from slot 0
+[09:45:40.460] [SEVERE ] key 79 was pressed by player 2
+[09:45:40.460] [SEVERE ] player 2 placing token on slot 2
+[09:45:40.790] [SEVERE ] key 85 was pressed by player 2
+[09:45:41.152] [SEVERE ] key 85 was pressed by player 2
+[09:46:01.671] [SEVERE ] exit button pressed
+[09:46:01.671] [INFO   ] thread Thread-0 terminated.
+[09:46:01.671] [INFO   ] thread Thread-1 terminated.
