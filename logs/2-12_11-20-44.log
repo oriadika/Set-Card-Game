@@ -1,0 +1,41 @@
+[11:20:44.922] [INFO   ] thread main starting.
+[11:20:44.934] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[11:20:44.939] [SEVERE ] configuration file was loaded from resources directory.
+[11:20:45.611] [INFO   ] thread dealer starting.
+[11:20:45.612] [INFO   ] thread dealer starting.
+[11:20:45.612] [INFO   ] thread Thread-0 starting.
+[11:20:45.613] [INFO   ] thread Thread-1 starting.
+[11:20:45.736] [SEVERE ] placing card 22 in slot 0
+[11:20:45.844] [SEVERE ] placing card 31 in slot 1
+[11:20:45.953] [SEVERE ] placing card 58 in slot 2
+[11:20:46.060] [SEVERE ] placing card 11 in slot 3
+[11:20:46.169] [SEVERE ] placing card 39 in slot 4
+[11:20:46.277] [SEVERE ] placing card 54 in slot 5
+[11:20:46.385] [SEVERE ] placing card 77 in slot 6
+[11:20:46.494] [SEVERE ] placing card 26 in slot 7
+[11:20:46.601] [SEVERE ] placing card 41 in slot 8
+[11:20:46.708] [SEVERE ] placing card 15 in slot 9
+[11:20:46.818] [SEVERE ] placing card 27 in slot 10
+[11:20:46.926] [SEVERE ] placing card 14 in slot 11
+[11:20:58.990] [SEVERE ] key 77 was pressed by player 2
+[11:20:58.990] [SEVERE ] player 2 placing token on slot 8
+[11:21:05.709] [SEVERE ] key 74 was pressed by player 2
+[11:21:05.710] [SEVERE ] player 2 placing token on slot 4
+[11:21:12.772] [SEVERE ] key 46 was pressed by player 2
+[11:21:12.772] [SEVERE ] player 2 placing token on slot 10
+[11:21:15.825] [SEVERE ] key 76 was pressed by player 2
+[11:21:16.221] [SEVERE ] key 76 was pressed by player 2
+[11:21:16.657] [SEVERE ] key 76 was pressed by player 2
+[11:21:18.105] [SEVERE ] key 44 was pressed by player 2
+[11:21:18.435] [SEVERE ] key 75 was pressed by player 2
+[11:21:18.610] [SEVERE ] key 44 was pressed by player 2
+[11:21:19.582] [SEVERE ] key 74 was pressed by player 2
+[11:21:19.582] [SEVERE ] removing player 2 token from slot 4
+[11:21:20.252] [SEVERE ] key 44 was pressed by player 2
+[11:21:20.253] [SEVERE ] player 2 placing token on slot 9
+[11:21:31.079] [SEVERE ] key 81 was pressed by player 1
+[11:21:31.079] [SEVERE ] player 1 placing token on slot 0
+[11:21:31.204] [SEVERE ] key 87 was pressed by player 1
+[11:21:31.204] [SEVERE ] player 1 placing token on slot 1
+[11:21:31.309] [SEVERE ] key 69 was pressed by player 1
+[11:21:31.309] [SEVERE ] player 1 placing token on slot 2
