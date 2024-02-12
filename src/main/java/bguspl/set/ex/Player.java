@@ -212,9 +212,9 @@ public class Player implements Runnable {
     public void penalty() {
 
         try {
+            this.env.ui.setFreeze(id, PENAlTY_MILLISECONDS);
             Thread.currentThread().sleep(PENAlTY_MILLISECONDS);
            // this.env.ui.setFreeze(this.id, PENAlTY_MILLISECONDS);
-            this.env.ui.setFreeze(id, PENAlTY_MILLISECONDS);
            // this.env.ui.setCountdown(PENAlTY_MILLISECONDS, human);
         } catch (InterruptedException e) { // need to understand what to do with the exception
             e.printStackTrace();
