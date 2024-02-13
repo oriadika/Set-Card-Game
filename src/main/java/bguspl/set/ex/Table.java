@@ -170,7 +170,7 @@ public class Table {
      * @param player - the player the token belongs to.
      * @param slot   - the slot on which to place the token.
      */
-    public void placeToken(int player, int slot) {
+    public synchronized void placeToken(int player, int slot) {
         synchronized (slotsLocks[slot]) {
             tokensQueues[player].add(slot);
             env.ui.placeToken(player, slot); // for logger and ui
@@ -185,7 +185,7 @@ public class Table {
      * @param slot   - the slot from which to remove the token.
      * @return - true iff a token was successfully removed.
      */
-    public boolean removeToken(int player, int slot) {
+    public synchronized boolean removeToken(int player, int slot) {
         Queue<Integer> queue = tokensQueues[player];
         for (int i = 0; i < queue.size(); i++) {
             int tokenPosition = queue.poll();

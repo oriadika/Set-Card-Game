@@ -162,7 +162,18 @@ public class Player implements Runnable {
      * @param slot - the slot corresponding to the key pressed.
      */
     public void keyPressed(int slot) {
-        if (table.slotToCard[slot] != null) {
+        if (actions.size()<3){
+            actions.add(slot);
+            if (table.removeToken(id, slot)){
+                removeAction(slot);
+            }
+            else{
+                table.placeToken(id, slot);
+                addAction(slot);
+            }
+        }
+        /*
+         * if (table.slotToCard[slot] != null) {
             java.util.Iterator<Integer> iterator = this.actions.iterator();
             boolean placeToken = true;
             while (iterator.hasNext()) {
@@ -194,6 +205,8 @@ public class Player implements Runnable {
                 // case of set
             }
         }
+         */
+        
     }
 
     public void addAction(int slot){
