@@ -31,6 +31,8 @@ public class Dealer implements Runnable {
 
     private final long updateEach = 1000;
 
+    private Thread dealerThread;
+
     /**
      * Game entities.
      */
