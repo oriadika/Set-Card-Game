@@ -161,7 +161,7 @@ public class Player implements Runnable {
      * 
      * @param slot - the slot corresponding to the key pressed.
      */
-    public synchronized void keyPressed(int slot) {
+    public void keyPressed(int slot) {
         if (table.slotToCard[slot] != null & actions.size() < 3 | (actions.contains(slot) & actions.size() == 3)) {
             java.util.Iterator<Integer> iterator = this.actions.iterator();
             boolean placeToken = true;
@@ -171,7 +171,7 @@ public class Player implements Runnable {
                     // remove the token
                     placeToken = false;
                     table.removeToken(id, slot); // call the table to remove the token
-                    this.actions.poll();
+                    removeAction(slotOfExistToken);
                     break;
                 }
 
@@ -180,7 +180,7 @@ public class Player implements Runnable {
             if (placeToken & actions.size() < 3) { // the player wants to put a new token
                 synchronized (table.slotsLocks[slot]) { // prevent from a player to place token on empty slot
                     table.placeToken(id, slot); // checks if there is max of 3 or it happends by deafult?
-                    actions.add(slot);
+                    addAction(slot);
                 }
             }
         }
@@ -193,6 +193,34 @@ public class Player implements Runnable {
             } catch (InterruptedException e) { // the dealer should remove my tokens in
                 // case of set
 
+            }
+        }
+    }
+
+    public void addAction(int slot){
+        while (actions.size()==3 || !actions.contains(slot)){
+            synchronized(actions){
+                try{
+                    actions.wait();
+                }
+                catch(InterruptedException e){
+                    actions.add(slot);
+                    actions.notifyAll();
+                }
+            }
+        }
+    }
+
+    public void removeAction(int slot){
+        while (actions.size()==0 || !actions.contains(slot)){
+            synchronized(actions){
+                try{
+                    actions.wait();
+                }
+                catch(InterruptedException e){
+                    actions.remove(slot);
+                    notifyAll();
+                }
             }
         }
     }
