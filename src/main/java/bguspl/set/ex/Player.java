@@ -162,7 +162,7 @@ public class Player implements Runnable {
      * @param slot - the slot corresponding to the key pressed.
      */
     public void keyPressed(int slot) {
-        if (table.slotToCard[slot] != null & actions.size() < 3 | (actions.contains(slot) & actions.size() == 3)) {
+        if (table.slotToCard[slot] != null) {
             java.util.Iterator<Integer> iterator = this.actions.iterator();
             boolean placeToken = true;
             while (iterator.hasNext()) {
@@ -192,7 +192,6 @@ public class Player implements Runnable {
 
             } catch (InterruptedException e) { // the dealer should remove my tokens in
                 // case of set
-
             }
         }
     }
