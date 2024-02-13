@@ -63,6 +63,7 @@ public class Dealer implements Runnable {
         this.remainSeconds = env.config.turnTimeoutMillis / 1000;
         this.remainMiliSconds = this.env.config.turnTimeoutMillis;
         this.lastUpdateTime = System.currentTimeMillis();
+        this.dealerThread = new Thread(this);
 
     }
 
@@ -74,9 +75,25 @@ public class Dealer implements Runnable {
         env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
 
         while (!shouldFinish()) {
+            for (Player player : players){
+                try{
+                    player.getActions().wait();
+                }
+                catch(InterruptedException e){
+                    if (isSet(player.id)) {
+                        player.point();
+                        updateTimerDisplay(true); // by H.W : when player hits set
+                        updatePlayerTimer(env.config.pointFreezeMillis);
+                        removeCardsFromTable();
+                    } else {
+                        player.penalty();
+                        updatePlayerTimer(env.config.penaltyFreezeMillis);
+                    }
+                }
+            }
             placeCardsOnTable();
             timerLoop();
-            // updateTimerDisplay(false);
+            updateTimerDisplay(false);
             removeAllCardsFromTable();
         }
 
@@ -172,6 +189,10 @@ public class Dealer implements Runnable {
          * }
          * }
          */
+    }
+
+    public Thread getThread(){
+        return dealerThread;
     }
 
     public boolean isSet(int playerId) { // wants to be exceuted when player hits his third token - need to check

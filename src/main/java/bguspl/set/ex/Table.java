@@ -172,7 +172,7 @@ public class Table {
      */
     public void placeToken(int player, int slot) {
         synchronized (slotsLocks[slot]) {
-            tokensQueues[player].add(slot); // adding new slot of token
+            tokensQueues[player].add(slot);
             env.ui.placeToken(player, slot); // for logger and ui
         }
 
@@ -192,9 +192,7 @@ public class Table {
             if (tokenPosition == slot) { // there is a slot to remove
                 env.ui.removeToken(player, slot);
                 return true;
-            } else {
-                queue.add(tokenPosition);
-            }
+            } 
         }
         return false;
 

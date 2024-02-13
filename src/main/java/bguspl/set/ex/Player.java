@@ -1,10 +1,10 @@
 package bguspl.set.ex;
 
 import java.sql.Time;
+import java.util.LinkedList;
 import java.util.Queue;
 
 import bguspl.set.Env;
-
 
 /**
  * This class manages the players' threads and data
@@ -23,6 +23,8 @@ public class Player implements Runnable {
      */
     private final Env env;
 
+    private Queue<Integer> actions;
+
     /**
      * Game entities.
      */
@@ -37,6 +39,8 @@ public class Player implements Runnable {
      * The thread representing the current player.
      */
     private Thread playerThread;
+
+    private Thread dealerThread;
 
     /**
      * The thread of the AI (computer) player (an additional thread used to generate
@@ -53,6 +57,8 @@ public class Player implements Runnable {
      * True iff game should be terminated.
      */
     private volatile boolean terminate;
+
+    private Dealer dealer;
 
     /**
      * The current score of the player.
@@ -76,35 +82,42 @@ public class Player implements Runnable {
         this.human = human;
         Thread plThread = new Thread(this);
         plThread.start();
-    
+        this.actions = new LinkedList<>();
+        this.dealer = dealer;
+        this.dealerThread = dealer.getThread();
     }
 
     /**
      * The main player thread of each player starts here (main loop for the player
      * thread).
      */
-    @Override
     public void run() {
-        playerThread = Thread.currentThread();
-        env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
-        if (!human)
-            createArtificialIntelligence();
+        this.playerThread = Thread.currentThread();
+        this.env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
+        if (!this.human) {
+            this.createArtificialIntelligence();
+        }
 
-        while (!terminate) {
-            synchronized (this) {
-                try {
-                    this.wait();
-                } catch (InterruptedException e) {
+        while (!this.terminate) {
+            synchronized (actions) {
+                while (actions.size() == 0) { // no action preformed yet
+                    try {
+                        actions.wait();
+                    } catch (InterruptedException e) {
+
+                    }
                 }
             }
-            // TODO implement main player loop
         }
-        if (!human)
+
+        if (!this.human) {
             try {
-                aiThread.join();
-            } catch (InterruptedException ignored) {
+                this.aiThread.join();
+            } catch (InterruptedException var2) {
             }
-        env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
+        }
+
+        this.env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
     }
 
     /**
@@ -118,11 +131,14 @@ public class Player implements Runnable {
         aiThread = new Thread(() -> {
             env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
             while (!terminate) {
-                while (table.getTokensQueues()[id].size() == 3) {
-                    try {
-                        this.wait();
-                    } catch (InterruptedException e) {
+                synchronized(actions){
+                    while (actions.size()==0){
+                        try{
+                            actions.wait();
+                        }
+                        catch(InterruptedException e){}
                     }
+
                 }
                 // TODO implement player key press simulator
             }
@@ -141,16 +157,13 @@ public class Player implements Runnable {
 
     /**
      * This method is called when a key is pressed.
-     *
+     * s
+     * 
      * @param slot - the slot corresponding to the key pressed.
      */
     public synchronized void keyPressed(int slot) {
-        if (table.getTokensQueues()[id].size() == 3) {
-            notifyAll(); // notify the AI?
-        }
-        if (table.slotToCard[slot] != null) {
-            Queue<Integer> tokenQueue = table.getTokensQueues()[id]; // thy not [id][slot]?
-            java.util.Iterator<Integer> iterator = tokenQueue.iterator();
+        if (table.slotToCard[slot] != null & actions.size() < 3 | (actions.contains(slot) & actions.size() == 3)) {
+            java.util.Iterator<Integer> iterator = this.actions.iterator();
             boolean placeToken = true;
             while (iterator.hasNext()) {
                 int slotOfExistToken = iterator.next();
@@ -158,28 +171,30 @@ public class Player implements Runnable {
                     // remove the token
                     placeToken = false;
                     table.removeToken(id, slot); // call the table to remove the token
+                    this.actions.poll();
                     break;
                 }
 
             }
 
-            if (placeToken & tokenQueue.size() < 3) { // the player wants to put a new token
+            if (placeToken & actions.size() < 3) { // the player wants to put a new token
                 synchronized (table.slotsLocks[slot]) { // prevent from a player to place token on empty slot
                     table.placeToken(id, slot); // checks if there is max of 3 or it happends by deafult?
+                    actions.add(slot);
                 }
             }
-
-            if (tokenQueue.size() == 3) {
-                synchronized (this) {
-                    notifyAll(); // once the player hit third token on the table, he must notify to the delaer
-                    // and wait for him to check
-                }
-
-            }
-
-            // TODO implement
         }
 
+        if (this.actions.size() == 3 & actions.contains(slot)) { // just put his third token
+            dealerThread.interrupt(); // to make him check the cuurent set
+            try {
+                playerThread.wait(); // waits for the dealer to check my cards
+
+            } catch (InterruptedException e) { // the dealer should remove my tokens in
+                // case of set
+
+            }
+        }
     }
 
     /**
@@ -189,17 +204,15 @@ public class Player implements Runnable {
      * @post - the player's score is updated in the ui.
      */
     public void point() {
-
         try {
-
             this.score = this.score + POINT;
             int ignored = table.countCards(); // this part is just for demonstration in the unit tests
             env.ui.setScore(id, this.score);
-            playerThread.sleep(FREEZE_TIME_MILLI);
             this.env.ui.setFreeze(this.id, FREEZE_TIME_MILLI);
+            playerThread.sleep(FREEZE_TIME_MILLI);
 
         } catch (InterruptedException e) { // need to understand what to do with the exception
-            e.printStackTrace();
+
         }
     }
 
@@ -210,10 +223,9 @@ public class Player implements Runnable {
 
         try {
             this.env.ui.setFreeze(id, PENAlTY_MILLISECONDS);
-            Thread.currentThread().sleep(PENAlTY_MILLISECONDS);
+            playerThread.sleep(PENAlTY_MILLISECONDS);
 
         } catch (InterruptedException e) { // need to understand what to do with the exception
-            e.printStackTrace();
         }
     }
 
@@ -221,20 +233,8 @@ public class Player implements Runnable {
         return score;
     }
 
-    public synchronized boolean waitForThree() {
-        try {
-            if (table.getTokensQueues()[id].size() != 3) {
-                Thread.currentThread().wait();
-            } else {
-                this.notifyAll();
-
-            }
-
-        }
-
-        catch (Exception exception) {
-            waitForThree();
-        }
-        return true;
+    public Queue<Integer> getActions() {
+        return actions;
     }
+
 }
