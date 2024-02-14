@@ -81,7 +81,7 @@ public class Player implements Runnable {
         this.table = table;
         this.id = id;
         this.human = human;
-        
+
         this.actions = new LinkedList<>();
         this.dealer = dealer;
         this.dealerThread = dealer.getThread();
@@ -101,15 +101,14 @@ public class Player implements Runnable {
 
         while (!this.terminate) {
             synchronized (actions) {
-                try{
-                   while (actions.isEmpty()) { // no action preformed yet 
+                try {
+                    while (actions.isEmpty()) { // no action preformed yet
                         playerThread.wait();
-                    } 
-                }
-                catch (Exception e) {
+                    }
+                } catch (Exception e) {
                     while (actions.size() > 0) {
                         int slot = actions.poll();
-                        table.playerAction(this, slot);   
+                        table.playerAction(this, slot);
                     }
                 }
             }
@@ -123,8 +122,7 @@ public class Player implements Runnable {
         }
 
         this.env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
-        }
-
+    }
 
     /**
      * Creates an additional thread for an AI (computer) player. The main loop of
@@ -137,12 +135,12 @@ public class Player implements Runnable {
         aiThread = new Thread(() -> {
             env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
             while (!terminate) {
-                synchronized(actions){
-                    while (actions.size()==0){
-                        try{
+                synchronized (actions) {
+                    while (actions.size() == 0) {
+                        try {
                             actions.wait();
+                        } catch (Exception e) {
                         }
-                        catch(Exception e){}
                     }
 
                 }
@@ -171,73 +169,75 @@ public class Player implements Runnable {
         if (actions.size()<3){
             actions.add(slot);
             synchronized(playerThread){
-                 playerThread.interrupt();
-                }
-            }
-        }
-        /*
-         * if (table.slotToCard[slot] != null) {
-            java.util.Iterator<Integer> iterator = this.actions.iterator();
-            boolean placeToken = true;
-            while (iterator.hasNext()) {
-                int slotOfExistToken = iterator.next();
-                if (slotOfExistToken == slot) {// It means there is already a token on the slot, so the player wants to
-                    // remove the token
-                    placeToken = false;
-                    table.removeToken(id, slot); // call the table to remove the token
-                    removeAction(slotOfExistToken);
-                    break;
-                }
-
-            }
-
-            if (placeToken & actions.size() < 3) { // the player wants to put a new token
-                synchronized (table.slotsLocks[slot]) { // prevent from a player to place token on empty slot
-                    table.placeToken(id, slot); // checks if there is max of 3 or it happends by deafult?
-                    addAction(slot);
-                }
-            }
-        }
-
-        if (this.actions.size() == 3 & actions.contains(slot)) { // just put his third token
-            dealerThread.interrupt(); // to make him check the cuurent set
-            try {
-                playerThread.wait(); // waits for the dealer to check my cards
-
-            } catch (InterruptedException e) { // the dealer should remove my tokens in
-                // case of set
-            }
-        }
-         */
-        
-    
-
-    public void addAction(int slot){
-        while (actions.size()==3 || !actions.contains(slot)){
-            synchronized(actions){
-                try{
-                    actions.wait();
-                }
-                catch(InterruptedException e){
-                    actions.add(slot);
-                    actions.notifyAll();
-                }
+                playerThread.interrupt();
             }
         }
     }
+    /*
+     * if (table.slotToCard[slot] != null) {
+     * java.util.Iterator<Integer> iterator = this.actions.iterator();
+     * boolean placeToken = true;
+     * while (iterator.hasNext()) {
+     * int slotOfExistToken = iterator.next();
+     * if (slotOfExistToken == slot) {// It means there is already a token on the
+     * slot, so the player wants to
+     * // remove the token
+     * placeToken = false;
+     * table.removeToken(id, slot); // call the table to remove the token
+     * removeAction(slotOfExistToken);
+     * break;
+     * }
+     * 
+     * }
+     * 
+     * if (placeToken & actions.size() < 3) { // the player wants to put a new token
+     * synchronized (table.slotsLocks[slot]) { // prevent from a player to place
+     * token on empty slot
+     * table.placeToken(id, slot); // checks if there is max of 3 or it happends by
+     * deafult?
+     * addAction(slot);
+     * }
+     * }
+     * }
+     * 
+     * if (this.actions.size() == 3 & actions.contains(slot)) { // just put his
+     * third token
+     * dealerThread.interrupt(); // to make him check the cuurent set
+     * try {
+     * playerThread.wait(); // waits for the dealer to check my cards
+     * 
+     * } catch (InterruptedException e) { // the dealer should remove my tokens in
+     * // case of set
+     * }
+     * }
+     */
 
-    public void removeAction(int slot){
-        while (actions.size()==0 || !actions.contains(slot)){
-            synchronized(actions){
-                try{
+    public void addAction(int slot) {
+        synchronized (actions) {
+            while (actions.size() == 3) {
+                try {
                     actions.wait();
-                }
-                catch(InterruptedException e){
-                    actions.remove(slot);
-                    notifyAll();
+                } catch (InterruptedException e) {
                 }
             }
+            actions.add(slot);
+            actions.notifyAll();
         }
+
+    }
+
+    public void removeAction(int slot) {
+        synchronized (actions) {
+            while (actions.size() == 0) {
+                try {
+                    actions.wait();
+                } catch (InterruptedException e) {
+                }
+            }
+            actions.poll();
+            actions.notifyAll();
+        }
+
     }
 
     /**
@@ -249,7 +249,8 @@ public class Player implements Runnable {
     public void point() {
         try {
             this.score = this.score + POINT;
-           // int ignored = table.countCards(); // this part is just for demonstration in the unit tests
+            // int ignored = table.countCards(); // this part is just for demonstration in
+            // the unit tests
             env.ui.setScore(id, this.score);
             this.env.ui.setFreeze(this.id, FREEZE_TIME_MILLI);
             playerThread.sleep(FREEZE_TIME_MILLI);
@@ -263,15 +264,15 @@ public class Player implements Runnable {
     /**
      * Penalize a player and perform other related actions.
      */
-    public  void penalty() {
+    public void penalty() {
 
-            long penaltyTime = PENAlTY_MILLISECONDS;
-            synchronized(playerThread){
+        long penaltyTime = PENAlTY_MILLISECONDS;
+        synchronized (playerThread) {
             try {
                 while (penaltyTime > 0) {
                     this.env.ui.setFreeze(id, penaltyTime);
                     playerThread.sleep(FREEZE_TIME_MILLI);
-                    penaltyTime = penaltyTime - FREEZE_TIME_MILLI;   
+                    penaltyTime = penaltyTime - FREEZE_TIME_MILLI;
                 }
 
             } catch (InterruptedException e) { // need to understand what to do with the exception
@@ -292,7 +293,3 @@ public class Player implements Runnable {
     }
 
 }
-
-
-
-
