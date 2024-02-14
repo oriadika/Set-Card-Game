@@ -1,0 +1,48 @@
+[09:40:49.369] [INFO   ] thread main starting.
+[09:40:49.389] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[09:40:49.394] [SEVERE ] configuration file was loaded from resources directory.
+[09:40:50.729] [INFO   ] thread dealer starting.
+[09:40:50.731] [INFO   ] thread Thread-0 starting.
+[09:40:50.743] [INFO   ] thread dealer starting.
+[09:40:50.743] [INFO   ] thread Thread-1 starting.
+[09:40:50.880] [SEVERE ] placing card 11 in slot 0
+[09:40:50.987] [SEVERE ] placing card 31 in slot 1
+[09:40:51.096] [SEVERE ] placing card 76 in slot 2
+[09:40:51.204] [SEVERE ] placing card 40 in slot 3
+[09:40:51.315] [SEVERE ] placing card 30 in slot 4
+[09:40:51.423] [SEVERE ] placing card 57 in slot 5
+[09:40:51.533] [SEVERE ] placing card 6 in slot 6
+[09:40:51.645] [SEVERE ] placing card 53 in slot 7
+[09:40:51.753] [SEVERE ] placing card 56 in slot 8
+[09:40:51.865] [SEVERE ] placing card 64 in slot 9
+[09:40:51.974] [SEVERE ] placing card 27 in slot 10
+[09:40:52.085] [SEVERE ] placing card 77 in slot 11
+[09:40:53.087] [SEVERE ] updating countdown to 59000
+[09:40:54.106] [SEVERE ] updating countdown to 58000
+[09:40:54.430] [SEVERE ] key 65 was pressed by player 1
+[09:40:55.118] [SEVERE ] updating countdown to 57000
+[09:40:56.118] [SEVERE ] updating countdown to 56000
+[09:40:57.119] [SEVERE ] updating countdown to 55000
+[09:40:58.133] [SEVERE ] updating countdown to 54000
+[09:40:59.134] [SEVERE ] updating countdown to 53000
+[09:41:00.148] [SEVERE ] updating countdown to 52000
+[09:41:01.159] [SEVERE ] updating countdown to 51000
+[09:41:02.173] [SEVERE ] updating countdown to 50000
+[09:41:03.182] [SEVERE ] updating countdown to 49000
+[09:41:04.197] [SEVERE ] updating countdown to 48000
+[09:41:05.209] [SEVERE ] updating countdown to 47000
+[09:41:06.225] [SEVERE ] updating countdown to 46000
+[09:41:07.236] [SEVERE ] updating countdown to 45000
+[09:41:08.252] [SEVERE ] updating countdown to 44000
+[09:41:09.267] [SEVERE ] updating countdown to 43000
+[09:41:10.277] [SEVERE ] updating countdown to 42000
+[09:41:11.283] [SEVERE ] updating countdown to 41000
+[09:41:12.295] [SEVERE ] updating countdown to 40000
+[09:41:12.824] [SEVERE ] removing player 1 token from slot 4
+[09:41:13.305] [SEVERE ] updating countdown to 39000
+[09:41:14.319] [SEVERE ] updating countdown to 38000
+[09:41:15.333] [SEVERE ] updating countdown to 37000
+[09:41:16.336] [SEVERE ] updating countdown to 36000
+[09:41:17.347] [SEVERE ] updating countdown to 35000
+[09:41:18.360] [SEVERE ] updating countdown to 34000
+[09:41:19.372] [SEVERE ] updating countdown to 33000

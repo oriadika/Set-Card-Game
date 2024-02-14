@@ -31,10 +31,9 @@ public class Dealer implements Runnable {
 
     private final long updateEach = 1000;
 
-    private Thread dealerThread; //This is the way to get the dealer thread
+    private Thread dealerThread; // This is the way to get the dealer thread
 
     private final long Minute = 60000;
-
 
     /**
      * Game entities.
@@ -66,6 +65,7 @@ public class Dealer implements Runnable {
         this.remainSeconds = env.config.turnTimeoutMillis / 1000;
         this.remainMiliSconds = this.env.config.turnTimeoutMillis;
         this.lastUpdateTime = System.currentTimeMillis();
+        this.dealerThread = new Thread(this);
 
     }
 
@@ -178,7 +178,7 @@ public class Dealer implements Runnable {
          */
     }
 
-    public Thread getThread(){
+    public Thread getThread() {
         return dealerThread;
     }
 
@@ -194,9 +194,9 @@ public class Dealer implements Runnable {
         return env.util.testSet(cardsToCheck);
     }
 
-
-    //Returns the ID of the player that has a set on the table or -1 if no player has a set
-    public int isSetOnTable(){
+    // Returns the ID of the player that has a set on the table or -1 if no player
+    // has a set
+    public int isSetOnTable() {
         for (int i = 0; i < env.config.players; i++) {
             if (table.getTokensQueues()[i].size() == 3) {
                 if (isSet(i)) {
@@ -206,6 +206,7 @@ public class Dealer implements Runnable {
         }
         return -1;
     }
+
     /**
      * Check if any cards can be removed from the deck and placed on the table.
      */
@@ -223,7 +224,7 @@ public class Dealer implements Runnable {
             }
         }
 
-        else{
+        else {
             terminate = true;
         }
 
@@ -234,40 +235,42 @@ public class Dealer implements Runnable {
      * purpose.
      */
     private synchronized void sleepUntilWokenOrTimeout() {
-       /*  for (Player player : players) {
-           if (table.getTokensQueues()[player.id].size() == 3) { //Just to test other functions!
-            if (isSet(player.id)) {
-                player.point();
-                updateTimerDisplay(true); // by H.W : when player hits set
-                updatePlayerTimer(env.config.pointFreezeMillis);
-                removeCardsFromTable();
-            } else {
-                player.penalty();
-                updatePlayerTimer(env.config.penaltyFreezeMillis);
-            }
-            }*/
+        /*
+         * for (Player player : players) {
+         * if (table.getTokensQueues()[player.id].size() == 3) { //Just to test other
+         * functions!
+         * if (isSet(player.id)) {
+         * player.point();
+         * updateTimerDisplay(true); // by H.W : when player hits set
+         * updatePlayerTimer(env.config.pointFreezeMillis);
+         * removeCardsFromTable();
+         * } else {
+         * player.penalty();
+         * updatePlayerTimer(env.config.penaltyFreezeMillis);
+         * }
+         * }
+         */
         try {
-           dealerThread.sleep(updateEach);
-        }
-         catch (InterruptedException e) {
+            dealerThread.sleep(10000);
+        } catch (InterruptedException e) {
+            System.out.println("Interrupted");
             if (remainMiliSconds == 0) {
                 removeAllCardsFromTable();
                 placeCardsOnTable();
                 updateTimerDisplay(true);
             }
 
-            else{
+            else {
                 int playerID = isSetOnTable();
                 if (playerID != -1) {
                     players[playerID].point();
                     removeCardsFromTable();
                 }
             }
-            
+
         }
-
-
-    }
+        }
+    
 
     /**
      * Reset and/or update the countdown and the countdown display.
@@ -278,38 +281,36 @@ public class Dealer implements Runnable {
     }
 
     private void updateTimerDisplay(boolean reset) {
-       /*  if (reset) {
-            remainMiliSconds = env.config.turnTimeoutMillis;
-        }
-        long currentTime = System.currentTimeMillis();
-        if (currentTime - lastUpdateTime >= updateEach) {
-            if (remainMiliSconds >= 0) {
-                env.ui.setCountdown(remainMiliSconds, false);
-                remainMiliSconds = remainMiliSconds - 1000;
-            }
-            lastUpdateTime = System.currentTimeMillis();
-        }
-        if (remainMiliSconds == 0) {
-            removeAllCardsFromTable();
-            announceWinners();
-        }
-        */
+        /*
+         * if (reset) {
+         * remainMiliSconds = env.config.turnTimeoutMillis;
+         * }
+         * long currentTime = System.currentTimeMillis();
+         * if (currentTime - lastUpdateTime >= updateEach) {
+         * if (remainMiliSconds >= 0) {
+         * env.ui.setCountdown(remainMiliSconds, false);
+         * remainMiliSconds = remainMiliSconds - 1000;
+         * }
+         * lastUpdateTime = System.currentTimeMillis();
+         * }
+         * if (remainMiliSconds == 0) {
+         * removeAllCardsFromTable();
+         * announceWinners();
+         * }
+         */
 
         if (reset) {
             remainMiliSconds = Minute; // reset the timer 60,000
             env.ui.setCountdown(remainMiliSconds, false);
-            
-        }
-        else{
-            remainMiliSconds = remainMiliSconds - 1000;
-            if (remainMiliSconds == 0 ) {
-                this.dealerThread.interrupt();
-            }
-            else{
-            env.ui.setCountdown(remainMiliSconds, false);
-        }
-    }
 
+        } else {
+            remainMiliSconds = remainMiliSconds - 1000;
+            if (remainMiliSconds == 0) {
+                this.dealerThread.interrupt();
+            } else {
+                env.ui.setCountdown(remainMiliSconds, false);
+            }
+        }
 
     }
 
