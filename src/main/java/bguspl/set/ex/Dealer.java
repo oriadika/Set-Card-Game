@@ -1,6 +1,8 @@
 package bguspl.set.ex;
 
 import bguspl.set.Env;
+import bguspl.set.ThreadLogger;
+
 import java.util.Queue;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -8,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.swing.text.StyledEditorKit.ForegroundAction;
@@ -20,8 +23,11 @@ public class Dealer implements Runnable {
     /**
      * The game environment object.
      */
+    private final int noSet = -1;
 
     private final Env env;
+
+    private final ThreadLogger[] playersThread;
 
     private long remainSeconds;
 
@@ -65,8 +71,7 @@ public class Dealer implements Runnable {
         this.remainSeconds = env.config.turnTimeoutMillis / 1000;
         this.remainMiliSconds = this.env.config.turnTimeoutMillis;
         this.lastUpdateTime = System.currentTimeMillis();
-        this.dealerThread = new Thread(this);
-
+        playersThread = new ThreadLogger[env.config.players];
     }
 
     /**
@@ -74,8 +79,14 @@ public class Dealer implements Runnable {
      */
     @Override
     public void run() {
-        dealerThread = Thread.currentThread();
+        int i = 0;
+        for (Player player : players) {
+            playersThread[i] = new ThreadLogger(player, "player " + (player.id), env.logger);
+            playersThread[i].startWithLog();
+            i++;
+        }
         env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
+        dealerThread = Thread.currentThread();
 
         while (!shouldFinish()) {
             placeCardsOnTable();
@@ -105,8 +116,8 @@ public class Dealer implements Runnable {
      * Called when the game should be terminated.
      */
     public void terminate() {
-        for (Player player : players) {
-            player.terminate(); // tell all players the game is over
+        for (Thread player : playersThread) {
+            player.interrupt();; // tell all players the game is over
         }
 
         // TODO implement
@@ -188,7 +199,7 @@ public class Dealer implements Runnable {
         int cardsToCheck[] = new int[3];
         int index = 0;
         while (iterator.hasNext()) {
-            cardsToCheck[index] = iterator.next();
+            cardsToCheck[index] = table.slotToCard[iterator.next()];
             index++;
         }
         return env.util.testSet(cardsToCheck);
@@ -204,7 +215,7 @@ public class Dealer implements Runnable {
                 }
             }
         }
-        return -1;
+        return noSet;
     }
 
     /**
@@ -251,9 +262,9 @@ public class Dealer implements Runnable {
          * }
          */
         try {
-            dealerThread.sleep(10000);
+            dealerThread.sleep(1000);
         } catch (InterruptedException e) {
-            System.out.println("Interrupted");
+            System.out.println("dealerInterrupt");
             if (remainMiliSconds == 0) {
                 removeAllCardsFromTable();
                 placeCardsOnTable();
@@ -261,16 +272,28 @@ public class Dealer implements Runnable {
             }
 
             else {
-                int playerID = isSetOnTable();
-                if (playerID != -1) {
-                    players[playerID].point();
-                    removeCardsFromTable();
+                for (Player player : players) {
+                    if (table.getTokensQueues()[player.id].size() == 3) {
+                        if (isSet(player.id)) {
+                            player.point();
+                            removeCardsFromTable();
+                        } else {
+                            player.penalty();
+                        }
+                    }
                 }
+                /*
+                 * int playerID = isSetOnTable();
+                 * if (playerID != noSet) {
+                 * players[playerID].point();
+                 * removeCardsFromTable();
+                 * }
+                 */
+
             }
 
         }
-        }
-    
+    }
 
     /**
      * Reset and/or update the countdown and the countdown display.
@@ -320,7 +343,7 @@ public class Dealer implements Runnable {
     private void removeAllCardsFromTable() {
         for (int i = 0; i < env.config.tableSize; i++) {
             if (table.slotToCard[i] != null) {
-                table.removeCard(i);
+                table.removeAllTokens();
                 deck.add(table.slotToCard[i]);
             }
         }
