@@ -24,7 +24,9 @@ public class Player implements Runnable {
      */
     private final Env env;
 
-    private Queue<Integer> actions;
+    private BlockingQueue actions;
+
+    private boolean isFrozen;
 
     /**
      * Game entities.
@@ -81,12 +83,8 @@ public class Player implements Runnable {
         this.table = table;
         this.id = id;
         this.human = human;
-
-        this.actions = new LinkedList<>();
-        this.dealer = dealer;
-        this.dealerThread = dealer.getThread();
-        this.playerThread = new Thread(this);
-        playerThread.start();
+        this.isFrozen = false;
+        this.actions = new BlockingQueue();
     }
 
     /**
@@ -100,17 +98,10 @@ public class Player implements Runnable {
         }
 
         while (!this.terminate) {
-            synchronized (actions) {
-                try {
-                    while (actions.isEmpty()) { // no action preformed yet
-                        playerThread.wait();
-                    }
-                } catch (Exception e) {
-                    while (actions.size() > 0) {
-                        int slot = actions.poll();
-                        table.playerAction(this, slot);
-                    }
-                }
+            try {
+                int slot = actions.removeAction();
+                table.playerAction(this, slot);
+            } catch (InterruptedException e) {
             }
         }
 
@@ -136,7 +127,7 @@ public class Player implements Runnable {
             env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
             while (!terminate) {
                 synchronized (actions) {
-                    while (actions.size() == 0) {
+                    while (true) {
                         try {
                             actions.wait();
                         } catch (Exception e) {
@@ -166,11 +157,8 @@ public class Player implements Runnable {
      * @param slot - the slot corresponding to the key pressed.
      */
     public void keyPressed(int slot) {
-        if (actions.size()<3){
-            actions.add(slot);
-            synchronized(playerThread){
-                playerThread.interrupt();
-            }
+        if (!isFrozen) {
+            actions.addAction(slot);
         }
     }
     /*
@@ -212,34 +200,6 @@ public class Player implements Runnable {
      * }
      */
 
-    public void addAction(int slot) {
-        synchronized (actions) {
-            while (actions.size() == 3) {
-                try {
-                    actions.wait();
-                } catch (InterruptedException e) {
-                }
-            }
-            actions.add(slot);
-            actions.notifyAll();
-        }
-
-    }
-
-    public void removeAction(int slot) {
-        synchronized (actions) {
-            while (actions.size() == 0) {
-                try {
-                    actions.wait();
-                } catch (InterruptedException e) {
-                }
-            }
-            actions.poll();
-            actions.notifyAll();
-        }
-
-    }
-
     /**
      * Award a point to a player and perform other related actions.
      *
@@ -265,31 +225,28 @@ public class Player implements Runnable {
      * Penalize a player and perform other related actions.
      */
     public void penalty() {
-
-        long penaltyTime = PENAlTY_MILLISECONDS;
-        synchronized (playerThread) {
-            try {
-                while (penaltyTime > 0) {
-                    this.env.ui.setFreeze(id, penaltyTime);
-                    playerThread.sleep(FREEZE_TIME_MILLI);
-                    penaltyTime = penaltyTime - FREEZE_TIME_MILLI;
-                }
-
-            } catch (InterruptedException e) { // need to understand what to do with the exception
+        try {
+            isFrozen = true;
+            env.ui.setFreeze(id, PENAlTY_MILLISECONDS);
+            for (long frozenTime = PENAlTY_MILLISECONDS - 1000; frozenTime >= 0; frozenTime = frozenTime - 1000) {
+                playerThread.sleep(FREEZE_TIME_MILLI);
+                env.ui.setFreeze(id, frozenTime);
             }
+            isFrozen = false;
         }
+
+        catch (InterruptedException e) {
+        }
+
     }
 
     public int score() {
         return score;
     }
 
-    public Queue<Integer> getActions() {
-        return actions;
-    }
-
     public void InterruptdDealer() {
-        dealerThread.interrupt();
+        System.out.println("interrupt dealer");
+        dealer.getThread().interrupt();
     }
 
 }
