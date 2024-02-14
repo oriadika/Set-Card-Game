@@ -14,8 +14,9 @@ import bguspl.set.Env;
  */
 public class Player implements Runnable {
 
-    final int PENAlTY_MILLISECONDS = 3000;
-    final int FREEZE_TIME_MILLI = 1000;
+    final long PENAlTY_MILLISECONDS = 3000;
+    final long FREEZE_TIME_MILLI = 1000;
+    final long NO_Time_MILLI = 0;
     final int POINT = 1;
 
     /**
@@ -80,11 +81,12 @@ public class Player implements Runnable {
         this.table = table;
         this.id = id;
         this.human = human;
-        Thread plThread = new Thread(this);
-        plThread.start();
+        
         this.actions = new LinkedList<>();
         this.dealer = dealer;
         this.dealerThread = dealer.getThread();
+        this.playerThread = new Thread(this);
+        playerThread.start();
     }
 
     /**
@@ -92,7 +94,6 @@ public class Player implements Runnable {
      * thread).
      */
     public void run() {
-        this.playerThread = Thread.currentThread();
         this.env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
         if (!this.human) {
             this.createArtificialIntelligence();
@@ -100,11 +101,15 @@ public class Player implements Runnable {
 
         while (!this.terminate) {
             synchronized (actions) {
-                while (actions.size() == 0) { // no action preformed yet
-                    try {
-                        actions.wait();
-                    } catch (InterruptedException e) {
-
+                try{
+                   while (actions.isEmpty()) { // no action preformed yet 
+                        playerThread.wait();
+                    } 
+                }
+                catch (Exception e) {
+                    while (actions.size() > 0) {
+                        int slot = actions.poll();
+                        table.playerAction(this, slot);   
                     }
                 }
             }
@@ -118,7 +123,8 @@ public class Player implements Runnable {
         }
 
         this.env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
-    }
+        }
+
 
     /**
      * Creates an additional thread for an AI (computer) player. The main loop of
@@ -136,7 +142,7 @@ public class Player implements Runnable {
                         try{
                             actions.wait();
                         }
-                        catch(InterruptedException e){}
+                        catch(Exception e){}
                     }
 
                 }
@@ -164,12 +170,9 @@ public class Player implements Runnable {
     public void keyPressed(int slot) {
         if (actions.size()<3){
             actions.add(slot);
-            if (table.removeToken(id, slot)){
-                removeAction(slot);
-            }
-            else{
-                table.placeToken(id, slot);
-                addAction(slot);
+            synchronized(playerThread){
+                 playerThread.interrupt();
+                }
             }
         }
         /*
@@ -207,7 +210,7 @@ public class Player implements Runnable {
         }
          */
         
-    }
+    
 
     public void addAction(int slot){
         while (actions.size()==3 || !actions.contains(slot)){
@@ -246,10 +249,11 @@ public class Player implements Runnable {
     public void point() {
         try {
             this.score = this.score + POINT;
-            int ignored = table.countCards(); // this part is just for demonstration in the unit tests
+           // int ignored = table.countCards(); // this part is just for demonstration in the unit tests
             env.ui.setScore(id, this.score);
             this.env.ui.setFreeze(this.id, FREEZE_TIME_MILLI);
             playerThread.sleep(FREEZE_TIME_MILLI);
+            this.env.ui.setFreeze(this.id, NO_Time_MILLI);
 
         } catch (InterruptedException e) { // need to understand what to do with the exception
 
@@ -259,13 +263,19 @@ public class Player implements Runnable {
     /**
      * Penalize a player and perform other related actions.
      */
-    public void penalty() {
+    public  void penalty() {
 
-        try {
-            this.env.ui.setFreeze(id, PENAlTY_MILLISECONDS);
-            playerThread.sleep(PENAlTY_MILLISECONDS);
+            long penaltyTime = PENAlTY_MILLISECONDS;
+            synchronized(playerThread){
+            try {
+                while (penaltyTime > 0) {
+                    this.env.ui.setFreeze(id, penaltyTime);
+                    playerThread.sleep(FREEZE_TIME_MILLI);
+                    penaltyTime = penaltyTime - FREEZE_TIME_MILLI;   
+                }
 
-        } catch (InterruptedException e) { // need to understand what to do with the exception
+            } catch (InterruptedException e) { // need to understand what to do with the exception
+            }
         }
     }
 
@@ -277,4 +287,12 @@ public class Player implements Runnable {
         return actions;
     }
 
+    public void InterruptdDealer() {
+        dealerThread.interrupt();
+    }
+
 }
+
+
+
+

@@ -26,13 +26,15 @@ public class Table {
      */
     private final Env env;
 
-    private final int maxTokens = 2;
+
+
+    private final int maxTokens = 3;
 
     private final int noToken = -1;
 
     protected Integer[] slotsLocks;
 
-    private final Queue<Integer>[] tokensQueues;
+    private  Queue<Integer>[] tokensQueues;
 
     protected final Integer[] slotToCard; // card per slot (if any)
 
@@ -73,6 +75,53 @@ public class Table {
     public Table(Env env) {
 
         this(env, new Integer[env.config.tableSize], new Integer[env.config.deckSize]);
+
+    }
+
+
+    public void playerAction(Player player, int slot){
+            if (slotToCard[slot] != null) {
+                synchronized (slotsLocks[slot]) {  //Locking the slot
+                    int card = slotToCard[slot];
+                    if(tokensQueues[player.id].size() <= maxTokens){ 
+                        for(int i = 0; i < tokensQueues[player.id].size(); i++){
+                            int num = tokensQueues[player.id].poll();
+                            if(num == slot){
+                                removeToken(player.id, slot);
+                                return;
+                            }
+                            tokensQueues[player.id].add(num);
+                        }
+                        //Means that the token isnt there
+                        if(tokensQueues[player.id].size() < maxTokens){
+                            tokensQueues[player.id].add(slot);
+                            placeToken(player.id, slot);
+
+                            ///If the player has 3 tokens Now and we need to understand if there is a set
+                            if (tokensQueues[player.id].size() == maxTokens) {
+                                int[] set = new int[3];
+                                int i = 0;
+                                for (int num : tokensQueues[player.id]) {
+                                    set[i] = num;
+                                    i++;
+                                }
+                            if (env.util.testSet(set)) {
+                                    player.InterruptdDealer();
+                                    return;
+                                }
+                            else{
+                                player.penalty();
+                                return;
+                                }                             
+                            }
+                            return;
+                        }
+
+                        //If the token isnt there but the player has 3 tokens already
+                    }
+
+            }
+        }
 
     }
 
@@ -170,9 +219,8 @@ public class Table {
      * @param player - the player the token belongs to.
      * @param slot   - the slot on which to place the token.
      */
-    public synchronized void placeToken(int player, int slot) {
+    public  void placeToken(int player, int slot) {
         synchronized (slotsLocks[slot]) {
-            tokensQueues[player].add(slot);
             env.ui.placeToken(player, slot); // for logger and ui
         }
 
@@ -185,16 +233,14 @@ public class Table {
      * @param slot   - the slot from which to remove the token.
      * @return - true iff a token was successfully removed.
      */
-    public synchronized boolean removeToken(int player, int slot) {
-        Queue<Integer> queue = tokensQueues[player];
-        for (int i = 0; i < queue.size(); i++) {
-            int tokenPosition = queue.poll();
-            if (tokenPosition == slot) { // there is a slot to remove
-                env.ui.removeToken(player, slot);
-                return true;
-            } 
+    public boolean removeToken(int player, int slot) {
+        try{
+        env.ui.removeToken(player, slot);
+        return true;
         }
-        return false;
+        catch(Exception e){
+            return false;
+        }
 
     }
 }
