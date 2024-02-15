@@ -86,7 +86,7 @@ public class Dealer implements Runnable {
             i++;
         }
         env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
-        dealerThread = Thread.currentThread();
+        this.dealerThread = Thread.currentThread();
 
         while (!shouldFinish()) {
             placeCardsOnTable();
@@ -190,7 +190,7 @@ public class Dealer implements Runnable {
     }
 
     public Thread getThread() {
-        return dealerThread;
+        return this.dealerThread;
     }
 
     public boolean isSet(int playerId) { // wants to be exceuted when player hits his third token - need to check

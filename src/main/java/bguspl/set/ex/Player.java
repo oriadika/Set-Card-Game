@@ -85,6 +85,7 @@ public class Player implements Runnable {
         this.human = human;
         this.isFrozen = false;
         this.actions = new BlockingQueue();
+        this.dealer = dealer;
     }
 
     /**
@@ -244,9 +245,8 @@ public class Player implements Runnable {
         return score;
     }
 
-    public void InterruptdDealer() {
-        System.out.println("interrupt dealer");
-        dealer.getThread().interrupt();
+    public Thread getDealerThread() {
+        return dealer.getThread();
     }
 
 }

@@ -91,7 +91,7 @@ public class Table {
                 i++;
             }
             if (env.util.testSet(set)) {
-                player.InterruptdDealer();
+                player.getDealerThread().interrupt();
                 return;
             } else {
                 player.penalty();
