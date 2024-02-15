@@ -43,4 +43,8 @@ public class BlockingQueue {
         }
     }
 
+    public synchronized int removeActionAI() {
+        return actions.size();
+    }
+
 }

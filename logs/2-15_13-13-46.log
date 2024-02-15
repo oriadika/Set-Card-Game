@@ -1,0 +1,43 @@
+[13:13:46.323] [INFO   ] thread main starting.
+[13:13:46.331] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[13:13:46.334] [SEVERE ] configuration file was loaded from resources directory.
+[13:13:46.932] [INFO   ] thread dealer starting.
+[13:13:46.933] [INFO   ] thread player 0 starting.
+[13:13:46.933] [INFO   ] thread player 1 starting.
+[13:13:46.933] [INFO   ] thread player 0 starting.
+[13:13:46.933] [INFO   ] thread player 1 starting.
+[13:13:46.933] [INFO   ] thread dealer starting.
+[13:13:46.935] [INFO   ] thread computer-1 starting.
+[13:13:47.048] [SEVERE ] placing card 69 in slot 0
+[13:13:47.156] [SEVERE ] placing card 9 in slot 1
+[13:13:47.263] [SEVERE ] placing card 66 in slot 2
+[13:13:47.372] [SEVERE ] placing card 38 in slot 3
+[13:13:47.481] [SEVERE ] placing card 3 in slot 4
+[13:13:47.588] [SEVERE ] placing card 52 in slot 5
+[13:13:47.696] [SEVERE ] placing card 79 in slot 6
+[13:13:47.806] [SEVERE ] placing card 61 in slot 7
+[13:13:47.914] [SEVERE ] placing card 25 in slot 8
+[13:13:48.023] [SEVERE ] placing card 24 in slot 9
+[13:13:48.132] [SEVERE ] placing card 36 in slot 10
+[13:13:48.242] [SEVERE ] placing card 22 in slot 11
+[13:13:49.246] [SEVERE ] updating countdown to 59000
+[13:13:50.255] [SEVERE ] updating countdown to 58000
+[13:13:51.267] [SEVERE ] updating countdown to 57000
+[13:13:52.281] [SEVERE ] updating countdown to 56000
+[13:13:53.283] [SEVERE ] updating countdown to 55000
+[13:13:54.295] [SEVERE ] updating countdown to 54000
+[13:13:55.310] [SEVERE ] updating countdown to 53000
+[13:13:56.317] [SEVERE ] updating countdown to 52000
+[13:13:57.329] [SEVERE ] updating countdown to 51000
+[13:13:58.343] [SEVERE ] updating countdown to 50000
+[13:13:59.353] [SEVERE ] updating countdown to 49000
+[13:14:00.366] [SEVERE ] updating countdown to 48000
+[13:14:01.381] [SEVERE ] updating countdown to 47000
+[13:14:02.384] [SEVERE ] updating countdown to 46000
+[13:14:03.397] [SEVERE ] updating countdown to 45000
+[13:14:04.409] [SEVERE ] updating countdown to 44000
+[13:14:04.864] [SEVERE ] exit button pressed
+[13:14:05.419] [SEVERE ] updating countdown to 43000
+[13:14:06.432] [SEVERE ] updating countdown to 42000
+[13:14:07.438] [SEVERE ] updating countdown to 41000
+[13:14:08.443] [SEVERE ] updating countdown to 40000
