@@ -128,6 +128,7 @@ public class Player implements Runnable {
             env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
             while (!terminate) {
                 try {
+                aiThread.sleep(500);
                 Random random = new Random();
                 keyPressed(random.nextInt(table.slotToCard.length));
                 int slot = actions.removeAction();

@@ -117,7 +117,8 @@ public class Dealer implements Runnable {
      */
     public void terminate() {
         for (Thread player : playersThread) {
-            player.interrupt();; // tell all players the game is over
+            player.interrupt();
+            ; // tell all players the game is over
         }
 
         // TODO implement
@@ -157,7 +158,6 @@ public class Dealer implements Runnable {
 
         }
 
-      
     }
 
     public Thread getThread() {
@@ -193,6 +193,19 @@ public class Dealer implements Runnable {
      * Check if any cards can be removed from the deck and placed on the table.
      */
     private void placeCardsOnTable() {
+        if (deck.size() == 81) { // tried to lock the table, did not work..
+            synchronized (table) {
+                System.out.println("lock table");
+                for (int slot = 0; slot < env.config.tableSize; slot++) { // check if the slot is empty
+                    if (table.slotToCard[slot] == null) {
+                        int card = deck.remove(0);
+                        table.placeCard(card, slot);
+                    }
+                }
+            }
+
+        }
+
         if (deck.size() > 0) {
             Collections.shuffle(deck);
             int cardsToPlace = 0;
@@ -242,7 +255,6 @@ public class Dealer implements Runnable {
                     }
                 }
 
-
             }
 
         }
@@ -252,12 +264,7 @@ public class Dealer implements Runnable {
      * Reset and/or update the countdown and the countdown display.
      */
 
-    private void updatePlayerTimer(long freezeTime, int playerId) {
-
-    }
-
     private void updateTimerDisplay(boolean reset) {
-    
 
         if (reset) {
             remainMiliSconds = Minute; // reset the timer 60,000
