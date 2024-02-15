@@ -77,11 +77,16 @@ public class Table {
     }
 
     public void playerAction(Player player, int slot) {
+        
         if (slotToCard[slot] != null) {
             if (!removeToken(player.id, slot)) {
                 placeToken(player.id, slot);
+             
             }
+     
         }
+
+        if (tokensQueues[player.id].size() == maxTokens & !tokensQueues[player.id].contains(slot) ){return;}
 
         if (tokensQueues[player.id].size() == maxTokens) {
             int[] set = new int[3];
@@ -99,7 +104,7 @@ public class Table {
             }
         }
 
-        // If the token isnt there but the player has 3 tokens already
+        // If the token isnt there but the player has 3 tokens already*/
     }
 
     /**

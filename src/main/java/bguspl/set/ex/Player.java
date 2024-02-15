@@ -3,7 +3,7 @@ package bguspl.set.ex;
 import java.sql.Time;
 import java.util.LinkedList;
 import java.util.Queue;
-
+import java.util.Random;
 import bguspl.set.Env;
 
 /**
@@ -127,16 +127,15 @@ public class Player implements Runnable {
         aiThread = new Thread(() -> {
             env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
             while (!terminate) {
-                synchronized (actions) {
-                    while (true) {
-                        try {
-                            actions.wait();
-                        } catch (Exception e) {
-                        }
-                    }
+                try {
+                Random random = new Random();
+                keyPressed(random.nextInt(table.slotToCard.length));
+                int slot = actions.removeAction();
+                table.playerAction(this, slot);
+            } catch (Exception e) {
 
-                }
-                // TODO implement player key press simulator
+            }
+              
             }
             env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
         }, "computer-" + id);
@@ -162,44 +161,7 @@ public class Player implements Runnable {
             actions.addAction(slot);
         }
     }
-    /*
-     * if (table.slotToCard[slot] != null) {
-     * java.util.Iterator<Integer> iterator = this.actions.iterator();
-     * boolean placeToken = true;
-     * while (iterator.hasNext()) {
-     * int slotOfExistToken = iterator.next();
-     * if (slotOfExistToken == slot) {// It means there is already a token on the
-     * slot, so the player wants to
-     * // remove the token
-     * placeToken = false;
-     * table.removeToken(id, slot); // call the table to remove the token
-     * removeAction(slotOfExistToken);
-     * break;
-     * }
-     * 
-     * }
-     * 
-     * if (placeToken & actions.size() < 3) { // the player wants to put a new token
-     * synchronized (table.slotsLocks[slot]) { // prevent from a player to place
-     * token on empty slot
-     * table.placeToken(id, slot); // checks if there is max of 3 or it happends by
-     * deafult?
-     * addAction(slot);
-     * }
-     * }
-     * }
-     * 
-     * if (this.actions.size() == 3 & actions.contains(slot)) { // just put his
-     * third token
-     * dealerThread.interrupt(); // to make him check the cuurent set
-     * try {
-     * playerThread.wait(); // waits for the dealer to check my cards
-     * 
-     * } catch (InterruptedException e) { // the dealer should remove my tokens in
-     * // case of set
-     * }
-     * }
-     */
+
 
     /**
      * Award a point to a player and perform other related actions.

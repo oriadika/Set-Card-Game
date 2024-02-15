@@ -157,36 +157,7 @@ public class Dealer implements Runnable {
 
         }
 
-        /*
-         * for (int i = 0; i < env.config.players; i++) {
-         * Queue<Integer>[] set = table.getTokensQueues(); // get all players tokens
-         * for (int playerID = 0; playerID < set.length; playerID++) {
-         * int cardsToCheck[] = new int[3];
-         * if (set[playerID].size() == 3) { // If the queue is not in size of 3 - cannot
-         * check set
-         * for (int k = 0; k < set[playerID].size(); k++) { // get all the cards to
-         * check
-         * int card = set[playerID].poll();
-         * cardsToCheck[k] = card;
-         * set[playerID].add(card); // get to the end of the queue
-         * }
-         * 
-         * boolean isSet = env.util.testSet(cardsToCheck);
-         * 
-         * if (isSet) {
-         * players[playerID].point();
-         * for (int card : cardsToCheck) {
-         * table.removeCard(table.cardToSlot[card]);
-         * }
-         * 
-         * } else {
-         * players[playerID].penalty();
-         * }
-         * }
-         * 
-         * }
-         * }
-         */
+      
     }
 
     public Thread getThread() {
@@ -224,8 +195,10 @@ public class Dealer implements Runnable {
     private void placeCardsOnTable() {
         if (deck.size() > 0) {
             Collections.shuffle(deck);
+            int cardsToPlace = 0;
             for (int slot = 0; slot < env.config.tableSize; slot++) { // check if the slot is empty
                 if (table.slotToCard[slot] == null) {
+                    cardsToPlace++;
                     synchronized (table.slotsLocks[slot]) {
                         int card = deck.remove(0);
                         table.placeCard(card, slot);
@@ -246,21 +219,7 @@ public class Dealer implements Runnable {
      * purpose.
      */
     private synchronized void sleepUntilWokenOrTimeout() {
-        /*
-         * for (Player player : players) {
-         * if (table.getTokensQueues()[player.id].size() == 3) { //Just to test other
-         * functions!
-         * if (isSet(player.id)) {
-         * player.point();
-         * updateTimerDisplay(true); // by H.W : when player hits set
-         * updatePlayerTimer(env.config.pointFreezeMillis);
-         * removeCardsFromTable();
-         * } else {
-         * player.penalty();
-         * updatePlayerTimer(env.config.penaltyFreezeMillis);
-         * }
-         * }
-         */
+
         try {
             dealerThread.sleep(1000);
         } catch (InterruptedException e) {
@@ -282,13 +241,7 @@ public class Dealer implements Runnable {
                         }
                     }
                 }
-                /*
-                 * int playerID = isSetOnTable();
-                 * if (playerID != noSet) {
-                 * players[playerID].point();
-                 * removeCardsFromTable();
-                 * }
-                 */
+
 
             }
 
@@ -304,23 +257,7 @@ public class Dealer implements Runnable {
     }
 
     private void updateTimerDisplay(boolean reset) {
-        /*
-         * if (reset) {
-         * remainMiliSconds = env.config.turnTimeoutMillis;
-         * }
-         * long currentTime = System.currentTimeMillis();
-         * if (currentTime - lastUpdateTime >= updateEach) {
-         * if (remainMiliSconds >= 0) {
-         * env.ui.setCountdown(remainMiliSconds, false);
-         * remainMiliSconds = remainMiliSconds - 1000;
-         * }
-         * lastUpdateTime = System.currentTimeMillis();
-         * }
-         * if (remainMiliSconds == 0) {
-         * removeAllCardsFromTable();
-         * announceWinners();
-         * }
-         */
+    
 
         if (reset) {
             remainMiliSconds = Minute; // reset the timer 60,000
