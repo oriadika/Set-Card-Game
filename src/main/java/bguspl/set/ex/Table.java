@@ -77,34 +77,37 @@ public class Table {
     }
 
     public void playerAction(Player player, int slot) {
-        
-        if (slotToCard[slot] != null) {
-            if (!removeToken(player.id, slot)) {
-                placeToken(player.id, slot);
-             
-            }
-     
-        }
+        if (!player.isBlocked()) {
+            if (slotToCard[slot] != null) {
+                if (!removeToken(player.id, slot)) {
+                    placeToken(player.id, slot);
 
-        if (tokensQueues[player.id].size() == maxTokens & !tokensQueues[player.id].contains(slot) ){return;}
+                }
 
-        if (tokensQueues[player.id].size() == maxTokens) {
-            int[] set = new int[3];
-            int i = 0;
-            for (int num : tokensQueues[player.id]) {
-                set[i] = slotToCard[num];
-                i++;
             }
-            if (env.util.testSet(set)) {
-                player.getDealerThread().interrupt();
-                return;
-            } else {
-                player.penalty();
+
+            if (tokensQueues[player.id].size() == maxTokens & !tokensQueues[player.id].contains(slot)) {
                 return;
             }
-        }
 
-        // If the token isnt there but the player has 3 tokens already*/
+            if (tokensQueues[player.id].size() == maxTokens) {
+                int[] set = new int[3];
+                int i = 0;
+                for (int num : tokensQueues[player.id]) {
+                    set[i] = slotToCard[num];
+                    i++;
+                }
+                if (env.util.testSet(set)) {
+                    player.getDealerThread().interrupt();
+                    return;
+                } else {
+                    player.penalty();
+                    return;
+                }
+            }
+
+            // If the token isnt there but the player has 3 tokens already*/
+        }
     }
 
     /**
@@ -196,9 +199,9 @@ public class Table {
         }
     }
 
-    public void removeAllTokens(){
-        for (int i=0; i<env.config.players; i++){
-            for (int slot : tokensQueues[i]){
+    public void removeAllTokens() {
+        for (int i = 0; i < env.config.players; i++) {
+            for (int slot : tokensQueues[i]) {
                 removeToken(i, slot);
             }
         }

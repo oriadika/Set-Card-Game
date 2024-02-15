@@ -12,6 +12,7 @@ import java.util.stream.IntStream;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 
 import javax.swing.text.StyledEditorKit.ForegroundAction;
 
@@ -40,6 +41,8 @@ public class Dealer implements Runnable {
     private Thread dealerThread; // This is the way to get the dealer thread
 
     private final long Minute = 60000;
+
+    public boolean blockPlacing = false;
 
     /**
      * Game entities.
@@ -105,7 +108,9 @@ public class Dealer implements Runnable {
      */
     private void timerLoop() {
         while (!terminate && System.currentTimeMillis() < reshuffleTime) {
+            System.out.println("entered sleep");
             sleepUntilWokenOrTimeout();
+            System.out.println("out of sleep");
             updateTimerDisplay(false);
             removeCardsFromTable();
             placeCardsOnTable();
@@ -121,7 +126,6 @@ public class Dealer implements Runnable {
             ; // tell all players the game is over
         }
 
-        // TODO implement
     }
 
     /**
@@ -193,32 +197,45 @@ public class Dealer implements Runnable {
      * Check if any cards can be removed from the deck and placed on the table.
      */
     private void placeCardsOnTable() {
-        if (deck.size() == 81) { // tried to lock the table, did not work..
-            synchronized (table) {
-                System.out.println("lock table");
-                for (int slot = 0; slot < env.config.tableSize; slot++) { // check if the slot is empty
-                    if (table.slotToCard[slot] == null) {
-                        int card = deck.remove(0);
-                        table.placeCard(card, slot);
-                    }
-                }
-            }
 
-        }
+        List<Integer> cardsOnTable = new LinkedList<>();
 
         if (deck.size() > 0) {
+            if (deck.size() == 81) {
+                blockPlacing = true;
+            }
             Collections.shuffle(deck);
             int cardsToPlace = 0;
-            for (int slot = 0; slot < env.config.tableSize; slot++) { // check if the slot is empty
+            List<Integer> newCards = new LinkedList<>();
+            for (int slot = 0; slot < env.config.tableSize && deck.size() > 0; slot++) { // check if the slot is empty
                 if (table.slotToCard[slot] == null) {
                     cardsToPlace++;
-                    synchronized (table.slotsLocks[slot]) {
-                        int card = deck.remove(0);
-                        table.placeCard(card, slot);
-                    }
-
+                    int card = deck.remove(0);
+                    newCards.add(card);
+                    cardsOnTable.add(card);
+                } else {
+                    cardsOnTable.add(table.slotToCard[slot]);
                 }
             }
+
+            while (cardsToPlace != 0 && env.util.findSets(cardsOnTable, 1).size()==0) {
+                System.out.println("no set");
+                Collections.shuffle(deck);
+                for (int card : newCards){
+                    cardsOnTable.remove(card);
+                    deck.add(card); //returning to the deck
+                }
+                for (int i = 0; i < cardsToPlace ; i++) {
+                        newCards.add(deck.remove(0));
+                }
+            }
+
+            for (int slot=0; slot<env.config.tableSize; slot++){
+                if (table.slotToCard[slot]==null){
+                    table.placeCard(newCards.remove(0), slot);
+                }
+            }
+
         }
 
         else {
@@ -232,7 +249,6 @@ public class Dealer implements Runnable {
      * purpose.
      */
     private synchronized void sleepUntilWokenOrTimeout() {
-
         try {
             dealerThread.sleep(1000);
         } catch (InterruptedException e) {
@@ -265,7 +281,6 @@ public class Dealer implements Runnable {
      */
 
     private void updateTimerDisplay(boolean reset) {
-
         if (reset) {
             remainMiliSconds = Minute; // reset the timer 60,000
             env.ui.setCountdown(remainMiliSconds, false);
@@ -276,6 +291,7 @@ public class Dealer implements Runnable {
                 this.dealerThread.interrupt();
             } else {
                 env.ui.setCountdown(remainMiliSconds, false);
+                blockPlacing = false;
             }
         }
 

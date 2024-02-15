@@ -151,6 +151,9 @@ public class Player implements Runnable {
         terminate = true;
     }
 
+    public boolean isBlocked(){
+        return dealer.blockPlacing;
+    }
     /**
      * This method is called when a key is pressed.
      * s
@@ -200,6 +203,7 @@ public class Player implements Runnable {
         }
 
         catch (InterruptedException e) {
+            return;
         }
 
     }
