@@ -1,0 +1,193 @@
+[21:50:22.541] [INFO   ] thread main starting.
+[21:50:22.554] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[21:50:22.560] [SEVERE ] configuration file was loaded from resources directory.
+[21:50:23.365] [INFO   ] thread dealer starting.
+[21:50:23.368] [INFO   ] thread player 0 starting.
+[21:50:23.369] [INFO   ] thread player 1 starting.
+[21:50:23.370] [INFO   ] thread dealer starting.
+[21:50:23.370] [INFO   ] thread player 0 starting.
+[21:50:23.370] [INFO   ] thread player 1 starting.
+[21:50:23.489] [SEVERE ] placing card 44 in slot 0
+[21:50:23.600] [SEVERE ] placing card 3 in slot 1
+[21:50:23.716] [SEVERE ] placing card 54 in slot 2
+[21:50:23.830] [SEVERE ] placing card 62 in slot 3
+[21:50:23.940] [SEVERE ] placing card 13 in slot 4
+[21:50:24.049] [SEVERE ] placing card 77 in slot 5
+[21:50:24.157] [SEVERE ] placing card 20 in slot 6
+[21:50:24.264] [SEVERE ] placing card 69 in slot 7
+[21:50:24.379] [SEVERE ] placing card 24 in slot 8
+[21:50:24.486] [SEVERE ] placing card 75 in slot 9
+[21:50:24.593] [SEVERE ] placing card 15 in slot 10
+[21:50:24.702] [SEVERE ] placing card 33 in slot 11
+[21:50:25.706] [SEVERE ] updating countdown to 0
+[21:50:26.714] [SEVERE ] removing card from slot 0
+[21:50:26.714] [SEVERE ] removing card from slot 1
+[21:50:26.714] [SEVERE ] removing card from slot 2
+[21:50:26.714] [SEVERE ] removing card from slot 3
+[21:50:26.722] [SEVERE ] removing card from slot 4
+[21:50:26.722] [SEVERE ] removing card from slot 5
+[21:50:26.722] [SEVERE ] removing card from slot 6
+[21:50:26.722] [SEVERE ] removing card from slot 7
+[21:50:26.722] [SEVERE ] removing card from slot 8
+[21:50:26.722] [SEVERE ] removing card from slot 9
+[21:50:26.722] [SEVERE ] removing card from slot 10
+[21:50:26.722] [SEVERE ] removing card from slot 11
+[21:50:26.823] [SEVERE ] placing card 47 in slot 0
+[21:50:26.929] [SEVERE ] placing card 73 in slot 1
+[21:50:27.039] [SEVERE ] placing card 67 in slot 2
+[21:50:27.146] [SEVERE ] placing card 16 in slot 3
+[21:50:27.253] [SEVERE ] placing card 32 in slot 4
+[21:50:27.358] [SEVERE ] placing card 57 in slot 5
+[21:50:27.466] [SEVERE ] placing card 63 in slot 6
+[21:50:27.573] [SEVERE ] placing card 64 in slot 7
+[21:50:27.679] [SEVERE ] placing card 70 in slot 8
+[21:50:27.784] [SEVERE ] placing card 10 in slot 9
+[21:50:27.890] [SEVERE ] placing card 48 in slot 10
+[21:50:27.998] [SEVERE ] placing card 55 in slot 11
+[21:50:27.998] [SEVERE ] updating countdown to 1000
+[21:50:29.003] [SEVERE ] updating countdown to 0
+[21:50:30.017] [SEVERE ] removing card from slot 0
+[21:50:30.018] [SEVERE ] removing card from slot 1
+[21:50:30.018] [SEVERE ] removing card from slot 2
+[21:50:30.018] [SEVERE ] removing card from slot 3
+[21:50:30.018] [SEVERE ] removing card from slot 4
+[21:50:30.027] [SEVERE ] removing card from slot 5
+[21:50:30.027] [SEVERE ] removing card from slot 6
+[21:50:30.027] [SEVERE ] removing card from slot 7
+[21:50:30.027] [SEVERE ] removing card from slot 8
+[21:50:30.027] [SEVERE ] removing card from slot 9
+[21:50:30.027] [SEVERE ] removing card from slot 10
+[21:50:30.027] [SEVERE ] removing card from slot 11
+[21:50:30.139] [SEVERE ] placing card 52 in slot 0
+[21:50:30.243] [SEVERE ] placing card 39 in slot 1
+[21:50:30.358] [SEVERE ] placing card 46 in slot 2
+[21:50:30.465] [SEVERE ] placing card 9 in slot 3
+[21:50:30.580] [SEVERE ] placing card 41 in slot 4
+[21:50:30.689] [SEVERE ] placing card 30 in slot 5
+[21:50:30.800] [SEVERE ] placing card 31 in slot 6
+[21:50:30.908] [SEVERE ] placing card 60 in slot 7
+[21:50:31.012] [SEVERE ] placing card 43 in slot 8
+[21:50:31.126] [SEVERE ] placing card 5 in slot 9
+[21:50:31.233] [SEVERE ] placing card 8 in slot 10
+[21:50:31.348] [SEVERE ] placing card 19 in slot 11
+[21:50:31.350] [SEVERE ] updating countdown to 1000
+[21:50:32.353] [SEVERE ] updating countdown to 0
+[21:50:33.360] [SEVERE ] removing card from slot 0
+[21:50:33.362] [SEVERE ] removing card from slot 1
+[21:50:33.362] [SEVERE ] removing card from slot 2
+[21:50:33.362] [SEVERE ] removing card from slot 3
+[21:50:33.373] [SEVERE ] removing card from slot 4
+[21:50:33.373] [SEVERE ] removing card from slot 5
+[21:50:33.373] [SEVERE ] removing card from slot 6
+[21:50:33.373] [SEVERE ] removing card from slot 7
+[21:50:33.373] [SEVERE ] removing card from slot 8
+[21:50:33.373] [SEVERE ] removing card from slot 9
+[21:50:33.373] [SEVERE ] removing card from slot 10
+[21:50:33.373] [SEVERE ] removing card from slot 11
+[21:50:33.485] [SEVERE ] placing card 49 in slot 0
+[21:50:33.599] [SEVERE ] placing card 38 in slot 1
+[21:50:33.704] [SEVERE ] placing card 72 in slot 2
+[21:50:33.808] [SEVERE ] placing card 18 in slot 3
+[21:50:33.918] [SEVERE ] placing card 22 in slot 4
+[21:50:34.030] [SEVERE ] placing card 6 in slot 5
+[21:50:34.133] [SEVERE ] placing card 79 in slot 6
+[21:50:34.241] [SEVERE ] placing card 2 in slot 7
+[21:50:34.349] [SEVERE ] placing card 59 in slot 8
+[21:50:34.449] [SEVERE ] placing card 58 in slot 9
+[21:50:34.553] [SEVERE ] placing card 1 in slot 10
+[21:50:34.660] [SEVERE ] placing card 7 in slot 11
+[21:50:34.660] [SEVERE ] updating countdown to 1000
+[21:50:35.665] [SEVERE ] updating countdown to 0
+[21:50:36.680] [SEVERE ] removing card from slot 0
+[21:50:36.681] [SEVERE ] removing card from slot 1
+[21:50:36.681] [SEVERE ] removing card from slot 2
+[21:50:36.681] [SEVERE ] removing card from slot 3
+[21:50:36.681] [SEVERE ] removing card from slot 4
+[21:50:36.690] [SEVERE ] removing card from slot 5
+[21:50:36.691] [SEVERE ] removing card from slot 6
+[21:50:36.691] [SEVERE ] removing card from slot 7
+[21:50:36.691] [SEVERE ] removing card from slot 8
+[21:50:36.691] [SEVERE ] removing card from slot 9
+[21:50:36.691] [SEVERE ] removing card from slot 10
+[21:50:36.691] [SEVERE ] removing card from slot 11
+[21:50:36.797] [SEVERE ] placing card 12 in slot 0
+[21:50:36.899] [SEVERE ] placing card 53 in slot 1
+[21:50:37.015] [SEVERE ] placing card 27 in slot 2
+[21:50:37.127] [SEVERE ] placing card 50 in slot 3
+[21:50:37.237] [SEVERE ] placing card 40 in slot 4
+[21:50:37.337] [SEVERE ] placing card 35 in slot 5
+[21:50:37.440] [SEVERE ] placing card 11 in slot 6
+[21:50:37.546] [SEVERE ] placing card 51 in slot 7
+[21:50:37.655] [SEVERE ] placing card 36 in slot 8
+[21:50:37.770] [SEVERE ] placing card 42 in slot 9
+[21:50:37.882] [SEVERE ] placing card 74 in slot 10
+[21:50:37.987] [SEVERE ] placing card 80 in slot 11
+[21:50:37.987] [SEVERE ] updating countdown to 1000
+[21:50:38.996] [SEVERE ] updating countdown to 0
+[21:50:40.001] [SEVERE ] removing card from slot 0
+[21:50:40.001] [SEVERE ] removing card from slot 1
+[21:50:40.001] [SEVERE ] removing card from slot 2
+[21:50:40.001] [SEVERE ] removing card from slot 3
+[21:50:40.001] [SEVERE ] removing card from slot 4
+[21:50:40.009] [SEVERE ] removing card from slot 5
+[21:50:40.011] [SEVERE ] removing card from slot 6
+[21:50:40.011] [SEVERE ] removing card from slot 7
+[21:50:40.011] [SEVERE ] removing card from slot 8
+[21:50:40.011] [SEVERE ] removing card from slot 9
+[21:50:40.011] [SEVERE ] removing card from slot 10
+[21:50:40.011] [SEVERE ] removing card from slot 11
+[21:50:40.111] [SEVERE ] placing card 68 in slot 0
+[21:50:40.222] [SEVERE ] placing card 29 in slot 1
+[21:50:40.333] [SEVERE ] placing card 66 in slot 2
+[21:50:40.444] [SEVERE ] placing card 28 in slot 3
+[21:50:40.556] [SEVERE ] placing card 76 in slot 4
+[21:50:40.667] [SEVERE ] placing card 4 in slot 5
+[21:50:40.778] [SEVERE ] placing card 37 in slot 6
+[21:50:40.889] [SEVERE ] placing card 78 in slot 7
+[21:50:41.000] [SEVERE ] placing card 34 in slot 8
+[21:50:41.112] [SEVERE ] placing card 25 in slot 9
+[21:50:41.224] [SEVERE ] placing card 26 in slot 10
+[21:50:41.336] [SEVERE ] placing card 23 in slot 11
+[21:50:41.337] [SEVERE ] updating countdown to 1000
+[21:50:42.340] [SEVERE ] updating countdown to 0
+[21:50:43.360] [SEVERE ] removing card from slot 0
+[21:50:43.360] [SEVERE ] removing card from slot 1
+[21:50:43.360] [SEVERE ] removing card from slot 2
+[21:50:43.360] [SEVERE ] removing card from slot 3
+[21:50:43.360] [SEVERE ] removing card from slot 4
+[21:50:43.367] [SEVERE ] removing card from slot 5
+[21:50:43.367] [SEVERE ] removing card from slot 6
+[21:50:43.367] [SEVERE ] removing card from slot 7
+[21:50:43.367] [SEVERE ] removing card from slot 8
+[21:50:43.367] [SEVERE ] removing card from slot 9
+[21:50:43.367] [SEVERE ] removing card from slot 10
+[21:50:43.367] [SEVERE ] removing card from slot 11
+[21:50:43.482] [SEVERE ] placing card 14 in slot 0
+[21:50:43.584] [SEVERE ] placing card 65 in slot 1
+[21:50:43.688] [SEVERE ] placing card 56 in slot 2
+[21:50:43.800] [SEVERE ] placing card 71 in slot 3
+[21:50:43.912] [SEVERE ] placing card 21 in slot 4
+[21:50:44.025] [SEVERE ] placing card 17 in slot 5
+[21:50:44.126] [SEVERE ] placing card 0 in slot 6
+[21:50:44.236] [SEVERE ] placing card 61 in slot 7
+[21:50:44.347] [SEVERE ] placing card 45 in slot 8
+[21:50:44.347] [SEVERE ] updating countdown to 1000
+[21:50:44.347] [SEVERE ] updating countdown to 0
+[21:50:44.347] [SEVERE ] removing card from slot 0
+[21:50:44.358] [SEVERE ] removing card from slot 1
+[21:50:44.358] [SEVERE ] removing card from slot 2
+[21:50:44.358] [SEVERE ] removing card from slot 3
+[21:50:44.358] [SEVERE ] removing card from slot 4
+[21:50:44.358] [SEVERE ] removing card from slot 5
+[21:50:44.363] [SEVERE ] removing card from slot 6
+[21:50:44.363] [SEVERE ] removing card from slot 7
+[21:50:44.363] [SEVERE ] removing card from slot 8
+[21:50:44.363] [SEVERE ] removing card from slot 9
+[21:50:44.363] [SEVERE ] removing card from slot 10
+[21:50:44.363] [SEVERE ] removing card from slot 11
+[21:50:44.366] [SEVERE ] announcing winner(s): player 1, player 2
+[21:50:44.373] [INFO   ] thread dealer terminated.
+[21:50:44.373] [INFO   ] thread dealer terminated.
+[21:50:49.384] [SEVERE ] thanks for playing... it was fun!
+[21:50:49.384] [INFO   ] thread main terminated.
+[21:50:49.384] [SEVERE ] disposing of user interface elements
