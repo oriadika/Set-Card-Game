@@ -186,7 +186,7 @@ public class Table {
      * 
      * @param slot - the slot from which to remove the card.
      */
-    public void removeCard(int slot) { // No need to lock becuse only place card calls me and it has lock
+    public void removeCard(int slot) { 
         try {
             synchronized (slotsLocks[slot]) { // I want to lock the slot while I am removing the card
                 Thread.sleep(env.config.tableDelayMillis);

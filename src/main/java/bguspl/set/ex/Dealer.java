@@ -314,9 +314,7 @@ public class Dealer implements Runnable {
     private void removeAllCardsFromTable() {
         table.removeAllTokens();
         for (int i = 0; i < env.config.tableSize; i++) {
-
-            table.slotToCard[i] = null; // No card in there
-            this.env.ui.removeCard(i); // remove from table in ui
+            table.removeCard(i);
         }
     }
 
