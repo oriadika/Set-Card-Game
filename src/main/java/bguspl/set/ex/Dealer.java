@@ -36,7 +36,7 @@ public class Dealer implements Runnable {
 
     private Thread dealerThread; // This is the way to get the dealer thread
 
-    private final long Minute = 5000;
+    private final long Minute = 60000;
 
     private final int timesUp = -1000;
 
@@ -251,7 +251,6 @@ public class Dealer implements Runnable {
             terminate = true;
         }
     }
-
 
     /**
      * Sleep for a fixed amount of time or until the thread is awakened for some
