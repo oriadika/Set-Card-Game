@@ -218,4 +218,8 @@ public class Player implements Runnable {
         return dealer.getThread();
     }
 
+    public Thread getPlayerThread(){
+        return dealer.getPlayerThread(id);
+    }
+
 }

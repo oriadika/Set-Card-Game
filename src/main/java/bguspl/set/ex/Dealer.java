@@ -267,11 +267,17 @@ public class Dealer implements Runnable {
             }
 
             else {
+                System.out.println("dealer inter");
                 for (Player player : players) {
                     if (table.getTokensQueues()[player.id].size() == 3) {
                         if (isSet(player.id)) {
-                            player.point();
+                            synchronized (playersThread[player.id]) {
+                                System.out.println("sync on player");
+                                player.point();
+                                playersThread[player.id].interrupt();
+                            }
                             removeCardsFromTable();
+                            System.out.println("player wakes up");
                         } else {
                             player.penalty();
                         }
@@ -352,5 +358,9 @@ public class Dealer implements Runnable {
         }
 
         env.ui.announceWinner(winners);
+    }
+
+    public Thread getPlayerThread(int playerId) {
+        return playersThread[playerId];
     }
 }

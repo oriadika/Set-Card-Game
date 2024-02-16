@@ -199,8 +199,8 @@ public class Config {
         deckSize = (int) Math.pow(featureSize, featureCount);
 
         // gameplay settings
-        humanPlayers = Integer.parseInt(properties.getProperty("HumanPlayers", "1"));
-        computerPlayers = Integer.parseInt(properties.getProperty("ComputerPlayers", "1"));
+        humanPlayers = Integer.parseInt(properties.getProperty("HumanPlayers", "2"));
+        computerPlayers = Integer.parseInt(properties.getProperty("ComputerPlayers", "0"));
         players = humanPlayers + computerPlayers;
 
         hints = Boolean.parseBoolean(properties.getProperty("Hints", "False"));
