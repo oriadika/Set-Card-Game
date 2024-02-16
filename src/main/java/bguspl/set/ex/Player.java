@@ -145,6 +145,10 @@ public class Player implements Runnable {
         aiThread.start();
     }
 
+    public Dealer getDealer(){
+        return dealer;
+    }
+
     /**
      * Called when the game should be terminated.
      */

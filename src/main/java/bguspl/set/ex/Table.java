@@ -28,8 +28,6 @@ public class Table {
 
     private final int maxTokens = 3;
 
-    private final int noToken = -1;
-
     protected Integer[] slotsLocks;
 
     private Queue<Integer>[] tokensQueues;
@@ -77,7 +75,6 @@ public class Table {
     }
 
     public void playerAction(Player player, int slot) {
-        System.out.println("is blocked "+ player.isBlocked());
         if (!player.isBlocked()) {
             if (slotToCard[slot] != null) {
                 if (!removeToken(player.id, slot)) {
@@ -101,7 +98,6 @@ public class Table {
                 if (env.util.testSet(set)) {
                     synchronized (player.getPlayerThread()) {
                         try {
-                            System.out.println("player waits for dealer");
                             player.getDealerThread().interrupt();
                             player.getPlayerThread().wait();
                         } catch (InterruptedException e) {
