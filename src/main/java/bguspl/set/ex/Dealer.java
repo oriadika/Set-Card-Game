@@ -12,6 +12,7 @@ import java.util.stream.IntStream;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 
 import javax.swing.text.StyledEditorKit.ForegroundAction;
 
@@ -40,6 +41,8 @@ public class Dealer implements Runnable {
     private Thread dealerThread; // This is the way to get the dealer thread
 
     private final long Minute = 60000;
+
+    public boolean blockPlacing = false;
 
     /**
      * Game entities.
@@ -110,17 +113,25 @@ public class Dealer implements Runnable {
             removeCardsFromTable();
             placeCardsOnTable();
         }
+        
+       
     }
+
+    public void resetDeck(){
+        removeAllCardsFromTable();
+        placeCardsOnTable();
+        updateTimerDisplay(true);
+    }
+
 
     /**
      * Called when the game should be terminated.
      */
     public void terminate() {
         for (Thread player : playersThread) {
-            player.interrupt();; // tell all players the game is over
+            player.interrupt(); // tell all players the game is over
         }
 
-        // TODO implement
     }
 
     /**
@@ -148,8 +159,12 @@ public class Dealer implements Runnable {
                         index++;
                     }
                     for (int i = 0; i < slotsToRemove.length; i++) {
-                        table.removeToken(player.id, slotsToRemove[i]);
-                        table.removeCard(slotsToRemove[i]);
+                        for (int playerID =0 ; playerID<env.config.players; playerID++){
+                            if (table.getTokensQueues()[playerID].contains(slotsToRemove[i])){
+                                table.removeToken(playerID, slotsToRemove[i]);
+                            }
+                        }
+                      table.removeCard(slotsToRemove[i]);  
                     }
                 }
             }
@@ -157,7 +172,6 @@ public class Dealer implements Runnable {
 
         }
 
-      
     }
 
     public Thread getThread() {
@@ -193,19 +207,46 @@ public class Dealer implements Runnable {
      * Check if any cards can be removed from the deck and placed on the table.
      */
     private void placeCardsOnTable() {
+
+        List<Integer> cardsOnTable = new LinkedList<>();
+
         if (deck.size() > 0) {
+            if (deck.size() == 81) {
+                blockPlacing = true;
+            }
             Collections.shuffle(deck);
             int cardsToPlace = 0;
-            for (int slot = 0; slot < env.config.tableSize; slot++) { // check if the slot is empty
+            List<Integer> newCards = new LinkedList<>();
+            for (int slot = 0; slot < env.config.tableSize && deck.size() > 0; slot++) { // check if the slot is empty
                 if (table.slotToCard[slot] == null) {
                     cardsToPlace++;
-                    synchronized (table.slotsLocks[slot]) {
-                        int card = deck.remove(0);
-                        table.placeCard(card, slot);
-                    }
-
+                    int card = deck.remove(0);
+                    newCards.add(card);
+                    cardsOnTable.add(card);
+                } else {
+                    cardsOnTable.add(table.slotToCard[slot]);
                 }
             }
+
+            while (cardsToPlace != 0 && env.util.findSets(cardsOnTable, 1).size()==0) {
+                System.out.println("no set");
+                Collections.shuffle(deck);
+                for (int card : newCards){
+                    cardsOnTable.remove(card);
+                    deck.add(card); //returning to the deck
+                }
+                for (int i = 0; i < cardsToPlace ; i++) {
+                        newCards.add(deck.remove(0));
+                }
+            }
+
+            for (int slot=0; slot<env.config.tableSize; slot++){
+                if (table.slotToCard[slot]==null){
+                    table.placeCard(newCards.remove(0), slot);
+                }
+            }
+            blockPlacing=false;
+
         }
 
         else {
@@ -219,15 +260,14 @@ public class Dealer implements Runnable {
      * purpose.
      */
     private synchronized void sleepUntilWokenOrTimeout() {
-
         try {
             dealerThread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println("dealerInterrupt");
-            if (remainMiliSconds == 0) {
-                removeAllCardsFromTable();
-                placeCardsOnTable();
-                updateTimerDisplay(true);
+            if (remainMiliSconds == -1000) {
+               blockPlacing = true;
+                resetDeck();
+                blockPlacing = false;
             }
 
             else {
@@ -242,7 +282,6 @@ public class Dealer implements Runnable {
                     }
                 }
 
-
             }
 
         }
@@ -252,23 +291,22 @@ public class Dealer implements Runnable {
      * Reset and/or update the countdown and the countdown display.
      */
 
-    private void updatePlayerTimer(long freezeTime, int playerId) {
-
-    }
-
     private void updateTimerDisplay(boolean reset) {
-    
-
         if (reset) {
+            System.out.println("Times up - reset");
             remainMiliSconds = Minute; // reset the timer 60,000
+            removeAllCardsFromTable();
+            placeCardsOnTable();
             env.ui.setCountdown(remainMiliSconds, false);
 
         } else {
             remainMiliSconds = remainMiliSconds - 1000;
-            if (remainMiliSconds == 0) {
+            if (remainMiliSconds == -1000) {
+                blockPlacing = true;
                 this.dealerThread.interrupt();
             } else {
                 env.ui.setCountdown(remainMiliSconds, false);
+                blockPlacing = false;
             }
         }
 
@@ -278,12 +316,11 @@ public class Dealer implements Runnable {
      * Returns all the cards from the table to the deck.
      */
     private void removeAllCardsFromTable() {
-        for (int i = 0; i < env.config.tableSize; i++) {
-            if (table.slotToCard[i] != null) {
-                table.removeAllTokens();
-                deck.add(table.slotToCard[i]);
-            }
+        
+        for(int i =0; i<env.config.tableSize; i++){
+            table.slotToCard[i] = null;
         }
+        table.removeAllTokens();
     }
 
     /**

@@ -128,6 +128,7 @@ public class Player implements Runnable {
             env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
             while (!terminate) {
                 try {
+                aiThread.sleep(500);
                 Random random = new Random();
                 keyPressed(random.nextInt(table.slotToCard.length));
                 int slot = actions.removeAction();
@@ -150,6 +151,9 @@ public class Player implements Runnable {
         terminate = true;
     }
 
+    public boolean isBlocked(){
+        return dealer.blockPlacing;
+    }
     /**
      * This method is called when a key is pressed.
      * s
@@ -199,6 +203,7 @@ public class Player implements Runnable {
         }
 
         catch (InterruptedException e) {
+            return;
         }
 
     }
