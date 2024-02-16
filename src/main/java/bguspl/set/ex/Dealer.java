@@ -36,7 +36,7 @@ public class Dealer implements Runnable {
 
     private Thread dealerThread; // This is the way to get the dealer thread
 
-    private final long Minute = 5000;
+    private final long Minute = 60000;
 
     private final int timesUp = -1000;
 
@@ -252,7 +252,6 @@ public class Dealer implements Runnable {
         }
     }
 
-
     /**
      * Sleep for a fixed amount of time or until the thread is awakened for some
      * purpose.
@@ -268,14 +267,17 @@ public class Dealer implements Runnable {
             }
 
             else {
+                System.out.println("dealer inter");
                 for (Player player : players) {
                     if (table.getTokensQueues()[player.id].size() == 3) {
                         if (isSet(player.id)) {
                             synchronized (playersThread[player.id]) {
+                                System.out.println("sync on player");
                                 player.point();
                                 playersThread[player.id].interrupt();
                             }
                             removeCardsFromTable();
+                            System.out.println("player wakes up");
                         } else {
                             player.penalty();
                         }
