@@ -40,7 +40,7 @@ public class Dealer implements Runnable {
 
     private Thread dealerThread; // This is the way to get the dealer thread
 
-    private final long Minute = 60000;
+    private final long Minute = 5000;
 
     public boolean blockPlacing = false;
 
@@ -72,7 +72,7 @@ public class Dealer implements Runnable {
         this.players = players;
         deck = IntStream.range(0, env.config.deckSize).boxed().collect(Collectors.toList());
         this.remainSeconds = env.config.turnTimeoutMillis / 1000;
-        this.remainMiliSconds = this.env.config.turnTimeoutMillis;
+        this.remainMiliSconds = 10000;
         this.lastUpdateTime = System.currentTimeMillis();
         playersThread = new ThreadLogger[env.config.players];
     }
@@ -218,7 +218,7 @@ public class Dealer implements Runnable {
             int cardsToPlace = 0;
             List<Integer> newCards = new LinkedList<>();
             for (int slot = 0; slot < env.config.tableSize && deck.size() > 0; slot++) { // check if the slot is empty
-                if (table.slotToCard[slot] == null) {
+                if (table.slotToCard[slot] == null && deck.size()>0) {
                     cardsToPlace++;
                     int card = deck.remove(0);
                     newCards.add(card);
@@ -235,24 +235,23 @@ public class Dealer implements Runnable {
                     cardsOnTable.remove(card);
                     deck.add(card); //returning to the deck
                 }
-                for (int i = 0; i < cardsToPlace ; i++) {
+                for (int i = 0; i < cardsToPlace && deck.size()>0 ; i++) {
                         newCards.add(deck.remove(0));
                 }
             }
 
-            for (int slot=0; slot<env.config.tableSize; slot++){
+            for (int slot=0; slot<env.config.tableSize && newCards.size()>0; slot++){
                 if (table.slotToCard[slot]==null){
                     table.placeCard(newCards.remove(0), slot);
                 }
             }
-            blockPlacing=false;
 
         }
+
 
         else {
             terminate = true;
         }
-
     }
 
     /**
@@ -293,17 +292,17 @@ public class Dealer implements Runnable {
 
     private void updateTimerDisplay(boolean reset) {
         if (reset) {
-            System.out.println("Times up - reset");
             remainMiliSconds = Minute; // reset the timer 60,000
             removeAllCardsFromTable();
             placeCardsOnTable();
             env.ui.setCountdown(remainMiliSconds, false);
+            blockPlacing = false;
 
         } else {
             remainMiliSconds = remainMiliSconds - 1000;
             if (remainMiliSconds == -1000) {
                 blockPlacing = true;
-                this.dealerThread.interrupt();
+                updateTimerDisplay(true);
             } else {
                 env.ui.setCountdown(remainMiliSconds, false);
                 blockPlacing = false;
@@ -316,11 +315,13 @@ public class Dealer implements Runnable {
      * Returns all the cards from the table to the deck.
      */
     private void removeAllCardsFromTable() {
-        
-        for(int i =0; i<env.config.tableSize; i++){
-            table.slotToCard[i] = null;
-        }
+        System.out.println("I am in remove all cards");
         table.removeAllTokens();
+        for (int i=0; i<env.config.tableSize; i++){
+            
+            table.slotToCard[i] = null; // No card in there
+            this.env.ui.removeCard(i); // remove from table in ui
+        }
     }
 
     /**

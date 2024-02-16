@@ -100,8 +100,10 @@ public class Player implements Runnable {
 
         while (!this.terminate) {
             try {
+                if (!dealer.blockPlacing) {
                 int slot = actions.removeAction();
-                table.playerAction(this, slot);
+                table.playerAction(this, slot);   
+                }
             } catch (InterruptedException e) {
             }
         }
