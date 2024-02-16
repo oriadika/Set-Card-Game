@@ -200,11 +200,19 @@ public class Table {
     }
 
     public void removeAllTokens() {
+        
         for (int i = 0; i < env.config.players; i++) {
+            int[] slotsToRemove = {-1,-1,-1};
+            int index = 0;
             for (int slot : tokensQueues[i]) {
+                slotsToRemove[index] = slot;
+                index++;
+            }
+            for (int slot : slotsToRemove) {
                 removeToken(i, slot);
             }
-        }
+        }        
+
     }
 
     /**
