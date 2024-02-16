@@ -77,6 +77,7 @@ public class Table {
     }
 
     public void playerAction(Player player, int slot) {
+        System.out.println("is blocked "+ player.isBlocked());
         if (!player.isBlocked()) {
             if (slotToCard[slot] != null) {
                 if (!removeToken(player.id, slot)) {
@@ -98,7 +99,15 @@ public class Table {
                     i++;
                 }
                 if (env.util.testSet(set)) {
-                    player.getDealerThread().interrupt();
+                    synchronized (player.getPlayerThread()) {
+                        try {
+                            System.out.println("player waits for dealer");
+                            player.getDealerThread().interrupt();
+                            player.getPlayerThread().wait();
+                        } catch (InterruptedException e) {
+                        }
+                    }
+
                     return;
                 } else {
                     player.penalty();
@@ -156,7 +165,7 @@ public class Table {
     public void placeCard(int card, int slot) { // while I am placing a new card, I do not want any player to choose the
         // temporariy empty slot as his set. So, I want to lock the slot
         try {
-            Thread.sleep(env.config.tableDelayMillis); /* While I am placing a card, no one can touch the table */
+            Thread.sleep(env.config.tableDelayMillis); 
         } catch (InterruptedException ignored) {
         }
 
@@ -169,7 +178,8 @@ public class Table {
                 env.ui.placeCard(card, slot);
             }
 
-        } else { // there is no card in the given slot, we still want to lock the slot - no player puts token on empty
+        } else { // there is no card in the given slot, we still want to lock the slot - no
+                 // player puts token on empty
             synchronized (slotsLocks[slot]) {
                 env.ui.placeCard(card, slot); // Include ui swing. I have a card that I want to place in empty slot
             }
@@ -186,7 +196,7 @@ public class Table {
      * 
      * @param slot - the slot from which to remove the card.
      */
-    public void removeCard(int slot) { 
+    public void removeCard(int slot) {
         try {
             synchronized (slotsLocks[slot]) { // I want to lock the slot while I am removing the card
                 Thread.sleep(env.config.tableDelayMillis);
@@ -200,9 +210,9 @@ public class Table {
     }
 
     public void removeAllTokens() {
-        
+
         for (int i = 0; i < env.config.players; i++) {
-            int[] slotsToRemove = {-1,-1,-1};
+            int[] slotsToRemove = { -1, -1, -1 };
             int index = 0;
             for (int slot : tokensQueues[i]) {
                 slotsToRemove[index] = slot;
@@ -211,7 +221,7 @@ public class Table {
             for (int slot : slotsToRemove) {
                 removeToken(i, slot);
             }
-        }        
+        }
 
     }
 
@@ -222,7 +232,7 @@ public class Table {
      * @param slot   - the slot on which to place the token.
      */
     public void placeToken(int player, int slot) {
-        synchronized (slotsLocks[slot]) { //prevents from one thread to remove and the other to place token
+        synchronized (slotsLocks[slot]) { // prevents from one thread to remove and the other to place token
             if (tokensQueues[player].size() < 3) {
                 tokensQueues[player].add(slot);
                 env.ui.placeToken(player, slot);
@@ -239,7 +249,7 @@ public class Table {
      * @return - true iff a token was successfully removed.
      */
     public boolean removeToken(int player, int slot) {
-        synchronized (tokensQueues[player]) { 
+        synchronized (tokensQueues[player]) {
             if (tokensQueues[player].contains(slot)) {
                 env.ui.removeToken(player, slot);
                 tokensQueues[player].remove(slot);
