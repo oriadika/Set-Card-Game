@@ -169,7 +169,7 @@ public class Table {
                 env.ui.placeCard(card, slot);
             }
 
-        } else { // there is no card in the given slot, we still want to lock the slot
+        } else { // there is no card in the given slot, we still want to lock the slot - no player puts token on empty
             synchronized (slotsLocks[slot]) {
                 env.ui.placeCard(card, slot); // Include ui swing. I have a card that I want to place in empty slot
             }
@@ -222,7 +222,7 @@ public class Table {
      * @param slot   - the slot on which to place the token.
      */
     public void placeToken(int player, int slot) {
-        synchronized (tokensQueues[player]) {
+        synchronized (slotsLocks[slot]) { //prevents from one thread to remove and the other to place token
             if (tokensQueues[player].size() < 3) {
                 tokensQueues[player].add(slot);
                 env.ui.placeToken(player, slot);
@@ -239,7 +239,7 @@ public class Table {
      * @return - true iff a token was successfully removed.
      */
     public boolean removeToken(int player, int slot) {
-        synchronized (tokensQueues[player]) {
+        synchronized (tokensQueues[player]) { 
             if (tokensQueues[player].contains(slot)) {
                 env.ui.removeToken(player, slot);
                 tokensQueues[player].remove(slot);
