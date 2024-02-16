@@ -108,22 +108,28 @@ public class Dealer implements Runnable {
      */
     private void timerLoop() {
         while (!terminate && System.currentTimeMillis() < reshuffleTime) {
-            System.out.println("entered sleep");
             sleepUntilWokenOrTimeout();
-            System.out.println("out of sleep");
             updateTimerDisplay(false);
             removeCardsFromTable();
             placeCardsOnTable();
         }
+        
+       
     }
+
+    public void resetDeck(){
+        removeAllCardsFromTable();
+        placeCardsOnTable();
+        updateTimerDisplay(true);
+    }
+
 
     /**
      * Called when the game should be terminated.
      */
     public void terminate() {
         for (Thread player : playersThread) {
-            player.interrupt();
-            ; // tell all players the game is over
+            player.interrupt(); // tell all players the game is over
         }
 
     }
@@ -153,8 +159,12 @@ public class Dealer implements Runnable {
                         index++;
                     }
                     for (int i = 0; i < slotsToRemove.length; i++) {
-                        table.removeToken(player.id, slotsToRemove[i]);
-                        table.removeCard(slotsToRemove[i]);
+                        for (int playerID =0 ; playerID<env.config.players; playerID++){
+                            if (table.getTokensQueues()[playerID].contains(slotsToRemove[i])){
+                                table.removeToken(playerID, slotsToRemove[i]);
+                            }
+                        }
+                      table.removeCard(slotsToRemove[i]);  
                     }
                 }
             }
@@ -235,6 +245,7 @@ public class Dealer implements Runnable {
                     table.placeCard(newCards.remove(0), slot);
                 }
             }
+            blockPlacing=false;
 
         }
 
@@ -253,10 +264,10 @@ public class Dealer implements Runnable {
             dealerThread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println("dealerInterrupt");
-            if (remainMiliSconds == 0) {
-                removeAllCardsFromTable();
-                placeCardsOnTable();
-                updateTimerDisplay(true);
+            if (remainMiliSconds == -1000) {
+               blockPlacing = true;
+                resetDeck();
+                blockPlacing = false;
             }
 
             else {
@@ -282,12 +293,16 @@ public class Dealer implements Runnable {
 
     private void updateTimerDisplay(boolean reset) {
         if (reset) {
+            System.out.println("Times up - reset");
             remainMiliSconds = Minute; // reset the timer 60,000
+            removeAllCardsFromTable();
+            placeCardsOnTable();
             env.ui.setCountdown(remainMiliSconds, false);
 
         } else {
             remainMiliSconds = remainMiliSconds - 1000;
-            if (remainMiliSconds == 0) {
+            if (remainMiliSconds == -1000) {
+                blockPlacing = true;
                 this.dealerThread.interrupt();
             } else {
                 env.ui.setCountdown(remainMiliSconds, false);
@@ -301,12 +316,11 @@ public class Dealer implements Runnable {
      * Returns all the cards from the table to the deck.
      */
     private void removeAllCardsFromTable() {
-        for (int i = 0; i < env.config.tableSize; i++) {
-            if (table.slotToCard[i] != null) {
-                table.removeAllTokens();
-                deck.add(table.slotToCard[i]);
-            }
+        
+        for(int i =0; i<env.config.tableSize; i++){
+            table.slotToCard[i] = null;
         }
+        table.removeAllTokens();
     }
 
     /**
