@@ -92,7 +92,6 @@ public class Dealer implements Runnable {
         while (!shouldFinish()) {
             placeCardsOnTable();
             timerLoop();
-            updateTimerDisplay(false);
             removeAllCardsFromTable();
         }
 
@@ -109,7 +108,6 @@ public class Dealer implements Runnable {
             sleepUntilWokenOrTimeout();
             updateTimerDisplay(false);
             removeCardsFromTable();
-            placeCardsOnTable();
         }
 
     }
@@ -202,7 +200,6 @@ public class Dealer implements Runnable {
      * Check if any cards can be removed from the deck and placed on the table.
      */
     private void placeCardsOnTable() {
-        List<Integer> cardsOnTable = new LinkedList<>();
         if (deck.size() > 0 || remainMiliSconds > 0) {
             if (deck.size() == 81) {
                 blockPlacing = true;
@@ -214,36 +211,8 @@ public class Dealer implements Runnable {
 
             for (int slot = 0; slot < env.config.tableSize && deck.size() > 0; slot++) { // check if the slot is empty
                 if (table.slotToCard[slot] == null && deck.size() > 0) {
-                    cardsToPlace++;
                     int card = deck.remove(0);
-                    newCards.add(card);
-                    cardsOnTable.add(card);
-                } else {
-                    cardsOnTable.add(table.slotToCard[slot]);
-                }
-            }
-
-            while (cardsToPlace != 0 && env.util.findSets(cardsOnTable, 1).size() == 0 && !shouldFinish()) {
-                Collections.shuffle(deck);
-                for (int slot = 0; slot < env.config.tableSize; slot++) {
-                    for (int newCardIndex = 0; newCardIndex < newCards.size(); newCardIndex++) {
-                        if (table.slotToCard[slot] == newCards.get(newCardIndex)) {
-                            deck.add(newCards.remove(newCardIndex));
-                        }
-                    }
-                }
-
-                for (int i = 0; i < cardsToPlace && deck.size() > 0; i++) {
-                    newCards.add(deck.remove(0));
-                }
-            }
-
-            for (int slot = 0; slot < env.config.tableSize && newCards.size() > 0; slot++) {
-                if (table.slotToCard[slot] == null) {
-                    table.placeCard(newCards.remove(0), slot);
-                    if (deck.size() == 0) {
-                        System.out.println("no more cards to draw");
-                    }
+                    table.placeCard(card, slot);
                 }
             }
 
@@ -258,6 +227,18 @@ public class Dealer implements Runnable {
      * Sleep for a fixed amount of time or until the thread is awakened for some
      * purpose.
      */
+
+    public void checkSet(Player player, int[] set) {
+        player.setIsFrozen(true);
+        if (env.util.testSet(set)) {
+            player.point();
+
+        } else {
+            player.penalty();
+
+        }
+    }
+
     private synchronized void sleepUntilWokenOrTimeout() {
         try {
             dealerThread.sleep(updateEach);
@@ -273,13 +254,17 @@ public class Dealer implements Runnable {
                 for (Player player : players) {
                     if (table.getTokensQueues()[player.id].size() == 3) {
                         if (isSet(player.id)) {
-                            synchronized (dealerThread) {
-                                System.out.println("sync on player");
-                                player.point();
-                                dealerThread.notifyAll();
+                            synchronized (playersThread[player.id]) {
+                                try {
+                                    playersThread[player.id].wait();
+                                    System.out.println("sync on player");
+                                    player.point();
+                                    playersThread[player.id].notifyAll();
+                                } catch (InterruptedException var2) {
+                                }
+
                             }
-                            removeCardsFromTable();
-                            System.out.println("player wakes up");
+
                         } else {
                             player.penalty();
                         }
@@ -290,7 +275,6 @@ public class Dealer implements Runnable {
 
         }
     }
-
 
     /**
      * Reset and/or update the countdown and the countdown display.

@@ -81,9 +81,7 @@ public class Table {
             if (slotToCard[slot] != null) {
                 if (!removeToken(player.id, slot)) {
                     placeToken(player.id, slot);
-
                 }
-
             }
 
             if (tokensQueues[player.id].size() == maxTokens & !tokensQueues[player.id].contains(slot)) {
@@ -97,22 +95,7 @@ public class Table {
                     set[i] = slotToCard[num];
                     i++;
                 }
-                if (env.util.testSet(set)) {
-                    synchronized (player.getPlayerThread()) {
-                        try {
-                            System.out.println("player waits for dealer");
-                            player.getDealerThread().interrupt();
-                            player.getDealerThread().wait();
-                            System.out.println("player stopped waiting");
-                        } catch (InterruptedException e) {
-                        }
-                    }
-
-                    return;
-                } else {
-                    player.penalty();
-                    return;
-                }
+                player.getDealer().checkSet(player, set);
             }
 
             // If the token isnt there but the player has 3 tokens already*/
@@ -165,7 +148,7 @@ public class Table {
     public void placeCard(int card, int slot) { // while I am placing a new card, I do not want any player to choose the
         // temporariy empty slot as his set. So, I want to lock the slot
         try {
-            Thread.sleep(env.config.tableDelayMillis); 
+            Thread.sleep(env.config.tableDelayMillis);
         } catch (InterruptedException ignored) {
         }
 

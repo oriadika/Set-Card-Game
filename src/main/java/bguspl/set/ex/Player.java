@@ -100,7 +100,7 @@ public class Player implements Runnable {
                 createArtificialIntelligence();
                 this.aiThread.join();
             } catch (InterruptedException var2) {
-                
+
             }
         }
 
@@ -108,11 +108,11 @@ public class Player implements Runnable {
             try {
                 while (!isBlocked()) {
                     int slot = actions.removeAction();
-                    table.playerAction(this, slot);
+                        table.playerAction(this, slot);
                 }
 
             } catch (InterruptedException e) {
-                System.out.println("player interrupted. Terminate = "+ terminate);
+                System.out.println("player interrupted. Terminate = " + terminate);
             }
         }
 
@@ -134,9 +134,7 @@ public class Player implements Runnable {
                     aiThread.sleep(100);
                     Random random = new Random();
                     keyPressed(random.nextInt(table.slotToCard.length));
-                    System.out.println("player " + id + " is pressing key");
                     int slot = actions.removeAction();
-                    System.out.println("removing from AI");
                     table.playerAction(this, slot);
                 } catch (Exception e) {
 
@@ -147,6 +145,15 @@ public class Player implements Runnable {
         }, "computer-" + id);
         aiThread.start();
     }
+
+    public Dealer getDealer() {
+        return dealer;
+    }
+
+    public void setIsFrozen(boolean frozen){
+        isFrozen = frozen;
+    }
+
 
     /**
      * Called when the game should be terminated.
@@ -167,8 +174,9 @@ public class Player implements Runnable {
      * @param slot - the slot corresponding to the key pressed.
      */
     public synchronized void keyPressed(int slot) {
-        actions.addAction(slot);
-        System.out.println("slot added " + id);
+        if (!isFrozen){
+            actions.addAction(slot);
+        }
     }
 
     /**
@@ -188,13 +196,14 @@ public class Player implements Runnable {
             this.env.ui.setFreeze(this.id, NO_Time_MILLI);
 
         } catch (InterruptedException e) { // need to understand what to do with the exception
-
         }
+        isFrozen = false;
     }
 
     /**
      * Penalize a player and perform other related actions.
      */
+
     public void penalty() {
         try {
             env.ui.setFreeze(id, PENAlTY_MILLISECONDS);
@@ -205,8 +214,11 @@ public class Player implements Runnable {
         }
 
         catch (InterruptedException e) {
+            System.out.println("intrrupted");
             return;
         }
+
+        isFrozen = false;
 
     }
 
