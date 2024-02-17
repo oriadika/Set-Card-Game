@@ -109,7 +109,6 @@ public class Dealer implements Runnable {
             updateTimerDisplay(false);
             removeCardsFromTable();
         }
-
     }
 
     public void resetDeck() {
@@ -228,14 +227,41 @@ public class Dealer implements Runnable {
      * purpose.
      */
 
-    public void checkSet(Player player, int[] set) {
+    public void checkSet1(Player player) {
         player.setIsFrozen(true);
+        int[] set = new int[3];
+        int i = 0;
+        for (int num : table.getTokensQueues()[player.id]) {
+            set[i] = table.slotToCard[num];
+            i++;
+        }
         if (env.util.testSet(set)) {
-            player.point();
+            synchronized (this) {
+                player.point();
+                remainMiliSconds = Minute + updateEach;
+            }
 
         } else {
             player.penalty();
+        }
+    }
 
+    public void checkSet(Player player, int[] set) {
+        player.setIsFrozen(true);
+        if (env.util.testSet(set) & table.getTokensQueues()[player.id].size() == 3) {
+            synchronized (this) {
+                if (table.getTokensQueues()[player.id].size() == 3) {
+                    player.point();
+                    removeCardsFromTable();
+                    remainMiliSconds = Minute + updateEach;
+                }
+                else{
+                    player.setIsFrozen(false);
+                }
+            }
+        } else {
+            player.penalty();
+            
         }
     }
 

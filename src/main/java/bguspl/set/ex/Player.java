@@ -174,7 +174,7 @@ public class Player implements Runnable {
      * @param slot - the slot corresponding to the key pressed.
      */
     public synchronized void keyPressed(int slot) {
-        if (!isFrozen){
+        if (!isFrozen && !isBlocked()){
             actions.addAction(slot);
         }
     }

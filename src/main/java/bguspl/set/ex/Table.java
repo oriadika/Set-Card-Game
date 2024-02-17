@@ -89,13 +89,14 @@ public class Table {
             }
 
             if (tokensQueues[player.id].size() == maxTokens) {
+                player.setIsFrozen(true);
                 int[] set = new int[3];
                 int i = 0;
                 for (int num : tokensQueues[player.id]) {
                     set[i] = slotToCard[num];
                     i++;
                 }
-                player.getDealer().checkSet(player, set);
+                player.getDealer().checkSet(player,set);
             }
 
             // If the token isnt there but the player has 3 tokens already*/
