@@ -1,0 +1,46 @@
+[11:13:26.629] [INFO   ] thread main starting.
+[11:13:26.639] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[11:13:26.642] [SEVERE ] configuration file was loaded from resources directory.
+[11:13:27.215] [INFO   ] thread dealer starting.
+[11:13:27.216] [INFO   ] thread player 0 starting.
+[11:13:27.217] [INFO   ] thread dealer starting.
+[11:13:27.217] [INFO   ] thread player 0 starting.
+[11:13:27.234] [INFO   ] thread computer-0 starting.
+[11:13:27.356] [SEVERE ] placing card 10 in slot 0
+[11:13:27.467] [SEVERE ] placing card 69 in slot 1
+[11:13:27.576] [SEVERE ] placing card 53 in slot 2
+[11:13:27.686] [SEVERE ] placing card 37 in slot 3
+[11:13:27.795] [SEVERE ] placing card 28 in slot 4
+[11:13:27.904] [SEVERE ] placing card 70 in slot 5
+[11:13:28.012] [SEVERE ] placing card 59 in slot 6
+[11:13:28.121] [SEVERE ] placing card 20 in slot 7
+[11:13:28.231] [SEVERE ] placing card 36 in slot 8
+[11:13:28.339] [SEVERE ] placing card 25 in slot 9
+[11:13:28.448] [SEVERE ] placing card 45 in slot 10
+[11:13:28.557] [SEVERE ] placing card 14 in slot 11
+[11:13:29.566] [SEVERE ] updating countdown to 59000
+[11:13:29.570] [SEVERE ] player 1 placing token on slot 2
+[11:13:29.572] [SEVERE ] player 1 placing token on slot 7
+[11:13:29.572] [SEVERE ] player 1 placing token on slot 3
+[11:13:29.573] [SEVERE ] setting player 1 freeze to 3000
+[11:13:30.579] [SEVERE ] updating countdown to 58000
+[11:13:30.579] [SEVERE ] setting player 1 freeze to 2000
+[11:13:31.587] [SEVERE ] setting player 1 freeze to 1000
+[11:13:31.587] [SEVERE ] updating countdown to 57000
+[11:13:32.601] [SEVERE ] setting player 1 freeze to 0
+[11:13:32.601] [SEVERE ] updating countdown to 56000
+[11:13:32.837] [SEVERE ] removing player 1 token from slot 2
+[11:13:32.947] [SEVERE ] player 1 placing token on slot 2
+[11:13:32.948] [SEVERE ] setting player 1 freeze to 3000
+[11:13:33.609] [SEVERE ] updating countdown to 55000
+[11:13:33.960] [SEVERE ] setting player 1 freeze to 2000
+[11:13:34.615] [SEVERE ] updating countdown to 54000
+[11:13:34.974] [SEVERE ] setting player 1 freeze to 1000
+[11:13:35.625] [SEVERE ] updating countdown to 53000
+[11:13:35.981] [SEVERE ] setting player 1 freeze to 0
+[11:13:36.323] [SEVERE ] removing player 1 token from slot 3
+[11:13:36.432] [SEVERE ] player 1 placing token on slot 5
+[11:13:36.434] [SEVERE ] setting player 1 freeze to 3000
+[11:13:36.633] [SEVERE ] updating countdown to 52000
+[11:13:37.444] [SEVERE ] setting player 1 freeze to 2000
+[11:13:37.646] [SEVERE ] updating countdown to 51000

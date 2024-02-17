@@ -77,7 +77,6 @@ public class Table {
     }
 
     public void playerAction(Player player, int slot) {
-        System.out.println("is blocked "+ player.isBlocked());
         if (!player.isBlocked()) {
             if (slotToCard[slot] != null) {
                 if (!removeToken(player.id, slot)) {
@@ -103,7 +102,8 @@ public class Table {
                         try {
                             System.out.println("player waits for dealer");
                             player.getDealerThread().interrupt();
-                            player.getPlayerThread().wait();
+                            player.getDealerThread().wait();
+                            System.out.println("player stopped waiting");
                         } catch (InterruptedException e) {
                         }
                     }
