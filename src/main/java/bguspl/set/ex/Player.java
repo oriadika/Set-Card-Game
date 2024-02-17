@@ -94,24 +94,25 @@ public class Player implements Runnable {
      */
     public void run() {
         this.env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
+
         if (!this.human) {
-            this.createArtificialIntelligence();
+            try {
+                createArtificialIntelligence();
+                this.aiThread.join();
+            } catch (InterruptedException var2) {
+                
+            }
         }
 
         while (!this.terminate) {
             try {
-                if (!dealer.blockPlacing) {
-                int slot = actions.removeAction();
-                table.playerAction(this, slot);   
+                while (!isBlocked()) {
+                    int slot = actions.removeAction();
+                    table.playerAction(this, slot);
                 }
-            } catch (InterruptedException e) {
-            }
-        }
 
-        if (!this.human) {
-            try {
-                this.aiThread.join();
-            } catch (InterruptedException var2) {
+            } catch (InterruptedException e) {
+                System.out.println("player interrupted. Terminate = "+ terminate);
             }
         }
 
@@ -130,15 +131,17 @@ public class Player implements Runnable {
             env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
             while (!terminate) {
                 try {
-                aiThread.sleep(500);
-                Random random = new Random();
-                keyPressed(random.nextInt(table.slotToCard.length));
-                int slot = actions.removeAction();
-                table.playerAction(this, slot);
-            } catch (Exception e) {
+                    aiThread.sleep(100);
+                    Random random = new Random();
+                    keyPressed(random.nextInt(table.slotToCard.length));
+                    System.out.println("player " + id + " is pressing key");
+                    int slot = actions.removeAction();
+                    System.out.println("removing from AI");
+                    table.playerAction(this, slot);
+                } catch (Exception e) {
 
-            }
-              
+                }
+
             }
             env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
         }, "computer-" + id);
@@ -153,21 +156,20 @@ public class Player implements Runnable {
         terminate = true;
     }
 
-    public boolean isBlocked(){
+    public boolean isBlocked() {
         return dealer.blockPlacing;
     }
+
     /**
      * This method is called when a key is pressed.
      * s
      * 
      * @param slot - the slot corresponding to the key pressed.
      */
-    public void keyPressed(int slot) {
-        if (!isFrozen) {
-            actions.addAction(slot);
-        }
+    public synchronized void keyPressed(int slot) {
+        actions.addAction(slot);
+        System.out.println("slot added " + id);
     }
-
 
     /**
      * Award a point to a player and perform other related actions.
@@ -195,13 +197,11 @@ public class Player implements Runnable {
      */
     public void penalty() {
         try {
-            isFrozen = true;
             env.ui.setFreeze(id, PENAlTY_MILLISECONDS);
             for (long frozenTime = PENAlTY_MILLISECONDS - 1000; frozenTime >= 0; frozenTime = frozenTime - 1000) {
                 playerThread.sleep(FREEZE_TIME_MILLI);
                 env.ui.setFreeze(id, frozenTime);
             }
-            isFrozen = false;
         }
 
         catch (InterruptedException e) {
@@ -218,7 +218,7 @@ public class Player implements Runnable {
         return dealer.getThread();
     }
 
-    public Thread getPlayerThread(){
+    public Thread getPlayerThread() {
         return dealer.getPlayerThread(id);
     }
 

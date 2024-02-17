@@ -1,0 +1,42 @@
+[12:36:11.597] [INFO   ] thread main starting.
+[12:36:11.606] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[12:36:11.609] [SEVERE ] configuration file was loaded from resources directory.
+[12:36:12.170] [INFO   ] thread dealer starting.
+[12:36:12.177] [INFO   ] thread player 0 starting.
+[12:36:12.179] [INFO   ] thread player 1 starting.
+[12:36:12.180] [INFO   ] thread player 2 starting.
+[12:36:12.180] [INFO   ] thread player 3 starting.
+[12:36:12.195] [INFO   ] thread player 4 starting.
+[12:36:12.196] [INFO   ] thread player 5 starting.
+[12:36:12.195] [INFO   ] thread player 0 starting.
+[12:36:12.195] [INFO   ] thread player 2 starting.
+[12:36:12.195] [INFO   ] thread player 1 starting.
+[12:36:12.198] [INFO   ] thread player 5 starting.
+[12:36:12.198] [INFO   ] thread player 4 starting.
+[12:36:12.197] [INFO   ] thread player 3 starting.
+[12:36:12.197] [INFO   ] thread dealer starting.
+[12:36:12.201] [INFO   ] thread computer-5 starting.
+[12:36:12.201] [INFO   ] thread computer-4 starting.
+[12:36:12.201] [INFO   ] thread computer-2 starting.
+[12:36:12.201] [INFO   ] thread computer-1 starting.
+[12:36:12.201] [INFO   ] thread computer-0 starting.
+[12:36:12.201] [INFO   ] thread computer-3 starting.
+[12:36:12.319] [SEVERE ] placing card 45 in slot 0
+[12:36:12.427] [SEVERE ] placing card 25 in slot 1
+[12:36:12.536] [SEVERE ] placing card 28 in slot 2
+[12:36:12.645] [SEVERE ] placing card 8 in slot 3
+[12:36:12.752] [SEVERE ] placing card 54 in slot 4
+[12:36:12.863] [SEVERE ] placing card 70 in slot 5
+[12:36:12.970] [SEVERE ] placing card 41 in slot 6
+[12:36:13.077] [SEVERE ] placing card 5 in slot 7
+[12:36:13.186] [SEVERE ] placing card 39 in slot 8
+[12:36:13.294] [SEVERE ] placing card 1 in slot 9
+[12:36:13.403] [SEVERE ] placing card 19 in slot 10
+[12:36:13.511] [SEVERE ] placing card 10 in slot 11
+[12:36:14.520] [SEVERE ] updating countdown to 59000
+[12:36:14.584] [SEVERE ] player 6 placing token on slot 11
+[12:36:14.584] [SEVERE ] player 5 placing token on slot 6
+[12:36:14.584] [SEVERE ] player 3 placing token on slot 8
+[12:36:14.585] [SEVERE ] player 2 placing token on slot 11
+[12:36:14.597] [SEVERE ] player 4 placing token on slot 6
+[12:36:14.598] [SEVERE ] player 1 placing token on slot 6

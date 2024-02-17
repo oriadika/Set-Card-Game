@@ -38,6 +38,8 @@ public class Dealer implements Runnable {
 
     private final long Minute = 60000;
 
+    final long FREEZE_TIME_MILLI = 1000;
+
     private final int timesUp = -1000;
 
     public boolean blockPlacing = false;
@@ -271,10 +273,10 @@ public class Dealer implements Runnable {
                 for (Player player : players) {
                     if (table.getTokensQueues()[player.id].size() == 3) {
                         if (isSet(player.id)) {
-                            synchronized (playersThread[player.id]) {
+                            synchronized (dealerThread) {
                                 System.out.println("sync on player");
                                 player.point();
-                                playersThread[player.id].interrupt();
+                                dealerThread.notifyAll();
                             }
                             removeCardsFromTable();
                             System.out.println("player wakes up");
@@ -288,6 +290,7 @@ public class Dealer implements Runnable {
 
         }
     }
+
 
     /**
      * Reset and/or update the countdown and the countdown display.

@@ -1,50 +1,45 @@
 
-package bguspl.set.ex;
+    package bguspl.set.ex;
 
-import java.util.LinkedList;
-import java.util.Queue;
+    import java.util.LinkedList;
+    import java.util.Queue;
 
-public class BlockingQueue {
+    public class BlockingQueue {
 
-    private final int maxSize = 3;
+        private final int maxSize = 3;
 
-    private Queue<Integer> actions;
+        private Queue<Integer> actions;
 
-    public BlockingQueue() {
+        public BlockingQueue() {
 
-        this.actions = new LinkedList<>();
-
-    }
-
-    public synchronized void addAction(int slot) {
-        try {
-            while (actions.size() == maxSize) {
-                wait();
-
-            }
-            actions.add(slot);
-            notifyAll();
-        } catch (InterruptedException e) {
+            this.actions = new LinkedList<>();
 
         }
 
-    }
+        public synchronized void addAction(int slot) {
+            try {
+                while (actions.size() == maxSize) {
+                    wait();
 
-    public synchronized int removeAction() throws InterruptedException {
-        try {
-            while (actions.size() == 0) {
-                wait();
+                }
+                actions.add(slot);
+                notifyAll();
+            } catch (InterruptedException e) {
+
             }
-            int slot = actions.remove();
-            notifyAll();
-            return slot;
-        } catch (InterruptedException e) {
-            throw e;
+
+        }
+
+        public synchronized int removeAction() throws InterruptedException {
+            try {
+                while (actions.size() == 0) {
+                    wait();
+                }
+                int slot = actions.remove();
+                notifyAll();
+                return slot;
+            } catch (InterruptedException e) {
+                throw e;
+            }
         }
     }
-
-    public synchronized int removeActionAI() {
-        return actions.size();
-    }
-
-}
