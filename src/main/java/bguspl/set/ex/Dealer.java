@@ -6,6 +6,7 @@ import bguspl.set.ThreadLogger;
 import java.util.Queue;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -44,7 +45,7 @@ public class Dealer implements Runnable {
 
     public boolean blockPlacing = false;
 
-    volatile Boolean isOccupied = false;
+    volatile AtomicBoolean isOccupied;
 
     /**
      * Game entities.
@@ -75,6 +76,7 @@ public class Dealer implements Runnable {
         deck = IntStream.range(0, env.config.deckSize).boxed().collect(Collectors.toList());
         this.remainMiliSconds = Minute;
         playersThread = new ThreadLogger[env.config.players];
+        this.isOccupied = new AtomicBoolean();
     }
 
     /**
@@ -239,45 +241,31 @@ public class Dealer implements Runnable {
                 i++;
             }
             return env.util.testSet(set);
+
         }
+        isOccupied.set(false);
+        isOccupied.notifyAll();
         return false;
 
     }
 
-    public void checkSet2(Player player) {
-        synchronized (this) {
-            if (testSet(player)) {
-                player.point();
-                dealerThread.interrupt();
-            }
-        }
-        if (!testSet(player) && table.getTokensQueues()[player.id].size() == 3) {
-            player.penalty();
-        }
-
-    }
-
-    // & !dealerThread.isInterrupted()
-    public synchronized void checkSet1(Player player) {
-        isOccupied = true;
-        System.out.println("player " + player.id + " in check set");
-        System.out.println("isOccupied is " + isOccupied);
+    public void checkSet1(Player player) {
+        isOccupied.set(true); 
         if (testSet(player)) {
             synchronized (isOccupied) {
-                while (isOccupied) {
+                System.out.println("player " + player.id + " has set");
+                while (isOccupied.get()) {
                     dealerThread.interrupt();
                     try {
-                        System.out.println("waiting for dealer");
                         isOccupied.wait();
+
                     } catch (InterruptedException e) {
                     }
+                    ;
                 }
                 player.point();
             }
-
-        }
-        isOccupied = false;
-        if (!testSet(player) && table.getTokensQueues()[player.id].size() == 3) {
+        } else {
             player.penalty();
         }
 
@@ -298,8 +286,10 @@ public class Dealer implements Runnable {
                     removeCardsFromTable();
                     remainMiliSconds = Minute + updateEach;
                 }
-                isOccupied = false;
+                isOccupied.set(false);
+                System.out.println("set isOccupied to false");
                 isOccupied.notifyAll();
+                System.out.println("notifyAll");
             }
 
         }
