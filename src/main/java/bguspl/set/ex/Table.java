@@ -28,8 +28,6 @@ public class Table {
 
     private final int maxTokens = 3;
 
-    private final int noToken = -1;
-
     protected Integer[] slotsLocks;
 
     private Queue<Integer>[] tokensQueues;
@@ -87,16 +85,13 @@ public class Table {
             if (tokensQueues[player.id].size() == maxTokens & !tokensQueues[player.id].contains(slot)) {
                 return;
             }
-
-            if (tokensQueues[player.id].size() == maxTokens) {
-                player.setIsFrozen(true);
-                int[] set = new int[3];
-                int i = 0;
-                for (int num : tokensQueues[player.id]) {
-                    set[i] = slotToCard[num];
-                    i++;
+            synchronized (this) {
+                if (tokensQueues[player.id].size() == maxTokens) {
+                    System.out.println("player " + player.id + " got to table check set");
+                    System.out.println("player " + player.id + " tokens = " + tokensQueues[player.id]);
+                    player.setIsFrozen(true);
+                    player.getDealer().checkSet1(player);
                 }
-                player.getDealer().checkSet(player,set);
             }
 
             // If the token isnt there but the player has 3 tokens already*/
@@ -183,6 +178,7 @@ public class Table {
     public void removeCard(int slot) {
         try {
             synchronized (slotsLocks[slot]) { // I want to lock the slot while I am removing the card
+                System.out.println("removing " +slot);
                 Thread.sleep(env.config.tableDelayMillis);
                 slotToCard[slot] = null; // No card in there
 
