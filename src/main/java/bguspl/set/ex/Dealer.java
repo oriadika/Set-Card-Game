@@ -143,7 +143,7 @@ public class Dealer implements Runnable {
     /**
      * Checks cards should be removed from the table and removes them.
      */
-    private synchronized void removeCardsFromTable() {// remove cards when a set was found
+    private void removeCardsFromTable() {// remove cards when a set was found
         System.out.println("removing cards");
         for (Player player : players) {
             if (table.getTokensQueues()[player.id].size() == 3) {
@@ -259,23 +259,24 @@ public class Dealer implements Runnable {
 
     // & !dealerThread.isInterrupted()
     public synchronized void checkSet1(Player player) {
+        isOccupied = true;
         System.out.println("player " + player.id + " in check set");
+        System.out.println("isOccupied is " + isOccupied);
         if (testSet(player)) {
             synchronized (isOccupied) {
                 while (isOccupied) {
+                    dealerThread.interrupt();
                     try {
                         System.out.println("waiting for dealer");
                         isOccupied.wait();
                     } catch (InterruptedException e) {
                     }
                 }
+                player.point();
             }
-            isOccupied = true;
-            dealerThread.interrupt();
-            player.point();
 
         }
-
+        isOccupied = false;
         if (!testSet(player) && table.getTokensQueues()[player.id].size() == 3) {
             player.penalty();
         }
@@ -283,26 +284,22 @@ public class Dealer implements Runnable {
     }
 
     private void sleepUntilWokenOrTimeout() {
-
-        try {
-            dealerThread.sleep(updateEach);
-        } catch (InterruptedException e) {
-            synchronized (isOccupied) {
+        synchronized (isOccupied) {
+            try {
+                dealerThread.sleep(updateEach);
+            } catch (InterruptedException e) {
                 if (remainMiliSconds == -1000) {
                     blockPlacing = true;
                     resetDeck();
                     blockPlacing = false;
-                    isOccupied = false;
-                    isOccupied.notifyAll();
+
                 } else {
                     System.out.println("dealer inter");
                     removeCardsFromTable();
                     remainMiliSconds = Minute + updateEach;
-                    isOccupied = false;
-                    isOccupied.notifyAll();
-                    System.out.println("dealer notify");
-
                 }
+                isOccupied = false;
+                isOccupied.notifyAll();
             }
 
         }
