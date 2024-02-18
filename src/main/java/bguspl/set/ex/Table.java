@@ -28,8 +28,6 @@ public class Table {
 
     private final int maxTokens = 3;
 
-    private final int noToken = -1;
-
     protected Integer[] slotsLocks;
 
     private Queue<Integer>[] tokensQueues;
@@ -81,28 +79,18 @@ public class Table {
             if (slotToCard[slot] != null) {
                 if (!removeToken(player.id, slot)) {
                     placeToken(player.id, slot);
-
                 }
-
             }
 
             if (tokensQueues[player.id].size() == maxTokens & !tokensQueues[player.id].contains(slot)) {
                 return;
             }
-
-            if (tokensQueues[player.id].size() == maxTokens) {
-                int[] set = new int[3];
-                int i = 0;
-                for (int num : tokensQueues[player.id]) {
-                    set[i] = slotToCard[num];
-                    i++;
-                }
-                if (env.util.testSet(set)) {
-                    player.getDealerThread().interrupt();
-                    return;
-                } else {
-                    player.penalty();
-                    return;
+            synchronized (this) {
+                if (tokensQueues[player.id].size() == maxTokens) {
+                    System.out.println("player " + player.id + " got to table check set");
+                    System.out.println("player " + player.id + " tokens = " + tokensQueues[player.id]);
+                    player.setIsFrozen(true);
+                    player.getDealer().checkSet1(player);
                 }
             }
 
@@ -156,7 +144,7 @@ public class Table {
     public void placeCard(int card, int slot) { // while I am placing a new card, I do not want any player to choose the
         // temporariy empty slot as his set. So, I want to lock the slot
         try {
-            Thread.sleep(env.config.tableDelayMillis); /* While I am placing a card, no one can touch the table */
+            Thread.sleep(env.config.tableDelayMillis);
         } catch (InterruptedException ignored) {
         }
 
@@ -169,7 +157,8 @@ public class Table {
                 env.ui.placeCard(card, slot);
             }
 
-        } else { // there is no card in the given slot, we still want to lock the slot
+        } else { // there is no card in the given slot, we still want to lock the slot - no
+                 // player puts token on empty
             synchronized (slotsLocks[slot]) {
                 env.ui.placeCard(card, slot); // Include ui swing. I have a card that I want to place in empty slot
             }
@@ -186,9 +175,10 @@ public class Table {
      * 
      * @param slot - the slot from which to remove the card.
      */
-    public void removeCard(int slot) { // No need to lock becuse only place card calls me and it has lock
+    public void removeCard(int slot) {
         try {
             synchronized (slotsLocks[slot]) { // I want to lock the slot while I am removing the card
+                System.out.println("removing " +slot);
                 Thread.sleep(env.config.tableDelayMillis);
                 slotToCard[slot] = null; // No card in there
 
@@ -200,9 +190,9 @@ public class Table {
     }
 
     public void removeAllTokens() {
-        
+
         for (int i = 0; i < env.config.players; i++) {
-            int[] slotsToRemove = {-1,-1,-1};
+            int[] slotsToRemove = { -1, -1, -1 };
             int index = 0;
             for (int slot : tokensQueues[i]) {
                 slotsToRemove[index] = slot;
@@ -211,7 +201,7 @@ public class Table {
             for (int slot : slotsToRemove) {
                 removeToken(i, slot);
             }
-        }        
+        }
 
     }
 
@@ -222,7 +212,7 @@ public class Table {
      * @param slot   - the slot on which to place the token.
      */
     public void placeToken(int player, int slot) {
-        synchronized (tokensQueues[player]) {
+        synchronized (slotsLocks[slot]) { // prevents from one thread to remove and the other to place token
             if (tokensQueues[player].size() < 3) {
                 tokensQueues[player].add(slot);
                 env.ui.placeToken(player, slot);

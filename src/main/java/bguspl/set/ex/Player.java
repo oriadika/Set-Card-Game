@@ -94,24 +94,25 @@ public class Player implements Runnable {
      */
     public void run() {
         this.env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
+
         if (!this.human) {
-            this.createArtificialIntelligence();
+            try {
+                createArtificialIntelligence();
+                this.aiThread.join();
+            } catch (InterruptedException var2) {
+
+            }
         }
 
         while (!this.terminate) {
             try {
-                if (!dealer.blockPlacing) {
-                int slot = actions.removeAction();
-                table.playerAction(this, slot);   
+                while (!isBlocked()) {
+                    int slot = actions.removeAction();
+                        table.playerAction(this, slot);
                 }
-            } catch (InterruptedException e) {
-            }
-        }
 
-        if (!this.human) {
-            try {
-                this.aiThread.join();
-            } catch (InterruptedException var2) {
+            } catch (InterruptedException e) {
+                System.out.println("player interrupted. Terminate = " + terminate);
             }
         }
 
@@ -130,20 +131,29 @@ public class Player implements Runnable {
             env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
             while (!terminate) {
                 try {
-                aiThread.sleep(500);
-                Random random = new Random();
-                keyPressed(random.nextInt(table.slotToCard.length));
-                int slot = actions.removeAction();
-                table.playerAction(this, slot);
-            } catch (Exception e) {
+                    aiThread.sleep(100);
+                    Random random = new Random();
+                    keyPressed(random.nextInt(table.slotToCard.length));
+                    int slot = actions.removeAction();
+                    table.playerAction(this, slot);
+                } catch (Exception e) {
 
-            }
-              
+                }
+
             }
             env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
         }, "computer-" + id);
         aiThread.start();
     }
+
+    public Dealer getDealer() {
+        return dealer;
+    }
+
+    public void setIsFrozen(boolean frozen){
+        isFrozen = frozen;
+    }
+
 
     /**
      * Called when the game should be terminated.
@@ -153,21 +163,21 @@ public class Player implements Runnable {
         terminate = true;
     }
 
-    public boolean isBlocked(){
+    public boolean isBlocked() {
         return dealer.blockPlacing;
     }
+
     /**
      * This method is called when a key is pressed.
      * s
      * 
      * @param slot - the slot corresponding to the key pressed.
      */
-    public void keyPressed(int slot) {
-        if (!isFrozen) {
+    public synchronized void keyPressed(int slot) {
+        if (!isFrozen && !isBlocked()){
             actions.addAction(slot);
         }
     }
-
 
     /**
      * Award a point to a player and perform other related actions.
@@ -186,27 +196,29 @@ public class Player implements Runnable {
             this.env.ui.setFreeze(this.id, NO_Time_MILLI);
 
         } catch (InterruptedException e) { // need to understand what to do with the exception
-
         }
+        isFrozen = false;
     }
 
     /**
      * Penalize a player and perform other related actions.
      */
+
     public void penalty() {
         try {
-            isFrozen = true;
             env.ui.setFreeze(id, PENAlTY_MILLISECONDS);
             for (long frozenTime = PENAlTY_MILLISECONDS - 1000; frozenTime >= 0; frozenTime = frozenTime - 1000) {
                 playerThread.sleep(FREEZE_TIME_MILLI);
                 env.ui.setFreeze(id, frozenTime);
             }
-            isFrozen = false;
         }
 
         catch (InterruptedException e) {
+            System.out.println("intrrupted");
             return;
         }
+
+        isFrozen = false;
 
     }
 
@@ -216,6 +228,10 @@ public class Player implements Runnable {
 
     public Thread getDealerThread() {
         return dealer.getThread();
+    }
+
+    public Thread getPlayerThread() {
+        return dealer.getPlayerThread(id);
     }
 
 }
