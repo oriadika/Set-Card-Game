@@ -106,6 +106,7 @@ public class Dealer implements Runnable {
     private void timerLoop() {
         while (!terminate && System.currentTimeMillis() < reshuffleTime) {
             sleepUntilWokenOrTimeout();
+            table.hints();
             updateTimerDisplay(false);
             removeCardsFromTable();
         }
@@ -139,7 +140,7 @@ public class Dealer implements Runnable {
     /**
      * Checks cards should be removed from the table and removes them.
      */
-    private void removeCardsFromTable() {// remove cards when a set was found
+    private synchronized void removeCardsFromTable() {// remove cards when a set was found
 
         for (Player player : players) {
             if (table.getTokensQueues()[player.id].size() == 3) {
@@ -157,6 +158,7 @@ public class Dealer implements Runnable {
                                 table.removeToken(playerID, slotsToRemove[i]);
                             }
                         }
+
                         table.removeCard(slotsToRemove[i]);
                     }
                 }
@@ -205,9 +207,6 @@ public class Dealer implements Runnable {
             }
             Collections.shuffle(deck);
 
-            int cardsToPlace = 0;
-            List<Integer> newCards = new LinkedList<>();
-
             for (int slot = 0; slot < env.config.tableSize && deck.size() > 0; slot++) { // check if the slot is empty
                 if (table.slotToCard[slot] == null && deck.size() > 0) {
                     int card = deck.remove(0);
@@ -227,48 +226,51 @@ public class Dealer implements Runnable {
      * purpose.
      */
 
-    public void checkSet1(Player player) {
-        player.setIsFrozen(true);
-        int[] set = new int[3];
-        int i = 0;
-        for (int num : table.getTokensQueues()[player.id]) {
-            set[i] = table.slotToCard[num];
-            i++;
-        }
-        if (env.util.testSet(set)) {
-            synchronized (this) {
-                player.point();
-                remainMiliSconds = Minute + updateEach;
+    public synchronized void checkSet1(Player player) {
+        System.out.println("check set for player " + player.id);
+        if (table.getTokensQueues()[player.id].size() == 3) {
+            int[] set = new int[3];
+            int i = 0;
+            for (int num : table.getTokensQueues()[player.id]) {
+                set[i] = table.slotToCard[num];
+                i++;
             }
+            if (env.util.testSet(set)) {
+                System.out.println("player " + player.id + " point");
+                player.point();
+                this.getThread().interrupt();
+                remainMiliSconds = Minute + updateEach;
 
-        } else {
-            player.penalty();
+            } else {
+                player.penalty();
+            }
         }
+
     }
 
     public void checkSet(Player player, int[] set) {
+        System.out.println("check set for player " + player.id);
         player.setIsFrozen(true);
         if (env.util.testSet(set) & table.getTokensQueues()[player.id].size() == 3) {
             synchronized (this) {
                 if (table.getTokensQueues()[player.id].size() == 3) {
                     player.point();
-                    removeCardsFromTable();
-                    remainMiliSconds = Minute + updateEach;
-                }
-                else{
+                    dealerThread.interrupt();
+                } else {
                     player.setIsFrozen(false);
                 }
             }
         } else {
             player.penalty();
-            
+
         }
     }
 
-    private synchronized void sleepUntilWokenOrTimeout() {
+    private void sleepUntilWokenOrTimeout() {
         try {
             dealerThread.sleep(updateEach);
         } catch (InterruptedException e) {
+            System.out.println("dealer inter");
             if (remainMiliSconds == -1000) {
                 blockPlacing = true;
                 resetDeck();
@@ -276,30 +278,12 @@ public class Dealer implements Runnable {
             }
 
             else {
-                System.out.println("dealer inter");
-                for (Player player : players) {
-                    if (table.getTokensQueues()[player.id].size() == 3) {
-                        if (isSet(player.id)) {
-                            synchronized (playersThread[player.id]) {
-                                try {
-                                    playersThread[player.id].wait();
-                                    System.out.println("sync on player");
-                                    player.point();
-                                    playersThread[player.id].notifyAll();
-                                } catch (InterruptedException var2) {
-                                }
-
-                            }
-
-                        } else {
-                            player.penalty();
-                        }
-                    }
-                }
-
+                removeCardsFromTable();
+                remainMiliSconds = Minute + updateEach;
             }
 
         }
+
     }
 
     /**
