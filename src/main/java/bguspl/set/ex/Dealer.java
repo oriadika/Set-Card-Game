@@ -40,7 +40,7 @@ public class Dealer implements Runnable {
 
     private Thread dealerThread; // This is the way to get the dealer thread
 
-    private final long Minute = 5000;
+    private final long Minute = 60000;
 
     public boolean blockPlacing = false;
 
@@ -72,7 +72,7 @@ public class Dealer implements Runnable {
         this.players = players;
         deck = IntStream.range(0, env.config.deckSize).boxed().collect(Collectors.toList());
         this.remainSeconds = env.config.turnTimeoutMillis / 1000;
-        this.remainMiliSconds = 10000;
+        this.remainMiliSconds = env.config.turnTimeoutMillis;
         this.lastUpdateTime = System.currentTimeMillis();
         playersThread = new ThreadLogger[env.config.players];
     }
@@ -315,7 +315,6 @@ public class Dealer implements Runnable {
      * Returns all the cards from the table to the deck.
      */
     private void removeAllCardsFromTable() {
-        System.out.println("I am in remove all cards");
         table.removeAllTokens();
         for (int i=0; i<env.config.tableSize; i++){
             
