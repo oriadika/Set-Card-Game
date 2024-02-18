@@ -108,7 +108,6 @@ public class Dealer implements Runnable {
             sleepUntilWokenOrTimeout();
             table.hints();
             updateTimerDisplay(false);
-            removeCardsFromTable();
         }
     }
 
@@ -238,7 +237,7 @@ public class Dealer implements Runnable {
             if (env.util.testSet(set)) {
                 System.out.println("player " + player.id + " point");
                 player.point();
-                this.getThread().interrupt();
+                dealerThread.interrupt();
                 remainMiliSconds = Minute + updateEach;
 
             } else {
@@ -251,8 +250,11 @@ public class Dealer implements Runnable {
     public void checkSet(Player player, int[] set) {
         System.out.println("check set for player " + player.id);
         player.setIsFrozen(true);
+        System.out.println(table.getTokensQueues()[player.id].size());
+        System.out.println(env.util.testSet(set));
         if (env.util.testSet(set) & table.getTokensQueues()[player.id].size() == 3) {
             synchronized (this) {
+                System.out.println("point for player");
                 if (table.getTokensQueues()[player.id].size() == 3) {
                     player.point();
                     dealerThread.interrupt();
@@ -260,10 +262,11 @@ public class Dealer implements Runnable {
                     player.setIsFrozen(false);
                 }
             }
-        } else {
+        } else if (table.getTokensQueues()[player.id].size()==3) {
             player.penalty();
-
         }
+        player.setIsFrozen(false);
+
     }
 
     private void sleepUntilWokenOrTimeout() {
