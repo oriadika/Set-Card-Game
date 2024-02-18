@@ -1,0 +1,77 @@
+[21:48:32.136] [INFO   ] thread main starting.
+[21:48:32.147] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[21:48:32.149] [SEVERE ] configuration file was loaded from resources directory.
+[21:48:32.731] [INFO   ] thread dealer starting.
+[21:48:32.731] [INFO   ] thread player 0 starting.
+[21:48:32.732] [INFO   ] thread player 1 starting.
+[21:48:32.733] [INFO   ] thread dealer starting.
+[21:48:32.733] [INFO   ] thread player 0 starting.
+[21:48:32.734] [INFO   ] thread player 1 starting.
+[21:48:32.851] [SEVERE ] placing card 29 in slot 0
+[21:48:32.959] [SEVERE ] placing card 35 in slot 1
+[21:48:33.062] [SEVERE ] placing card 3 in slot 2
+[21:48:33.170] [SEVERE ] placing card 75 in slot 3
+[21:48:33.278] [SEVERE ] placing card 6 in slot 4
+[21:48:33.382] [SEVERE ] placing card 34 in slot 5
+[21:48:33.488] [SEVERE ] placing card 24 in slot 6
+[21:48:33.590] [SEVERE ] placing card 77 in slot 7
+[21:48:33.692] [SEVERE ] placing card 23 in slot 8
+[21:48:33.805] [SEVERE ] placing card 27 in slot 9
+[21:48:33.914] [SEVERE ] placing card 39 in slot 10
+[21:48:34.022] [SEVERE ] placing card 36 in slot 11
+[21:48:35.041] [SEVERE ] updating countdown to 59000
+[21:48:36.056] [SEVERE ] updating countdown to 58000
+[21:48:37.073] [SEVERE ] updating countdown to 57000
+[21:48:38.079] [SEVERE ] updating countdown to 56000
+[21:48:38.453] [SEVERE ] key 69 was pressed by player 1
+[21:48:38.453] [SEVERE ] player 1 placing token on slot 2
+[21:48:38.714] [SEVERE ] key 82 was pressed by player 1
+[21:48:38.714] [SEVERE ] player 1 placing token on slot 3
+[21:48:39.086] [SEVERE ] updating countdown to 55000
+[21:48:40.098] [SEVERE ] updating countdown to 54000
+[21:48:41.105] [SEVERE ] updating countdown to 53000
+[21:48:41.642] [SEVERE ] key 67 was pressed by player 1
+[21:48:41.644] [SEVERE ] player 1 placing token on slot 10
+[21:48:42.111] [SEVERE ] updating countdown to 52000
+[21:48:43.116] [SEVERE ] updating countdown to 51000
+[21:48:44.120] [SEVERE ] updating countdown to 50000
+[21:48:45.123] [SEVERE ] updating countdown to 49000
+[21:48:46.129] [SEVERE ] updating countdown to 48000
+[21:48:47.140] [SEVERE ] updating countdown to 47000
+[21:48:48.147] [SEVERE ] updating countdown to 46000
+[21:48:49.154] [SEVERE ] updating countdown to 45000
+[21:48:50.158] [SEVERE ] updating countdown to 44000
+[21:48:51.162] [SEVERE ] updating countdown to 43000
+[21:48:52.171] [SEVERE ] updating countdown to 42000
+[21:48:53.184] [SEVERE ] updating countdown to 41000
+[21:48:54.201] [SEVERE ] updating countdown to 40000
+[21:48:55.214] [SEVERE ] updating countdown to 39000
+[21:48:56.223] [SEVERE ] updating countdown to 38000
+[21:48:57.227] [SEVERE ] updating countdown to 37000
+[21:48:58.241] [SEVERE ] updating countdown to 36000
+[21:48:59.255] [SEVERE ] updating countdown to 35000
+[21:49:00.257] [SEVERE ] updating countdown to 34000
+[21:49:01.269] [SEVERE ] updating countdown to 33000
+[21:49:02.287] [SEVERE ] updating countdown to 32000
+[21:49:03.297] [SEVERE ] updating countdown to 31000
+[21:49:04.304] [SEVERE ] updating countdown to 30000
+[21:49:05.320] [SEVERE ] updating countdown to 29000
+[21:49:06.332] [SEVERE ] updating countdown to 28000
+[21:49:07.347] [SEVERE ] updating countdown to 27000
+[21:49:08.357] [SEVERE ] updating countdown to 26000
+[21:49:09.367] [SEVERE ] updating countdown to 25000
+[21:49:10.372] [SEVERE ] updating countdown to 24000
+[21:49:11.374] [SEVERE ] updating countdown to 23000
+[21:49:12.379] [SEVERE ] updating countdown to 22000
+[21:49:13.382] [SEVERE ] updating countdown to 21000
+[21:49:14.385] [SEVERE ] updating countdown to 20000
+[21:49:15.401] [SEVERE ] updating countdown to 19000
+[21:49:16.407] [SEVERE ] updating countdown to 18000
+[21:49:17.419] [SEVERE ] updating countdown to 17000
+[21:49:18.432] [SEVERE ] updating countdown to 16000
+[21:49:19.440] [SEVERE ] updating countdown to 15000
+[21:49:20.448] [SEVERE ] updating countdown to 14000
+[21:49:21.461] [SEVERE ] updating countdown to 13000
+[21:49:22.464] [SEVERE ] updating countdown to 12000
+[21:49:23.474] [SEVERE ] updating countdown to 11000
+[21:49:24.487] [SEVERE ] updating countdown to 10000
