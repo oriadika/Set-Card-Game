@@ -90,7 +90,13 @@ public class Table {
                     System.out.println("player " + player.id + " got to table check set");
                     System.out.println("player " + player.id + " tokens = " + tokensQueues[player.id]);
                     player.setIsFrozen(true);
-                    player.getDealer().checkSet1(player);
+                    int [] set = new int[3];
+                    int index = 0; 
+                    for (int token : tokensQueues[player.id]){
+                        set[index] = slotToCard[token];
+                        index++;
+                    }
+                    player.getDealer().checkSet(player, set);
                 }
             }
 
@@ -179,10 +185,10 @@ public class Table {
         try {
             synchronized (slotsLocks[slot]) { // I want to lock the slot while I am removing the card
                 System.out.println("removing " +slot);
-                Thread.sleep(env.config.tableDelayMillis);
                 slotToCard[slot] = null; // No card in there
 
                 this.env.ui.removeCard(slot); // remove from table in ui
+                Thread.sleep(env.config.tableDelayMillis);
             }
 
         } catch (InterruptedException ignored) {
