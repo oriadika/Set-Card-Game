@@ -1,0 +1,45 @@
+[22:18:20.061] [INFO   ] thread main starting.
+[22:18:20.076] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[22:18:20.081] [SEVERE ] configuration file was loaded from resources directory.
+[22:18:20.666] [INFO   ] thread dealer starting.
+[22:18:20.667] [INFO   ] thread player 0 starting.
+[22:18:20.667] [INFO   ] thread player 1 starting.
+[22:18:20.668] [INFO   ] thread dealer starting.
+[22:18:20.676] [INFO   ] thread player 0 starting.
+[22:18:20.676] [INFO   ] thread player 1 starting.
+[22:18:20.789] [SEVERE ] placing card 45 in slot 0
+[22:18:20.901] [SEVERE ] placing card 19 in slot 1
+[22:18:21.013] [SEVERE ] placing card 2 in slot 2
+[22:18:21.124] [SEVERE ] placing card 55 in slot 3
+[22:18:21.236] [SEVERE ] placing card 72 in slot 4
+[22:18:21.342] [SEVERE ] placing card 74 in slot 5
+[22:18:21.443] [SEVERE ] placing card 4 in slot 6
+[22:18:21.554] [SEVERE ] placing card 20 in slot 7
+[22:18:21.665] [SEVERE ] placing card 61 in slot 8
+[22:18:21.777] [SEVERE ] placing card 77 in slot 9
+[22:18:21.889] [SEVERE ] placing card 54 in slot 10
+[22:18:22.001] [SEVERE ] placing card 9 in slot 11
+[22:18:23.011] [SEVERE ] updating countdown to 59000
+[22:18:24.021] [SEVERE ] updating countdown to 58000
+[22:18:25.035] [SEVERE ] updating countdown to 57000
+[22:18:26.047] [SEVERE ] updating countdown to 56000
+[22:18:26.940] [SEVERE ] key 86 was pressed by player 1
+[22:18:26.941] [SEVERE ] player 1 placing token on slot 11
+[22:18:27.051] [SEVERE ] updating countdown to 55000
+[22:18:27.296] [SEVERE ] key 47 was pressed by player 2
+[22:18:27.296] [SEVERE ] player 2 placing token on slot 11
+[22:18:28.054] [SEVERE ] updating countdown to 54000
+[22:18:28.791] [SEVERE ] key 67 was pressed by player 1
+[22:18:28.791] [SEVERE ] player 1 placing token on slot 10
+[22:18:29.054] [SEVERE ] updating countdown to 53000
+[22:18:29.192] [SEVERE ] key 46 was pressed by player 2
+[22:18:29.192] [SEVERE ] player 2 placing token on slot 10
+[22:18:30.067] [SEVERE ] updating countdown to 52000
+[22:18:30.911] [SEVERE ] key 81 was pressed by player 1
+[22:18:30.911] [SEVERE ] player 1 placing token on slot 0
+[22:18:31.021] [SEVERE ] key 85 was pressed by player 2
+[22:18:31.031] [SEVERE ] player 2 placing token on slot 0
+[22:18:31.083] [SEVERE ] setting player 2 score to 1
+[22:18:31.083] [SEVERE ] setting player 2 freeze to 1000
+[22:18:31.088] [SEVERE ] updating countdown to 51000
+[22:18:32.085] [SEVERE ] setting player 2 freeze to 0
