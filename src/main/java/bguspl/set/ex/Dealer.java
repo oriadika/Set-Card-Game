@@ -262,7 +262,7 @@ public class Dealer implements Runnable {
                     player.setIsFrozen(false);
                 }
             }
-        } else if (table.getTokensQueues()[player.id].size()==3) {
+        } else if (table.getTokensQueues()[player.id].size() == 3) {
             player.penalty();
         }
         player.setIsFrozen(false);
@@ -320,6 +320,8 @@ public class Dealer implements Runnable {
     private void removeAllCardsFromTable() {
         table.removeAllTokens();
         for (int i = 0; i < env.config.tableSize; i++) {
+            int card = table.slotToCard[i];
+            deck.add(card);
             table.removeCard(i);
         }
     }
