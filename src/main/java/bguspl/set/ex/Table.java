@@ -86,24 +86,27 @@ public class Table {
                 return;
             }
 
-            synchronized (player.getDealer().isOccupied) {
-                if (tokensQueues[player.id].size() == maxTokens) {
-                    if (!player.getDealer().isOccupied.get()) {
-                        player.getDealer().isOccupied.set(true);
-                        player.getDealer().checkSet2(player);
-                    } else {
+            if (tokensQueues[player.id].size() == maxTokens) {
+                player.getDealer().isOccupied.set(true);
+                boolean isSet = player.getDealer().checkSet1(player);
+                System.out.println(isSet);
+                if (isSet) {
+                    synchronized (player.getDealer().isOccupied) {
                         while (player.getDealer().isOccupied.get()) {
                             try {
                                 player.getDealer().isOccupied.wait();
                             } catch (InterruptedException e) {
-                                player.getDealer().isOccupied.set(true);
-                                player.getDealer().checkSet2(player);
                             }
                             ;
                         }
                     }
+                    System.out.println("out of wait");
+                } else {
+                    System.out.println("penalty");
+                    player.penalty();
 
                 }
+
             }
         }
 

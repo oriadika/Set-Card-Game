@@ -232,7 +232,7 @@ public class Dealer implements Runnable {
      * purpose.
      */
 
-    public synchronized boolean testSet(Player player) {
+    public boolean testSet(Player player) {
         if (table.getTokensQueues()[player.id].size() == 3) {
             int[] set = new int[3];
             int i = 0;
@@ -244,7 +244,6 @@ public class Dealer implements Runnable {
 
         }
         isOccupied.set(false);
-        isOccupied.notifyAll();
         return false;
 
     }
@@ -261,30 +260,18 @@ public class Dealer implements Runnable {
 
     }
 
-
-
-    public void checkSet1(Player player) {
-        if (!testSet(player)) {
-            player.penalty();
+    public boolean checkSet1(Player player) {
+        if (testSet(player)) {
+            dealerThread.interrupt();
+            player.point();
+            return true;
         } else {
-            isOccupied.set(true);
-            if (testSet(player)) {
-                synchronized (isOccupied) {
-                    System.out.println("player " + player.id + " has set");
-                    while (isOccupied.get()) {
-                        dealerThread.interrupt();
-                        try {
-                            isOccupied.wait();
-
-                        } catch (InterruptedException e) {
-                        }
-                        ;
-                    }
-                    System.out.println("out of wait");
-                    player.point();
-                }
+            synchronized(isOccupied){
+                isOccupied.set(false);
+                isOccupied.notifyAll();
+                return false;
             }
-
+            
         }
 
     }
