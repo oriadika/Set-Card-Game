@@ -249,24 +249,42 @@ public class Dealer implements Runnable {
 
     }
 
-    public void checkSet1(Player player) {
-        isOccupied.set(true); 
-        if (testSet(player)) {
-            synchronized (isOccupied) {
-                System.out.println("player " + player.id + " has set");
-                while (isOccupied.get()) {
-                    dealerThread.interrupt();
-                    try {
-                        isOccupied.wait();
-
-                    } catch (InterruptedException e) {
-                    }
-                    ;
-                }
-                player.point();
-            }
-        } else {
+    public void checkSet2(Player player) {
+        if (!testSet(player)) {
+            isOccupied.set(false);
             player.penalty();
+        } else {
+            isOccupied.set(true);
+            player.point();
+            dealerThread.interrupt();
+        }
+
+    }
+
+
+
+    public void checkSet1(Player player) {
+        if (!testSet(player)) {
+            player.penalty();
+        } else {
+            isOccupied.set(true);
+            if (testSet(player)) {
+                synchronized (isOccupied) {
+                    System.out.println("player " + player.id + " has set");
+                    while (isOccupied.get()) {
+                        dealerThread.interrupt();
+                        try {
+                            isOccupied.wait();
+
+                        } catch (InterruptedException e) {
+                        }
+                        ;
+                    }
+                    System.out.println("out of wait");
+                    player.point();
+                }
+            }
+
         }
 
     }
