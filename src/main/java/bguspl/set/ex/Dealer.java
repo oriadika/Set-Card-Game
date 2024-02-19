@@ -25,7 +25,6 @@ public class Dealer implements Runnable {
     /**
      * The game environment object.
      */
-    private final int noSet = -1;
 
     private final Env env;
 
@@ -33,7 +32,7 @@ public class Dealer implements Runnable {
 
     private long remainMiliSconds;
 
-    private final long updateEach = 1000;
+    private long updateEach = 1000;
 
     private Thread dealerThread; // This is the way to get the dealer thread
 
@@ -41,11 +40,18 @@ public class Dealer implements Runnable {
 
     final long FREEZE_TIME_MILLI = 1000;
 
-    private final int timesUp = -1000;
+    private final int timesUp = 0;
 
     public boolean blockPlacing = false;
 
     volatile AtomicBoolean isOccupied;
+
+    public final int Set = 1;
+    public final int noSet = 2;
+    public final int tokensRemoved = 3;
+    public final int placedTooLate = Set;
+
+    public final long turnTimeoutWarningMillis = 5000;
 
     /**
      * Game entities.
@@ -145,26 +151,29 @@ public class Dealer implements Runnable {
      */
     private void removeCardsFromTable() {// remove cards when a set was found
         for (Player player : players) {
-            if (table.getTokensQueues()[player.id].size() == 3) {
-                if (isSet(player.id)) {
-                    int[] slotsToRemove = new int[3];
-                    java.util.Iterator<Integer> iterator = table.getTokensQueues()[player.id].iterator();
-                    int index = 0;
-                    while (iterator.hasNext()) {
-                        slotsToRemove[index] = iterator.next();
-                        index++;
-                    }
-                    for (int i = 0; i < slotsToRemove.length; i++) {
-                        for (int playerID = 0; playerID < env.config.players; playerID++) {
-                            if (table.getTokensQueues()[playerID].contains(slotsToRemove[i])) {
-                                table.removeToken(playerID, slotsToRemove[i]);
-                            }
+            if (player.getIsFrozen()) {
+                if (table.getTokensQueues()[player.id].size() == 3) {
+                    if (isSet(player.id)) {
+                        int[] slotsToRemove = new int[3];
+                        java.util.Iterator<Integer> iterator = table.getTokensQueues()[player.id].iterator();
+                        int index = 0;
+                        while (iterator.hasNext()) {
+                            slotsToRemove[index] = iterator.next();
+                            index++;
                         }
+                        for (int i = 0; i < slotsToRemove.length; i++) {
+                            for (int playerID = 0; playerID < env.config.players; playerID++) {
+                                if (table.getTokensQueues()[playerID].contains(slotsToRemove[i])) {
+                                    table.removeToken(playerID, slotsToRemove[i]);
+                                }
+                            }
 
-                        table.removeCard(slotsToRemove[i]);
+                            table.removeCard(slotsToRemove[i]);
+                        }
                     }
                 }
             }
+
             placeCardsOnTable();
         }
         System.out.println("finished removing cards");
@@ -230,52 +239,56 @@ public class Dealer implements Runnable {
      * purpose.
      */
 
-    public boolean testSet(Player player) {
-        if (table.getTokensQueues()[player.id].size() == 3) {
-            int[] set = new int[3];
-            int i = 0;
-            for (int num : table.getTokensQueues()[player.id]) {
-                set[i] = table.slotToCard[num];
-                i++;
+    public int testSet(Player player) {
+        synchronized (player.getDealer().isOccupied) {
+            System.out.println("player " + player.id + " in check set");
+            if (table.getTokensQueues()[player.id].size() == 3) {
+                int[] set = new int[3];
+                int i = 0;
+                for (int num : table.getTokensQueues()[player.id]) {
+                    set[i] = table.slotToCard[num];
+                    i++;
+                }
+                if (env.util.testSet(set)) {
+                    isOccupied.set(true);
+                    return Set;
+                } else {
+                    return noSet;
+                }
+
+            } else if (table.getTokensQueues()[player.id].size() == 0) {
+                isOccupied.set(false);
+                return placedTooLate;
             }
-            return env.util.testSet(set);
-
-        }
-        isOccupied.set(false);
-        return false;
-
-    }
-
-    public void checkSet2(Player player) {
-        if (!testSet(player)) {
-            isOccupied.set(false);
-            player.penalty();
-        } else {
-            isOccupied.set(true);
-            player.point();
-            dealerThread.interrupt();
+            return tokensRemoved;
         }
 
     }
 
     public boolean checkSet1(Player player) {
-        if (testSet(player)) {
+        if (true) {
             dealerThread.interrupt();
             player.point();
             return true;
         } else {
-            synchronized(isOccupied){
+            synchronized (isOccupied) {
                 isOccupied.set(false);
                 isOccupied.notifyAll();
                 return false;
             }
-            
+
         }
 
     }
 
     private void sleepUntilWokenOrTimeout() {
         synchronized (isOccupied) {
+            if (remainMiliSconds > turnTimeoutWarningMillis) {
+                updateEach = 1000;
+            }
+            else{
+                updateEach = 10;
+            }
             try {
                 dealerThread.sleep(updateEach);
             } catch (InterruptedException e) {
@@ -294,10 +307,11 @@ public class Dealer implements Runnable {
                 isOccupied.notifyAll();
                 System.out.println("notifyAll");
             }
-
         }
 
     }
+
+    
 
     /**
      * Reset and/or update the countdown and the countdown display.
@@ -312,12 +326,16 @@ public class Dealer implements Runnable {
             blockPlacing = false;
 
         } else {
-            remainMiliSconds = remainMiliSconds - 1000;
             if (remainMiliSconds == timesUp) {
                 blockPlacing = true;
                 updateTimerDisplay(true);
+            }
+            if (remainMiliSconds <= turnTimeoutWarningMillis) {
+                remainMiliSconds = remainMiliSconds -10;
+                env.ui.setCountdown(remainMiliSconds, true);
             } else {
                 env.ui.setCountdown(remainMiliSconds, false);
+                remainMiliSconds = remainMiliSconds - 1000;
                 blockPlacing = false;
             }
         }
@@ -340,7 +358,6 @@ public class Dealer implements Runnable {
      * Check who is/are the winner/s and displays them.
      */
     private void announceWinners() {
-        System.out.println(deck.size());
         Integer[] playersScore = new Integer[env.config.players]; // get all players scores
         for (int id = 0; id < playersScore.length; id++) {
             playersScore[id] = players[id].score();

@@ -76,7 +76,6 @@ public class Table {
 
     public void playerAction(Player player, int slot) {
         if (!player.isBlocked()) {
-            System.out.println("placing token");
             if (slotToCard[slot] != null) {
                 if (!removeToken(player.id, slot)) {
                     placeToken(player.id, slot);
@@ -88,27 +87,37 @@ public class Table {
             }
 
             if (tokensQueues[player.id].size() == maxTokens) {
-                player.setIsFrozen(true);
-                player.getDealer().isOccupied.set(true);
-                boolean isSet = player.getDealer().checkSet1(player);
-                System.out.println(isSet);
-                if (isSet) {
-                    synchronized (player.getDealer().isOccupied) {
+                int action = -1;
+                synchronized (this) {
+                    player.setIsFrozen(true);
+                    action = player.getDealer().testSet(player);
+                    if (action == player.getDealer().Set) {
                         while (player.getDealer().isOccupied.get()) {
-                            try {
-                                player.getDealer().isOccupied.wait();
-                            } catch (InterruptedException e) {
+                            synchronized (player.getDealer().isOccupied) {
+                                try {
+                                    player.getDealerThread().interrupt();
+                                    player.getDealer().isOccupied.wait();
+
+                                } catch (InterruptedException e) {
+                                }
+                                ;
                             }
-                            ;
                         }
+                        player.point();
                     }
-                    System.out.println("out of wait");
-                } else {
-                    System.out.println("penalty");
-                    player.penalty();
+
+                    System.out.println("player " + player.id + " action = " + action);
+                    System.out.println(player.getDealer().isOccupied.get());
                 }
 
+                if (action == player.getDealer().noSet) {
+                    player.penalty();
+                } else if (action == player.getDealer().tokensRemoved) {
+                }
+                ;
+
             }
+            player.setIsFrozen(false);
         }
 
         // If the token isnt there but the player has 3 tokens already*/

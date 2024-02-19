@@ -1,0 +1,74 @@
+[17:54:41.426] [INFO   ] thread main starting.
+[17:54:41.442] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[17:54:41.442] [SEVERE ] configuration file was loaded from resources directory.
+[17:54:42.094] [INFO   ] thread dealer starting.
+[17:54:42.094] [INFO   ] thread player 0 starting.
+[17:54:42.098] [INFO   ] thread player 1 starting.
+[17:54:42.101] [INFO   ] thread dealer starting.
+[17:54:42.111] [INFO   ] thread player 0 starting.
+[17:54:42.111] [INFO   ] thread player 1 starting.
+[17:54:42.232] [SEVERE ] placing card 4 in slot 0
+[17:54:42.345] [SEVERE ] placing card 70 in slot 1
+[17:54:42.449] [SEVERE ] placing card 34 in slot 2
+[17:54:42.564] [SEVERE ] placing card 62 in slot 3
+[17:54:42.679] [SEVERE ] placing card 30 in slot 4
+[17:54:42.780] [SEVERE ] placing card 24 in slot 5
+[17:54:42.892] [SEVERE ] placing card 45 in slot 6
+[17:54:43.004] [SEVERE ] placing card 41 in slot 7
+[17:54:43.115] [SEVERE ] placing card 44 in slot 8
+[17:54:43.227] [SEVERE ] placing card 76 in slot 9
+[17:54:43.339] [SEVERE ] placing card 46 in slot 10
+[17:54:43.449] [SEVERE ] placing card 10 in slot 11
+[17:54:44.468] [SEVERE ] updating countdown to 59000
+[17:54:45.484] [SEVERE ] updating countdown to 58000
+[17:54:46.494] [SEVERE ] updating countdown to 57000
+[17:54:47.503] [SEVERE ] updating countdown to 56000
+[17:54:48.525] [SEVERE ] updating countdown to 55000
+[17:54:49.536] [SEVERE ] updating countdown to 54000
+[17:54:49.999] [SEVERE ] key 79 was pressed by player 2
+[17:54:49.999] [SEVERE ] player 2 placing token on slot 2
+[17:54:50.540] [SEVERE ] updating countdown to 53000
+[17:54:51.548] [SEVERE ] updating countdown to 52000
+[17:54:51.969] [SEVERE ] key 75 was pressed by player 2
+[17:54:51.969] [SEVERE ] player 2 placing token on slot 5
+[17:54:52.553] [SEVERE ] updating countdown to 51000
+[17:54:53.569] [SEVERE ] updating countdown to 50000
+[17:54:54.572] [SEVERE ] updating countdown to 49000
+[17:54:55.586] [SEVERE ] updating countdown to 48000
+[17:54:56.379] [SEVERE ] key 81 was pressed by player 1
+[17:54:56.379] [SEVERE ] player 1 placing token on slot 0
+[17:54:56.598] [SEVERE ] updating countdown to 47000
+[17:54:57.296] [SEVERE ] key 87 was pressed by player 1
+[17:54:57.296] [SEVERE ] player 1 placing token on slot 1
+[17:54:57.599] [SEVERE ] updating countdown to 46000
+[17:54:58.605] [SEVERE ] updating countdown to 45000
+[17:54:59.626] [SEVERE ] updating countdown to 44000
+[17:55:00.642] [SEVERE ] updating countdown to 43000
+[17:55:01.189] [SEVERE ] key 76 was pressed by player 2
+[17:55:01.189] [SEVERE ] player 2 placing token on slot 6
+[17:55:01.469] [SEVERE ] key 67 was pressed by player 1
+[17:55:01.469] [SEVERE ] player 1 placing token on slot 10
+[17:55:01.655] [SEVERE ] setting player 2 freeze to 3000
+[17:55:01.657] [SEVERE ] updating countdown to 42000
+[17:55:02.664] [SEVERE ] setting player 2 freeze to 2000
+[17:55:02.668] [SEVERE ] setting player 1 score to 1
+[17:55:02.669] [SEVERE ] setting player 1 freeze to 1000
+[17:55:02.669] [SEVERE ] updating countdown to 41000
+[17:55:03.670] [SEVERE ] setting player 2 freeze to 1000
+[17:55:03.670] [SEVERE ] setting player 1 freeze to 0
+[17:55:03.670] [SEVERE ] removing player 1 token from slot 0
+[17:55:03.670] [SEVERE ] removing card from slot 0
+[17:55:03.777] [SEVERE ] removing player 1 token from slot 1
+[17:55:03.777] [SEVERE ] removing card from slot 1
+[17:55:03.882] [SEVERE ] removing player 1 token from slot 10
+[17:55:03.882] [SEVERE ] removing card from slot 10
+[17:55:04.106] [SEVERE ] placing card 1 in slot 0
+[17:55:04.218] [SEVERE ] placing card 52 in slot 1
+[17:55:04.329] [SEVERE ] placing card 63 in slot 10
+[17:55:04.334] [SEVERE ] updating countdown to 60000
+[17:55:04.672] [SEVERE ] setting player 2 freeze to 0
+[17:55:05.341] [SEVERE ] updating countdown to 59000
+[17:55:05.819] [SEVERE ] key 67 was pressed by player 1
+[17:55:05.819] [SEVERE ] player 1 placing token on slot 10
+[17:55:06.349] [SEVERE ] updating countdown to 58000
+[17:55:07.367] [SEVERE ] updating countdown to 57000

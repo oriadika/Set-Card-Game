@@ -94,7 +94,6 @@ public class Player implements Runnable {
      */
     public void run() {
         this.env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
-        System.out.println("i am in run");
         if (!this.human) {
                 createArtificialIntelligence();
         }
@@ -116,6 +115,9 @@ public class Player implements Runnable {
         this.env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
     }
 
+    public boolean getIsFrozen(){
+        return isFrozen;
+    }
     /**
      * Creates an additional thread for an AI (computer) player. The main loop of
      * this thread repeatedly generates
