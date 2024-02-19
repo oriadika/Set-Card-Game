@@ -132,7 +132,7 @@ public class Player implements Runnable {
                 try {
                     Random random = new Random();
                     keyPressed(random.nextInt(table.slotToCard.length));
-                    aiThread.sleep(1000);
+                    aiThread.sleep(500);
                     
                 } catch (Exception e) {
 

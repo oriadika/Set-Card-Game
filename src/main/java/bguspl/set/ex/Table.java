@@ -226,6 +226,7 @@ public class Table {
                 removeToken(i, slot);
             }
         }
+    
 
     }
 
@@ -253,7 +254,6 @@ public class Table {
      * @return - true iff a token was successfully removed.
      */
     public boolean removeToken(int player, int slot) {
-        synchronized (tokensQueues[player]) {
             if (tokensQueues[player].contains(slot)) {
                 env.ui.removeToken(player, slot);
                 tokensQueues[player].remove(slot);
@@ -261,7 +261,6 @@ public class Table {
             } else {
                 return false;
             }
-        }
 
     }
 }

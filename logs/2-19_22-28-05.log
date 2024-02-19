@@ -1,0 +1,42 @@
+[22:28:05.125] [INFO   ] thread main starting.
+[22:28:05.141] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[22:28:05.141] [SEVERE ] configuration file was loaded from resources directory.
+[22:28:05.726] [INFO   ] thread dealer starting.
+[22:28:05.727] [INFO   ] thread player 0 starting.
+[22:28:05.728] [INFO   ] thread player 1 starting.
+[22:28:05.729] [INFO   ] thread player 2 starting.
+[22:28:05.729] [INFO   ] thread player 3 starting.
+[22:28:05.729] [INFO   ] thread dealer starting.
+[22:28:05.730] [INFO   ] thread player 0 starting.
+[22:28:05.730] [INFO   ] thread player 3 starting.
+[22:28:05.730] [INFO   ] thread player 2 starting.
+[22:28:05.730] [INFO   ] thread player 1 starting.
+[22:28:05.733] [INFO   ] thread computer-0 starting.
+[22:28:05.733] [INFO   ] thread computer-3 starting.
+[22:28:05.738] [INFO   ] thread computer-2 starting.
+[22:28:05.738] [INFO   ] thread computer-1 starting.
+[22:28:12.899] [SEVERE ] placing card 60 in slot 0
+[22:28:13.000] [SEVERE ] placing card 52 in slot 1
+[22:28:13.102] [SEVERE ] placing card 47 in slot 2
+[22:28:13.203] [SEVERE ] placing card 18 in slot 3
+[22:28:13.305] [SEVERE ] placing card 57 in slot 4
+[22:28:13.406] [SEVERE ] placing card 75 in slot 5
+[22:28:13.507] [SEVERE ] placing card 16 in slot 6
+[22:28:13.609] [SEVERE ] placing card 62 in slot 7
+[22:28:13.710] [SEVERE ] placing card 10 in slot 8
+[22:28:13.823] [SEVERE ] placing card 31 in slot 9
+[22:28:13.926] [SEVERE ] placing card 27 in slot 10
+[22:28:14.040] [SEVERE ] placing card 48 in slot 11
+[22:28:14.042] [SEVERE ] player 4 placing token on slot 3
+[22:28:14.042] [SEVERE ] player 3 placing token on slot 1
+[22:28:14.042] [SEVERE ] player 2 placing token on slot 10
+[22:28:14.042] [SEVERE ] player 1 placing token on slot 0
+[22:28:14.058] [SEVERE ] player 2 placing token on slot 8
+[22:28:14.058] [SEVERE ] player 3 placing token on slot 6
+[22:28:14.058] [SEVERE ] player 4 placing token on slot 10
+[22:28:14.058] [SEVERE ] player 1 placing token on slot 2
+[22:28:14.074] [SEVERE ] player 1 placing token on slot 10
+[22:28:14.074] [SEVERE ] player 2 placing token on slot 6
+[22:28:14.074] [SEVERE ] player 3 placing token on slot 8
+[22:28:14.074] [SEVERE ] player 4 placing token on slot 0
+[22:28:15.053] [SEVERE ] updating countdown to 60000
