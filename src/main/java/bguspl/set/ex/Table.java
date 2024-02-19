@@ -76,6 +76,7 @@ public class Table {
 
     public void playerAction(Player player, int slot) {
         if (!player.isBlocked()) {
+            System.out.println("placing token");
             if (slotToCard[slot] != null) {
                 if (!removeToken(player.id, slot)) {
                     placeToken(player.id, slot);
@@ -193,7 +194,6 @@ public class Table {
     public void removeCard(int slot) {
         try {
             synchronized (slotsLocks[slot]) { // I want to lock the slot while I am removing the card
-                System.out.println("removing " + slot);
                 slotToCard[slot] = null; // No card in there
 
                 this.env.ui.removeCard(slot); // remove from table in ui

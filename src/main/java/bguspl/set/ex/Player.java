@@ -94,27 +94,24 @@ public class Player implements Runnable {
      */
     public void run() {
         this.env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
-
+        System.out.println("i am in run");
         if (!this.human) {
-            try {
                 createArtificialIntelligence();
-                this.aiThread.join();
-            } catch (InterruptedException var2) {
-
-            }
         }
 
         while (!this.terminate) {
             try {
                 while (!isBlocked()) {
                     int slot = actions.removeAction();
-                        table.playerAction(this, slot);
+                    table.playerAction(this, slot);
                 }
 
             } catch (InterruptedException e) {
                 System.out.println("player interrupted. Terminate = " + terminate);
             }
         }
+        if (!human) try { aiThread.join(); } catch (InterruptedException ignored) {}
+        env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
 
         this.env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
     }
@@ -125,17 +122,16 @@ public class Player implements Runnable {
      * key presses. If the queue of key presses is full, the thread waits until it
      * is not full.
      */
-    private synchronized void createArtificialIntelligence() {
+    private void createArtificialIntelligence() {
         // note: this is a very, very smart AI (!)
         aiThread = new Thread(() -> {
             env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
             while (!terminate) {
                 try {
-                    aiThread.sleep(100);
                     Random random = new Random();
                     keyPressed(random.nextInt(table.slotToCard.length));
-                    int slot = actions.removeAction();
-                    table.playerAction(this, slot);
+                    aiThread.sleep(1000);
+                    ;
                 } catch (Exception e) {
 
                 }
@@ -160,10 +156,6 @@ public class Player implements Runnable {
      */
     public void terminate() {
         terminate = true;
-        if (aiThread != null) {
-            aiThread.interrupt();
-        }
-        playerThread.interrupt();
     }
 
     public boolean isBlocked() {

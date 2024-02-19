@@ -129,8 +129,6 @@ public class Dealer implements Runnable {
             player.terminate(); // tell all players the game is over
         }
         terminate = true;
-        dealerThread.interrupt();
-
     }
 
     /**
@@ -146,7 +144,6 @@ public class Dealer implements Runnable {
      * Checks cards should be removed from the table and removes them.
      */
     private void removeCardsFromTable() {// remove cards when a set was found
-        System.out.println("removing cards");
         for (Player player : players) {
             if (table.getTokensQueues()[player.id].size() == 3) {
                 if (isSet(player.id)) {
@@ -225,6 +222,7 @@ public class Dealer implements Runnable {
         else {
             terminate = true;
         }
+
     }
 
     /**
