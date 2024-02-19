@@ -44,14 +44,16 @@ public class Dealer implements Runnable {
 
     public boolean blockPlacing = false;
 
+    private final int deckSize;
+
     volatile AtomicBoolean isOccupied;
 
     public final int Set = 1;
     public final int noSet = 2;
     public final int tokensRemoved = 3;
-    public final int placedTooLate = Set;
 
-    public final long turnTimeoutWarningMillis = 5000;
+    public final int setSize = 3;
+    public final long turnTimeoutWarningMillis;
 
     /**
      * Game entities.
@@ -83,6 +85,8 @@ public class Dealer implements Runnable {
         this.remainMiliSconds = Minute;
         playersThread = new ThreadLogger[env.config.players];
         this.isOccupied = new AtomicBoolean();
+        this.deckSize = env.config.deckSize;
+        this.turnTimeoutWarningMillis = env.config.turnTimeoutWarningMillis;
     }
 
     /**
@@ -154,7 +158,7 @@ public class Dealer implements Runnable {
             if (player.getIsFrozen()) {
                 if (table.getTokensQueues()[player.id].size() == 3) {
                     if (isSet(player.id)) {
-                        int[] slotsToRemove = new int[3];
+                        int[] slotsToRemove = new int[setSize];
                         java.util.Iterator<Integer> iterator = table.getTokensQueues()[player.id].iterator();
                         int index = 0;
                         while (iterator.hasNext()) {
@@ -167,7 +171,6 @@ public class Dealer implements Runnable {
                                     table.removeToken(playerID, slotsToRemove[i]);
                                 }
                             }
-
                             table.removeCard(slotsToRemove[i]);
                         }
                     }
@@ -187,7 +190,7 @@ public class Dealer implements Runnable {
     public boolean isSet(int playerId) { // wants to be exceuted when player hits his third token - need to check
         Queue<Integer> playerSet = table.getTokensQueues()[playerId]; // get all players tokens
         java.util.Iterator<Integer> iterator = playerSet.iterator();
-        int cardsToCheck[] = new int[3];
+        int cardsToCheck[] = new int[setSize];
         int index = 0;
         while (iterator.hasNext()) {
             cardsToCheck[index] = table.slotToCard[iterator.next()];
@@ -214,7 +217,7 @@ public class Dealer implements Runnable {
      */
     private void placeCardsOnTable() {
         if (deck.size() > 0 || remainMiliSconds > 0) {
-            if (deck.size() == 81) {
+            if (deck.size() == deckSize) {
                 blockPlacing = true;
             }
             Collections.shuffle(deck);
@@ -242,12 +245,13 @@ public class Dealer implements Runnable {
     public int testSet(Player player) {
         synchronized (player.getDealer().isOccupied) {
             System.out.println("player " + player.id + " in check set");
-            if (table.getTokensQueues()[player.id].size() == 3) {
-                int[] set = new int[3];
+            if (table.getTokensQueues()[player.id].size() == setSize) {
+                int[] set = new int[setSize];
                 int i = 0;
                 for (int num : table.getTokensQueues()[player.id]) {
                     set[i] = table.slotToCard[num];
                     i++;
+                    System.out.println(num);
                 }
                 if (env.util.testSet(set)) {
                     isOccupied.set(true);
@@ -256,11 +260,10 @@ public class Dealer implements Runnable {
                     return noSet;
                 }
 
-            } else if (table.getTokensQueues()[player.id].size() == 0) {
+            } 
                 isOccupied.set(false);
-                return placedTooLate;
-            }
-            return tokensRemoved;
+                return tokensRemoved;
+            
         }
 
     }
@@ -285,8 +288,7 @@ public class Dealer implements Runnable {
         synchronized (isOccupied) {
             if (remainMiliSconds > turnTimeoutWarningMillis) {
                 updateEach = 1000;
-            }
-            else{
+            } else {
                 updateEach = 10;
             }
             try {
@@ -311,8 +313,6 @@ public class Dealer implements Runnable {
 
     }
 
-    
-
     /**
      * Reset and/or update the countdown and the countdown display.
      */
@@ -331,7 +331,7 @@ public class Dealer implements Runnable {
                 updateTimerDisplay(true);
             }
             if (remainMiliSconds <= turnTimeoutWarningMillis) {
-                remainMiliSconds = remainMiliSconds -10;
+                remainMiliSconds = remainMiliSconds - 10;
                 env.ui.setCountdown(remainMiliSconds, true);
             } else {
                 env.ui.setCountdown(remainMiliSconds, false);

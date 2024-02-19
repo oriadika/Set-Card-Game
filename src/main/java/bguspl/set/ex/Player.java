@@ -133,7 +133,7 @@ public class Player implements Runnable {
                     Random random = new Random();
                     keyPressed(random.nextInt(table.slotToCard.length));
                     aiThread.sleep(1000);
-                    ;
+                    
                 } catch (Exception e) {
 
                 }
@@ -211,7 +211,6 @@ public class Player implements Runnable {
         }
 
         catch (InterruptedException e) {
-            System.out.println("intrrupted");
             return;
         }
 
