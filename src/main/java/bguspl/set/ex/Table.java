@@ -87,6 +87,7 @@ public class Table {
             }
 
             if (tokensQueues[player.id].size() == maxTokens) {
+                player.setIsFrozen(true);
                 player.getDealer().isOccupied.set(true);
                 boolean isSet = player.getDealer().checkSet1(player);
                 System.out.println(isSet);
@@ -104,7 +105,6 @@ public class Table {
                 } else {
                     System.out.println("penalty");
                     player.penalty();
-
                 }
 
             }
