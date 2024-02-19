@@ -87,19 +87,30 @@ public class Table {
             }
 
             if (tokensQueues[player.id].size() == maxTokens) {
-                player.setIsFrozen(true);
-                int[] set = new int[3];
-                int index = 0;
-                for (int token : tokensQueues[player.id]) {
-                    set[index] = slotToCard[token];
-                    index++;
+                player.getDealer().isOccupied.set(true);
+                boolean isSet = player.getDealer().checkSet1(player);
+                System.out.println(isSet);
+                if (isSet) {
+                    synchronized (player.getDealer().isOccupied) {
+                        while (player.getDealer().isOccupied.get()) {
+                            try {
+                                player.getDealer().isOccupied.wait();
+                            } catch (InterruptedException e) {
+                            }
+                            ;
+                        }
+                    }
+                    System.out.println("out of wait");
+                } else {
+                    System.out.println("penalty");
+                    player.penalty();
+
                 }
-                player.getDealer().checkSet1(player);
 
             }
-
-            // If the token isnt there but the player has 3 tokens already*/
         }
+
+        // If the token isnt there but the player has 3 tokens already*/
     }
 
     /**
