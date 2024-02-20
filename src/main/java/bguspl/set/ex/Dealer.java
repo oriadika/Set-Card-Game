@@ -36,7 +36,7 @@ public class Dealer implements Runnable {
 
     private Thread dealerThread; // This is the way to get the dealer thread
 
-    private final long Minute = 60000;
+    private final long Minute = 5000;
 
     final long FREEZE_TIME_MILLI = 1000;
 
@@ -139,6 +139,7 @@ public class Dealer implements Runnable {
         for (Player player : players) {
             player.terminate(); // tell all players the game is over
         }
+
         terminate = true;
     }
 
@@ -239,7 +240,6 @@ public class Dealer implements Runnable {
 
     public int testSet(Player player) {
         synchronized (player.getDealer().isOccupied) {
-            System.out.println("player " + player.id + " in check set");
             if (table.getTokensQueues()[player.id].size() == setSize && remainMiliSconds > 0) {
                 int[] set = new int[setSize];
                 int i = 0;
@@ -248,7 +248,6 @@ public class Dealer implements Runnable {
                         set[i] = table.slotToCard[num];
                         i++;
                     }
-                    System.out.println(num);
                 }
                 if (env.util.testSet(set)) {
                     isOccupied.set(true);
@@ -282,15 +281,16 @@ public class Dealer implements Runnable {
     }
 
     private void sleepUntilWokenOrTimeout() {
-        synchronized (isOccupied) {
+        
             if (remainMiliSconds > turnTimeoutWarningMillis) {
-                updateEach = 1000;
+                updateEach = 10;
             } else {
                 updateEach = 10;
             }
             try {
                 dealerThread.sleep(updateEach);
             } catch (InterruptedException e) {
+                synchronized (isOccupied) {
                 if (remainMiliSconds == timesUp) {
                     updateTimerDisplay(true);
 
@@ -380,6 +380,7 @@ public class Dealer implements Runnable {
         }
 
         env.ui.announceWinner(winners);
+        terminate();
     }
 
     public Thread getPlayerThread(int playerId) {

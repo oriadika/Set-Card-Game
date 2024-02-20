@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 import bguspl.set.Env;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * This class manages the players' threads and data
@@ -14,8 +15,8 @@ import bguspl.set.Env;
  */
 public class Player implements Runnable {
 
-    final long PENAlTY_MILLISECONDS = 3000;
-    final long FREEZE_TIME_MILLI = 1000;
+    final long PENAlTY_MILLISECONDS = 0;
+    final long FREEZE_TIME_MILLI = 0;
     final long NO_Time_MILLI = 0;
     final int POINT = 1;
 
@@ -24,7 +25,7 @@ public class Player implements Runnable {
      */
     private final Env env;
 
-    private BlockingQueue actions;
+    // private BlockingQueue actions;
 
     private boolean isFrozen;
 
@@ -43,7 +44,7 @@ public class Player implements Runnable {
      */
     private Thread playerThread;
 
-    private Thread dealerThread;
+    private LinkedBlockingQueue<Integer> actions;
 
     /**
      * The thread of the AI (computer) player (an additional thread used to generate
@@ -84,7 +85,8 @@ public class Player implements Runnable {
         this.id = id;
         this.human = human;
         this.isFrozen = false;
-        this.actions = new BlockingQueue();
+        // this.actions = new BlockingQueue();
+        this.actions = new LinkedBlockingQueue<>(2);
         this.dealer = dealer;
     }
 
@@ -95,29 +97,36 @@ public class Player implements Runnable {
     public void run() {
         this.env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
         if (!this.human) {
-                createArtificialIntelligence();
+            createArtificialIntelligence();
         }
 
         while (!this.terminate) {
-            try {
-                while (!isBlocked()) {
-                    int slot = actions.removeAction();
+            System.out.println("terminate is " +terminate);
+            while (!isBlocked()) {
+                if (!actions.isEmpty()) {
+                    int slot = actions.poll();
                     table.playerAction(this, slot);
                 }
+                synchronized(this){
+                    notifyAll();
+                }
 
-            } catch (InterruptedException e) {
-                System.out.println("player interrupted. Terminate = " + terminate);
             }
+
         }
-        if (!human) try { aiThread.join(); } catch (InterruptedException ignored) {}
+        if (!human)
+            try {
+                aiThread.join();
+            } catch (InterruptedException ignored) {
+            }
         env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
 
-        this.env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
     }
 
-    public boolean getIsFrozen(){
+    public boolean getIsFrozen() {
         return isFrozen;
     }
+
     /**
      * Creates an additional thread for an AI (computer) player. The main loop of
      * this thread repeatedly generates
@@ -129,14 +138,17 @@ public class Player implements Runnable {
         aiThread = new Thread(() -> {
             env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
             while (!terminate) {
+                System.out.println("terminate is "+ terminate);
                 try {
                     Random random = new Random();
                     keyPressed(random.nextInt(table.slotToCard.length));
-                    aiThread.sleep(500);
-                    
-                } catch (Exception e) {
+                    synchronized (this) {
+                        wait();
+                    }
 
+                } catch (InterruptedException e) {
                 }
+                ;
 
             }
             env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
@@ -148,10 +160,9 @@ public class Player implements Runnable {
         return dealer;
     }
 
-    public void setIsFrozen(boolean frozen){
+    public void setIsFrozen(boolean frozen) {
         isFrozen = frozen;
     }
-
 
     /**
      * Called when the game should be terminated.
@@ -170,9 +181,9 @@ public class Player implements Runnable {
      * 
      * @param slot - the slot corresponding to the key pressed.
      */
-    public synchronized void keyPressed(int slot) {
-        if (!isFrozen && !isBlocked()){
-            actions.addAction(slot);
+    public void keyPressed(int slot) {
+        if (!isFrozen && !isBlocked()) {
+            actions.add(slot);
         }
     }
 
