@@ -75,6 +75,7 @@ public class Table {
     }
 
     public void playerAction(Player player, int slot) {
+        System.out.println("player action still running");
         if (!player.isBlocked()) {
             if (slotToCard[slot] != null) {
                 if (!removeToken(player.id, slot)) {
@@ -96,6 +97,7 @@ public class Table {
                             synchronized (player.getDealer().isOccupied) {
                                 try {
                                     player.getDealerThread().interrupt();
+                                    System.out.println("waiting");
                                     player.getDealer().isOccupied.wait();
 
                                 } catch (InterruptedException e) {
@@ -115,7 +117,6 @@ public class Table {
                 } else if (action == player.getDealer().tokensRemoved) {
                 }
                 ;
-
             }
             player.setIsFrozen(false);
         }

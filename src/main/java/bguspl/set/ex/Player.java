@@ -101,13 +101,12 @@ public class Player implements Runnable {
         }
 
         while (!this.terminate) {
-            System.out.println("terminate is " +terminate);
             while (!isBlocked()) {
                 if (!actions.isEmpty()) {
                     int slot = actions.poll();
                     table.playerAction(this, slot);
                 }
-                synchronized(this){
+                synchronized (this) {
                     notifyAll();
                 }
 
@@ -138,7 +137,6 @@ public class Player implements Runnable {
         aiThread = new Thread(() -> {
             env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
             while (!terminate) {
-                System.out.println("terminate is "+ terminate);
                 try {
                     Random random = new Random();
                     keyPressed(random.nextInt(table.slotToCard.length));
@@ -169,6 +167,10 @@ public class Player implements Runnable {
      */
     public void terminate() {
         terminate = true;
+        if (!human) {
+            aiThread.interrupt();
+
+        }
     }
 
     public boolean isBlocked() {
@@ -184,6 +186,7 @@ public class Player implements Runnable {
     public void keyPressed(int slot) {
         if (!isFrozen && !isBlocked()) {
             actions.add(slot);
+            System.out.println("I just added");
         }
     }
 
