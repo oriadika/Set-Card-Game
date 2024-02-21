@@ -122,16 +122,11 @@ public class Dealer implements Runnable {
     private void timerLoop() {
         while (!terminate && System.currentTimeMillis() < reshuffleTime && remainMiliSconds > timesUp ) {
             sleepUntilWokenOrTimeout();
-            table.hints();
             updateTimerDisplay(false);
         }
     }
 
-    // public void resetDeck() {
-    // removeAllCardsFromTable();
-    // placeCardsOnTable();
-    // updateTimerDisplay(true);
-    // }
+
 
     /**
      * Called when the game should be terminated.
@@ -182,7 +177,6 @@ public class Dealer implements Runnable {
 
             placeCardsOnTable();
         }
-        System.out.println("finished removing cards");
 
     }
 

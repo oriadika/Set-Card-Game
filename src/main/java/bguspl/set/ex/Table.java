@@ -96,7 +96,7 @@ public class Table {
                             synchronized (player.getDealer().isOccupied) {
                                 try {
                                     player.getDealerThread().interrupt();
-                                    System.out.println("waiting");
+                                  
                                     player.getDealer().isOccupied.wait();
 
                                 } catch (InterruptedException e) {
@@ -107,8 +107,6 @@ public class Table {
                         player.point();
                     }
 
-                    System.out.println("player " + player.id + " action = " + action);
-                    System.out.println(player.getDealer().isOccupied.get());
                 }
 
                 if (action == player.getDealer().noSet) {
