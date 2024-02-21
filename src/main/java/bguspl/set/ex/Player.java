@@ -15,6 +15,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class Player implements Runnable {
 
+    final long One_Second = 1000;
     final long PENAlTY_MILLISECONDS = 3000;
     final long FREEZE_TIME_MILLI =1000;
     final long NO_Time_MILLI = 0;
@@ -216,7 +217,7 @@ public class Player implements Runnable {
     public void penalty() {
         try {
             env.ui.setFreeze(id, PENAlTY_MILLISECONDS);
-            for (long frozenTime = PENAlTY_MILLISECONDS - 1000; frozenTime >= 0; frozenTime = frozenTime - 1000) {
+            for (long frozenTime = PENAlTY_MILLISECONDS - One_Second; frozenTime >= 0; frozenTime = frozenTime - One_Second) {
                 playerThread.sleep(FREEZE_TIME_MILLI);
                 env.ui.setFreeze(id, frozenTime);
             }
