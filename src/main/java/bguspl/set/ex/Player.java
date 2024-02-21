@@ -15,8 +15,8 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class Player implements Runnable {
 
-    final long PENAlTY_MILLISECONDS = 0;
-    final long FREEZE_TIME_MILLI = 0;
+    final long PENAlTY_MILLISECONDS = 3000;
+    final long FREEZE_TIME_MILLI =1000;
     final long NO_Time_MILLI = 0;
     final int POINT = 1;
 
@@ -86,7 +86,7 @@ public class Player implements Runnable {
         this.human = human;
         this.isFrozen = false;
         // this.actions = new BlockingQueue();
-        this.actions = new LinkedBlockingQueue<>(2);
+        this.actions = new LinkedBlockingQueue<>(3);
         this.dealer = dealer;
     }
 
@@ -107,7 +107,7 @@ public class Player implements Runnable {
                     table.playerAction(this, slot);
                 }
                 synchronized (this) {
-                    notifyAll();
+                    notifyAll(); // notify the ai thread he can add elements now
                 }
 
             }
@@ -169,7 +169,6 @@ public class Player implements Runnable {
         terminate = true;
         if (!human) {
             aiThread.interrupt();
-
         }
     }
 
@@ -186,7 +185,6 @@ public class Player implements Runnable {
     public void keyPressed(int slot) {
         if (!isFrozen && !isBlocked()) {
             actions.add(slot);
-            System.out.println("I just added");
         }
     }
 

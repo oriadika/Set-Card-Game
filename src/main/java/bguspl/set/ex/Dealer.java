@@ -36,7 +36,7 @@ public class Dealer implements Runnable {
 
     private Thread dealerThread; // This is the way to get the dealer thread
 
-    private final long Minute = 5000;
+    private final long Minute = 60000;
 
     final long FREEZE_TIME_MILLI = 1000;
 
@@ -122,6 +122,7 @@ public class Dealer implements Runnable {
     private void timerLoop() {
         while (!terminate && System.currentTimeMillis() < reshuffleTime && remainMiliSconds > timesUp ) {
             sleepUntilWokenOrTimeout();
+            table.hints();
             updateTimerDisplay(false);
         }
     }
@@ -205,7 +206,7 @@ public class Dealer implements Runnable {
     // has a set
     public int isSetOnTable() {
         for (int i = 0; i < env.config.players; i++) {
-            if (table.getTokensQueues()[i].size() == 3) {
+            if (table.getTokensQueues()[i].size() == setSize) {
                 if (isSet(i)) {
                     return i;
                 }
@@ -283,7 +284,7 @@ public class Dealer implements Runnable {
     private void sleepUntilWokenOrTimeout() {
         
             if (remainMiliSconds > turnTimeoutWarningMillis) {
-                updateEach = 10;
+                updateEach = 1000;
             } else {
                 updateEach = 10;
             }
@@ -295,14 +296,11 @@ public class Dealer implements Runnable {
                     updateTimerDisplay(true);
 
                 } else {
-                    System.out.println("dealer inter");
                     removeCardsFromTable();
                     updateTimerDisplay(true);
                 }
                 isOccupied.set(false);
-                System.out.println("set isOccupied to false");
                 isOccupied.notifyAll();
-                System.out.println("notifyAll");
             }
         }
 

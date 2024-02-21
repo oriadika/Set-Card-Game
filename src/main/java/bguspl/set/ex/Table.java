@@ -75,7 +75,6 @@ public class Table {
     }
 
     public void playerAction(Player player, int slot) {
-        System.out.println("player action still running");
         if (!player.isBlocked()) {
             if (slotToCard[slot] != null) {
                 if (!removeToken(player.id, slot)) {
