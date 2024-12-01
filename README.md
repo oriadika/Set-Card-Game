@@ -22,7 +22,7 @@ Prerequisites
 1.Clone the repository:
   bash
   Copy code
-  git clone https://github.com/yourusername/set-card-game.git
+  git clone [https://github.com/yourusername/set-card-game.git](https://github.com/oriadika/Set-Card-Game.git)
   cd set-card-game
 2.Compile the project using Maven:
 bash
